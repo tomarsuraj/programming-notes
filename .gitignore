@@ -105,4 +105,4 @@ dist
 
 
 #  firebase config file
-.src/firebaseConfig.js
+/src/firebaseConfig.js
