@@ -20,12 +20,14 @@ import {
   UPDATE_POST_CATEGORY,
   UPDATE_POST_SAMPLE,
   UPDATE_POST_TITLE,
+  UPDATE_POST_ID,
 } from "../context/action.type";
 import { uploadPost } from "../context/databasefunction";
 import { UserContext } from "../context/context";
 import { firestore } from "firebase";
 
 const initialState = {
+  postId: null,
   editorState: EditorState.createEmpty(),
   postTitle: "",
   postSample: "",
@@ -35,19 +37,19 @@ const initialState = {
 const AddPost = () => {
   const [postState, dispatchPost] = useReducer(addPostReducer, initialState);
   const { appState } = useContext(UserContext);
-  const [postId, setPostId] = useState("");
+  const { postId } = postState;
 
   const { user } = appState;
 
   const getPostId = async () => {
     console.log("get Post ID Calsle");
-    const postId = await firestore()
+    const postdoc = await firestore()
       .collection("Users")
       .doc(appState.user.uid)
       .collection("post")
       .doc();
 
-    setPostId(postId.id);
+    dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id });
   };
 
   useEffect(() => {
@@ -112,9 +114,11 @@ const AddPost = () => {
             </Form.Group>
           </Form>
         </Col>
-        <Col sm={12} md={4} className="border border-primary  ">
-          <ImagePicker postId={postState.postId} />
-        </Col>
+        {postId ? (
+          <ImagePicker postId={postId} />
+        ) : (
+          <h5>Get Post ID first to Upload Image to our Server</h5>
+        )}
       </Row>
 
       <Row className="my-2 bg-light border border-primary">
@@ -134,11 +138,27 @@ const AddPost = () => {
       </Row>
       <Row>
         {user.uid ? (
-          <Button onClick={() => uploadPost({ postState, appState, postId })}>
-            ADD Post
-          </Button>
+          <>
+            {postId ? (
+              <Button
+                onClick={() =>
+                  uploadPost({
+                    postState,
+                    appState,
+                    postId,
+                    dispatch: dispatchPost,
+                    initialState,
+                  })
+                }
+              >
+                ADD Post
+              </Button>
+            ) : (
+              <Button onClick={() => getPostId()}>GET post ID</Button>
+            )}
+          </>
         ) : (
-          <Button>Verify Post Title</Button>
+          <h5>Wait for connection to etlabise</h5>
         )}
       </Row>
     </Container>

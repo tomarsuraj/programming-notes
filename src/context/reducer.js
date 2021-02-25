@@ -1,8 +1,10 @@
 import {
+  CLEAR_POST_STATE,
   IS_AUTHTHENTICATED,
   SET_USER,
   UPDATE_EDITOR_STATE,
   UPDATE_POST_CATEGORY,
+  UPDATE_POST_ID,
   UPDATE_POST_SAMPLE,
   UPDATE_POST_TITLE,
 } from "./action.type";
@@ -50,6 +52,13 @@ export const addPostReducer = (state, action) => {
       return {
         ...state,
         postCategory: action.payload,
+      };
+    case CLEAR_POST_STATE:
+      return action.payload;
+    case UPDATE_POST_ID:
+      return {
+        ...state,
+        postId: action.payload,
       };
 
     default:

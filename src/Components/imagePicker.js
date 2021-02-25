@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 // firebase
 import firebase from "firebase/app";
+import { UserContext } from "../context/context";
 
 const ImagePicker = ({ postId }) => {
+  const { appState } = useContext(UserContext);
+
   const [uploadingStatus, setUploadingStatus] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -17,7 +20,7 @@ const ImagePicker = ({ postId }) => {
 
       const storageRef = await firebase.storage().ref();
       var uploadTask = storageRef
-        .child(postId + "/" + file.name)
+        .child(appState.user.uid + "/" + postId + "/" + file.name + postId)
         .put(file, metadata);
 
       uploadTask.on(
