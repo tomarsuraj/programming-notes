@@ -1,6 +1,8 @@
+import { auth } from "firebase";
 import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Header = () => {
   return (
@@ -13,14 +15,35 @@ const Header = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={Link} to={`/addpost/${false}`}>
+          <Nav.Link as={Link} to={`/addpost`}>
             Add Post
           </Nav.Link>
           <Nav.Link as={Link} to="/allpost">
             All Post
           </Nav.Link>
 
-          <Nav.Link>Sign Out</Nav.Link>
+          <Nav.Link
+            onClick={() => {
+              console.log("On click work");
+
+              auth()
+                .signOut()
+                .then(() => {
+                  toast("Sign Out", {
+                    type: "success",
+                  });
+                  return <Redirect to="/signin" />;
+                })
+                .catch((error) => {
+                  console.log("Error", error);
+                  toast(error.message, {
+                    type: "error",
+                  });
+                });
+            }}
+          >
+            Sign Out
+          </Nav.Link>
 
           <Nav.Link href="/signin">Sign In</Nav.Link>
           <Nav.Link href="/signup">Sign Up</Nav.Link>

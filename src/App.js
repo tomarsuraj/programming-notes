@@ -1,5 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 // Bootstrap Css
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,16 +21,25 @@ import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 
 // Components
-import Header from "./Components/Header";
+import Header from "./Components/header";
 import { IS_AUTHTHENTICATED, SET_USER } from "./context/action.type";
-import { auth } from "firebase";
+import { auth, firestore } from "firebase";
+import AddPost from "./Pages/AddPost";
 
 const App = () => {
-  const { dispatch, appData } = useContext(UserContext);
+  const { dispatch, appState } = useContext(UserContext);
 
-  const onAuthStateChanged = (user) => {
+  const onAuthStateChanged = async (user) => {
     if (user) {
       dispatch({ type: IS_AUTHTHENTICATED, payload: true });
+
+      firestore()
+        .collection("Users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          dispatch({ type: SET_USER, payload: doc.data() });
+        });
     } else {
       dispatch({ type: IS_AUTHTHENTICATED, payload: false });
     }
@@ -36,7 +50,9 @@ const App = () => {
     return susbcriber;
   }, []);
 
-  console.log("App Data", appData.isAuthenticated);
+  console.log("App Data", appState.isAuthenticated);
+  console.log("User Data", appState.user);
+
   return (
     <Router>
       <ToastContainer />
@@ -44,6 +60,8 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/addPost" component={AddPost} />
+
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
 

@@ -1,9 +1,10 @@
 import React, { useReducer } from "react";
+
 import App from "./App";
 
 //Context
 import { UserContext } from "./context/context";
-import appReducer from "./context/reducer";
+import { appReducer } from "./context/reducer";
 
 // firebase
 import { firebaseConfig } from "./config";
@@ -23,10 +24,10 @@ const initialState = {
 };
 
 const RootApp = () => {
-  const [appData, dispatch] = useReducer(appReducer, initialState);
+  const [appState, dispatch] = useReducer(appReducer, initialState);
 
   return (
-    <UserContext.Provider value={{ appData, dispatch }}>
+    <UserContext.Provider value={{ appState: appState, dispatch }}>
       <App />
     </UserContext.Provider>
   );

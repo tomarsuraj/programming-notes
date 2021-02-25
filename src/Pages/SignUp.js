@@ -8,7 +8,7 @@ import { Redirect } from "react-router-dom";
 import { UserContext } from "../context/context";
 
 const SignUp = () => {
-  const { appData } = useContext(UserContext);
+  const { appState } = useContext(UserContext);
 
   const [email, setEmail] = useState("@gmail.com");
   const [password, setPassword] = useState("");
@@ -42,7 +42,7 @@ const SignUp = () => {
       });
   };
 
-  // if (appData.isAuthenticated) {
+  // if (appState.isAuthenticated) {
   //   return <Redirect to="/" />;
   // }
 

@@ -8,7 +8,7 @@ import { Redirect } from "react-router-dom";
 import { UserContext } from "../context/context";
 
 const SignIn = () => {
-  const { appData } = useContext(UserContext);
+  const { appState } = useContext(UserContext);
 
   const [email, setEmail] = useState("@gmail.com");
   const [password, setPassword] = useState("");
@@ -17,26 +17,29 @@ const SignIn = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log("Sign in success");
+      .then((res) => {
+        toast("Sign In", {
+          type: "success",
+        });
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
+        toast(error.message, {
+          type: "error",
+        });
       });
   };
-
-  if (appData.isAuthenticated) {
-    return <Redirect to="/" />;
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     handleSignIn();
   };
+  if (appState.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <Container>
-      <h2>Sign in</h2>
-      <Form onSubmit={() => handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Email</Form.Label>
           <Form.Control
