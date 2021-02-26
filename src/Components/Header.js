@@ -23,6 +23,7 @@ const Header = () => {
           </Nav.Link>
 
           <Nav.Link
+            as={Link}
             onClick={() => {
               console.log("On click work");
 
@@ -45,8 +46,12 @@ const Header = () => {
             Sign Out
           </Nav.Link>
 
-          <Nav.Link href="/signin">Sign In</Nav.Link>
-          <Nav.Link href="/signup">Sign Up</Nav.Link>
+          <Nav.Link as={Link} to="/signIn">
+            Sign In
+          </Nav.Link>
+          <Nav.Link as={Link} to="/signUp">
+            Sign Up
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

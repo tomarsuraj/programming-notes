@@ -25,9 +25,12 @@ import Header from "./Components/header";
 import { IS_AUTHTHENTICATED, SET_USER } from "./context/action.type";
 import { auth, firestore } from "firebase";
 import AddPost from "./Pages/AddPost";
+import ViewPost from "./Pages/ViewPost";
+import { getUserPost } from "./context/databasefunction";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
+  const { user } = appState;
 
   const onAuthStateChanged = async (user) => {
     if (user) {
@@ -50,8 +53,9 @@ const App = () => {
     return susbcriber;
   }, []);
 
-  console.log("App Data", appState.isAuthenticated);
-  console.log("User Data", appState.user);
+  useEffect(() => {
+    if (user.uid) getUserPost({ uid: user.uid, dispatch });
+  }, [user.uid]);
 
   return (
     <Router>
@@ -61,9 +65,10 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/addPost" component={AddPost} />
+        <Route exact path="/viewPost" component={ViewPost} />
 
-        <Route exact path="/signin" component={SignIn} />
-        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/signIn" component={SignIn} />
+        <Route exact path="/signUp" component={SignUp} />
 
         <Route exact path="*" component={NotFound} />
       </Switch>

@@ -2,6 +2,8 @@
 
 export const IS_AUTHTHENTICATED = "IS_AUTHTHENTICATED";
 export const SET_USER = "SET_USER";
+export const SET_USER_POST = "SET_USER_POST";
+export const SET_VIEW_POST_DATA = "SET_VIEW_POST_DATA";
 
 // Add post reducer action
 

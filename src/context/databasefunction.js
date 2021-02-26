@@ -1,7 +1,7 @@
 import { convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import { firestore } from "firebase";
-import { CLEAR_POST_STATE } from "./action.type";
+import { CLEAR_POST_STATE, SET_USER_POST } from "./action.type";
 
 export const uploadPost = async ({
   postState,
@@ -14,21 +14,47 @@ export const uploadPost = async ({
     convertToRaw(postState.editorState.getCurrentContent())
   );
 
-  await firestore()
+  const uploadPost = await firestore()
     .collection("Users")
     .doc(appState.user.uid)
     .collection("post")
-    .doc(postId)
+    .doc(postId);
+
+  uploadPost
     .set({
       postId,
       postBody,
       postTitle: postState.postTitle,
       postSample: postState.postSample,
       postCategory: postState.postCategory,
+      authorUid: appState.user.uid,
+      isPrivate: postState.isPrivate,
     })
     .then(() => {
       console.log("Post upload");
       dispatch({ type: CLEAR_POST_STATE, payload: initialState });
     })
     .catch((error) => console.log("Error", error));
+};
+
+export const getUserPost = async ({ uid, dispatch }) => {
+  console.log("Get user ost called");
+
+  try {
+    const post = await firestore()
+      .collection("Users")
+      .doc(uid)
+      .collection("post")
+      .where("authorUid", "==", uid);
+
+    post.onSnapshot((querySnapshot) => {
+      const tempDoc = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+
+      dispatch({ type: "SET_USER_POST", payload: tempDoc });
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
 };

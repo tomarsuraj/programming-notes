@@ -2,6 +2,8 @@ import {
   CLEAR_POST_STATE,
   IS_AUTHTHENTICATED,
   SET_USER,
+  SET_USER_POST,
+  SET_VIEW_POST_DATA,
   UPDATE_EDITOR_STATE,
   UPDATE_POST_CATEGORY,
   UPDATE_POST_ID,
@@ -22,6 +24,16 @@ export const appReducer = (state, action) => {
         ...state,
         isAuthenticated: action.payload,
         loading: false,
+      };
+    case SET_USER_POST:
+      return {
+        ...state,
+        post: action.payload,
+      };
+    case SET_VIEW_POST_DATA:
+      return {
+        ...state,
+        viewPostData: action.payload,
       };
 
     default:

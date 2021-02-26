@@ -32,6 +32,7 @@ const initialState = {
   postTitle: "",
   postSample: "",
   postCategory: "Python",
+  isPrivate: true,
 };
 
 const AddPost = () => {
@@ -43,6 +44,7 @@ const AddPost = () => {
 
   const getPostId = async () => {
     console.log("get Post ID Calsle");
+
     const postdoc = await firestore()
       .collection("Users")
       .doc(appState.user.uid)
