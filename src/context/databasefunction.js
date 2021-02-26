@@ -29,12 +29,34 @@ export const uploadPost = async ({
       postCategory: postState.postCategory,
       authorUid: appState.user.uid,
       isPrivate: postState.isPrivate,
+      timeStamp: firestore.Timestamp.now(),
     })
     .then(() => {
       console.log("Post upload");
       dispatch({ type: CLEAR_POST_STATE, payload: initialState });
     })
     .catch((error) => console.log("Error", error));
+
+  if (postState.isPrivate == false) {
+    const uploadPost = await firestore().collection("PublicPost").doc(postId);
+
+    uploadPost
+      .set({
+        postId,
+        postBody,
+        postTitle: postState.postTitle,
+        postSample: postState.postSample,
+        postCategory: postState.postCategory,
+        authorUid: appState.user.uid,
+        isPrivate: postState.isPrivate,
+        timeStamp: firestore.Timestamp.now(),
+      })
+      .then(() => {
+        console.log("Public Post upload");
+        dispatch({ type: CLEAR_POST_STATE, payload: initialState });
+      })
+      .catch((error) => console.log("Error", error));
+  }
 };
 
 export const getUserPost = async ({ uid, dispatch }) => {
@@ -45,7 +67,8 @@ export const getUserPost = async ({ uid, dispatch }) => {
       .collection("Users")
       .doc(uid)
       .collection("post")
-      .where("authorUid", "==", uid);
+      .orderBy("timeStamp", "desc")
+      .limit(4);
 
     post.onSnapshot((querySnapshot) => {
       const tempDoc = querySnapshot.docs.map((doc) => {

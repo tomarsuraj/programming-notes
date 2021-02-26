@@ -1,31 +1,44 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Row, Card, Button } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import { SET_VIEW_POST_DATA } from "../context/action.type";
+import { SET_EDIT_POST_DATA, SET_VIEW_POST_DATA } from "../context/action.type";
 import { UserContext } from "../context/context";
 
-const PostInfoCard = ({ value, postId }) => {
+const PostInfoCard = ({ value }) => {
   const { dispatch } = useContext(UserContext);
   const history = useHistory();
 
-  const handleClick = () => {
+  const handleViewClick = () => {
     dispatch({ type: SET_VIEW_POST_DATA, payload: value });
     history.push("viewPost");
+  };
+  const handleEditClick = () => {
+    dispatch({ type: SET_EDIT_POST_DATA, payload: value });
+    history.push("editPost");
   };
 
   return (
     <Row className="mb-4">
-      <Card className="w-100 ">
+      <Card className="w-100" border="success">
         <Card.Header>
           <Card.Title>{value.postTitle}</Card.Title>
         </Card.Header>
         <Card.Body>
           <Card.Text>{value.postSample}</Card.Text>
+          <Card.Text className="">
+            {value.isPrivate ? "Private" : "Public"}
+          </Card.Text>
         </Card.Body>
         <Card.Footer className="text-muted">
-          <Button variant="outline-primary" onClick={() => handleClick()}>
+          <Button
+            variant="outline-primary"
+            className="mr-3"
+            onClick={() => handleViewClick()}
+          >
             View
+          </Button>
+          <Button variant="outline-success" onClick={() => handleEditClick()}>
+            Edit
           </Button>
         </Card.Footer>
       </Card>

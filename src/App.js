@@ -27,6 +27,7 @@ import { auth, firestore } from "firebase";
 import AddPost from "./Pages/AddPost";
 import ViewPost from "./Pages/ViewPost";
 import { getUserPost } from "./context/databasefunction";
+import EditPost from "./Pages/EditPost";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
@@ -66,6 +67,7 @@ const App = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/addPost" component={AddPost} />
         <Route exact path="/viewPost" component={ViewPost} />
+        <Route exact path="/editPost" component={EditPost} />
 
         <Route exact path="/signIn" component={SignIn} />
         <Route exact path="/signUp" component={SignUp} />

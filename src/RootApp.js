@@ -42,8 +42,7 @@ const initialState = {
   user: {},
   post: {},
   viewPostData: {},
-  activeChat: {},
-  searchChatByName: "",
+  editPostData: {},
 };
 
 const RootApp = () => {

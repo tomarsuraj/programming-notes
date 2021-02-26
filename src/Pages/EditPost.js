@@ -1,11 +1,17 @@
 import React, { useReducer, useContext, useEffect, useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
-import { addPostReducer } from "../context/reducer";
+import { editPostReducer } from "../context/reducer";
 
 // Editior
-import { EditorState } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  convertFromHTML,
+  ContentState,
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import ImagePicker from "../Components/imagePicker";
@@ -16,10 +22,11 @@ import {
   UPDATE_POST_TITLE,
   UPDATE_POST_ID,
   SET_IS_PRIVATE,
+  SET_EDIT_POST_DATA,
 } from "../context/action.type";
 import { uploadPost } from "../context/databasefunction";
 import { UserContext } from "../context/context";
-import { firestore } from "firebase";
+import { useHistory } from "react-router-dom";
 
 const initialState = {
   postId: null,
@@ -30,30 +37,28 @@ const initialState = {
   isPrivate: true,
 };
 
-const AddPost = () => {
-  const [postState, dispatchPost] = useReducer(addPostReducer, initialState);
+const EditPost = () => {
+  const history = useHistory();
+
+  const [editPostState, dispatchEditPost] = useReducer(
+    editPostReducer,
+    initialState
+  );
+
   const { appState } = useContext(UserContext);
-  const { postId } = postState;
+  const { postId } = editPostState;
 
-  const { user } = appState;
-
-  const getPostId = async () => {
-    console.log("get Post ID Calsle");
-
-    const postdoc = await firestore()
-      .collection("Users")
-      .doc(appState.user.uid)
-      .collection("post")
-      .doc();
-
-    dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id });
-  };
+  const { editPostData } = appState;
 
   useEffect(() => {
-    if (user.uid && !postId) getPostId();
-  }, [user.uid]);
-
-  console.log("postState", postState);
+    if (editPostData) {
+      if (editPostData.postBody) {
+        dispatchEditPost({ type: SET_EDIT_POST_DATA, payload: editPostData });
+      } else {
+        history.push("/");
+      }
+    }
+  }, [editPostData]);
 
   return (
     <Container className="mb-5">
@@ -67,9 +72,9 @@ const AddPost = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter Post Title"
-                value={postState.postTitle}
+                value={editPostState.postTitle}
                 onChange={(e) => {
-                  dispatchPost({
+                  dispatchEditPost({
                     type: UPDATE_POST_TITLE,
                     payload: e.target.value,
                   });
@@ -80,9 +85,9 @@ const AddPost = () => {
               <Form.Label>Select Category</Form.Label>
               <Form.Control
                 as="select"
-                value={postState.postCategory}
+                value={editPostState.postCategory}
                 onChange={(e) => {
-                  dispatchPost({
+                  dispatchEditPost({
                     type: UPDATE_POST_CATEGORY,
                     payload: e.target.value,
                   });
@@ -97,15 +102,15 @@ const AddPost = () => {
               <Form.Label>Select Private/Public</Form.Label>
               <Form.Control
                 as="select"
-                value={`${postState.isPrivate ? "Private" : "Public"}`}
+                value={`${editPostState.isPrivate ? "Private" : "Public"}`}
                 onChange={(e) => {
                   if (e.target.value === "Private") {
-                    dispatchPost({
+                    dispatchEditPost({
                       type: SET_IS_PRIVATE,
                       payload: true,
                     });
                   } else {
-                    dispatchPost({
+                    dispatchEditPost({
                       type: SET_IS_PRIVATE,
                       payload: false,
                     });
@@ -115,16 +120,22 @@ const AddPost = () => {
                 <option>Private</option>
                 <option>Public</option>
               </Form.Control>
+
+              <Form.Text className="text-muted">
+                If you change Public post to private then old version og this
+                post remain in public folder of app. i.e Your feature edit won't
+                change in public version ot this.
+              </Form.Text>
             </Form.Group>
 
             <Form.Group controlId="postSample">
               <Form.Label>Post Smaple</Form.Label>
               <Form.Control
                 type="text"
-                value={postState.postSample}
+                value={editPostState.postSample}
                 placeholder="Post Smaple"
                 onChange={(e) => {
-                  dispatchPost({
+                  dispatchEditPost({
                     type: UPDATE_POST_SAMPLE,
                     payload: e.target.value,
                   });
@@ -143,11 +154,11 @@ const AddPost = () => {
       <Row className="my-2 bg-light border border-primary">
         <Col sm={12}>
           <Editor
-            editorState={postState.editorState}
+            editorState={editPostState.editorState}
             wrapperClassName="demo-wrapper"
             editorClassName="demo-editor"
             onEditorStateChange={(e) => {
-              dispatchPost({
+              dispatchEditPost({
                 type: UPDATE_EDITOR_STATE,
                 payload: e,
               });
@@ -156,32 +167,22 @@ const AddPost = () => {
         </Col>
       </Row>
       <Row>
-        {user.uid ? (
-          <>
-            {postId ? (
-              <Button
-                onClick={() =>
-                  uploadPost({
-                    postState,
-                    appState,
-                    postId,
-                    dispatch: dispatchPost,
-                    initialState,
-                  })
-                }
-              >
-                ADD Post
-              </Button>
-            ) : (
-              <Button onClick={() => getPostId()}>GET post ID</Button>
-            )}
-          </>
-        ) : (
-          <h5>Wait for connection to etlabise</h5>
-        )}
+        <Button
+          onClick={() =>
+            uploadPost({
+              postState: editPostState,
+              appState,
+              postId,
+              dispatch: dispatchEditPost,
+              initialState,
+            })
+          }
+        >
+          Update Post
+        </Button>
       </Row>
     </Container>
   );
 };
 
-export default AddPost;
+export default EditPost;
