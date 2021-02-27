@@ -5,7 +5,7 @@ import { UserContext } from "../context/context";
 // To Redirect Page
 import { Redirect } from "react-router-dom";
 import { getUserPost } from "../context/databasefunction";
-import { Container, Row } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import PostInfoCard from "../Components/PostInfoCard";
 
 const Home = () => {

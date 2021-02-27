@@ -3,6 +3,7 @@ import {
   IS_AUTHTHENTICATED,
   SET_EDIT_POST_DATA,
   SET_IS_PRIVATE,
+  SET_SEARCH_POST_DATA,
   SET_USER,
   SET_USER_POST,
   SET_VIEW_POST_DATA,
@@ -48,6 +49,8 @@ export const appReducer = (state, action) => {
 
     case SET_EDIT_POST_DATA:
       return { ...state, editPostData: action.payload };
+    case SET_SEARCH_POST_DATA:
+      return { ...state, searchPostData: action.payload };
 
     default:
       return state;

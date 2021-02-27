@@ -18,8 +18,8 @@ const Header = () => {
           <Nav.Link as={Link} to={`/addpost`}>
             Add Post
           </Nav.Link>
-          <Nav.Link as={Link} to="/allpost">
-            All Post
+          <Nav.Link as={Link} to="/searchPost">
+            Search Post
           </Nav.Link>
 
           <Nav.Link

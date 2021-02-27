@@ -43,6 +43,7 @@ const initialState = {
   post: {},
   viewPostData: {},
   editPostData: {},
+  searchPostData: {},
 };
 
 const RootApp = () => {

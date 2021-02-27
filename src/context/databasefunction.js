@@ -3,6 +3,33 @@ import draftToHtml from "draftjs-to-html";
 import { firestore } from "firebase";
 import { CLEAR_POST_STATE, SET_USER_POST } from "./action.type";
 
+export const getUserPost = async ({ uid, dispatch }) => {
+  console.log("Get user ost called");
+
+  try {
+    const post = await firestore()
+      .collection("Users")
+      .doc(uid)
+      .collection("post")
+      .orderBy("timeStamp", "desc")
+      .limit(4);
+
+    post.onSnapshot((querySnapshot) => {
+      const tempDoc = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+
+      dispatch({ type: "SET_USER_POST", payload: tempDoc });
+    });
+  } catch (error) {
+    console.log("Error", error);
+  }
+};
+
+export const searchUserPost = async ({}) => {
+  //write Code
+};
+
 export const uploadPost = async ({
   postState,
   appState,
@@ -59,25 +86,11 @@ export const uploadPost = async ({
   }
 };
 
-export const getUserPost = async ({ uid, dispatch }) => {
-  console.log("Get user ost called");
-
-  try {
-    const post = await firestore()
-      .collection("Users")
-      .doc(uid)
-      .collection("post")
-      .orderBy("timeStamp", "desc")
-      .limit(4);
-
-    post.onSnapshot((querySnapshot) => {
-      const tempDoc = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() };
-      });
-
-      dispatch({ type: "SET_USER_POST", payload: tempDoc });
-    });
-  } catch (error) {
-    console.log("Error", error);
-  }
+export const deletePublicPost = async ({ postId }) => {
+  firestore()
+    .collection("PublicPost")
+    .doc(postId)
+    .delete()
+    .then(() => console.log("Public Post Deleted"))
+    .catch((error) => console.log("Error", error));
 };

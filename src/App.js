@@ -28,6 +28,7 @@ import AddPost from "./Pages/AddPost";
 import ViewPost from "./Pages/ViewPost";
 import { getUserPost } from "./context/databasefunction";
 import EditPost from "./Pages/EditPost";
+import SearchPost from "./Pages/SearchPost";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
@@ -68,6 +69,7 @@ const App = () => {
         <Route exact path="/addPost" component={AddPost} />
         <Route exact path="/viewPost" component={ViewPost} />
         <Route exact path="/editPost" component={EditPost} />
+        <Route exact path="/searchPost" component={SearchPost} />
 
         <Route exact path="/signIn" component={SignIn} />
         <Route exact path="/signUp" component={SignUp} />
