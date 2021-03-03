@@ -1,26 +1,23 @@
 import React, { useContext, useEffect } from "react";
-
 import { UserContext } from "../context/context";
-
-// To Redirect Page
-import { Redirect } from "react-router-dom";
-import { getUserPost } from "../context/databasefunction";
 import { Button, Container, Row } from "react-bootstrap";
+import { getUserBinPost } from "../context/databasefunction";
 import PostInfoCard from "../Components/PostInfoCard";
+import BinPostInfoCard from "../Components/BinPostInfoCard";
 
-const Home = () => {
+const BinPost = () => {
   const { appState, dispatch } = useContext(UserContext);
 
-  if (!appState.isAuthenticated) {
-    return <Redirect to="/signIn" />;
-  }
+  useEffect(() => {
+    getUserBinPost({ uid: appState.user.uid, dispatch });
+  }, []);
 
   return (
     <Container className="mt-4">
-      {appState.post ? (
+      {appState.BinPostData ? (
         <>
-          {Object.entries(appState.post).map(([key, value]) => (
-            <PostInfoCard value={value} key={key} />
+          {Object.entries(appState.BinPostData).map(([key, value]) => (
+            <BinPostInfoCard value={value} key={key} />
           ))}
         </>
       ) : (
@@ -30,4 +27,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default BinPost;

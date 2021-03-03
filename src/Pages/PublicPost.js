@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import PostInfoCard from "../Components/PostInfoCard";
 import { UserContext } from "../context/context";
-import { searchUserPost } from "../context/databasefunction";
+import { searchPublicPost } from "../context/databasefunction";
 
-const SearchPost = () => {
+const PublicPost = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
@@ -12,14 +12,23 @@ const SearchPost = () => {
   const [category, setCategory] = useState("All");
 
   const handleSearch = () => {
-    searchUserPost({
+    searchPublicPost({
       title,
       numberOfPost,
       category,
       dispatch,
-      uid: appState.user.uid,
     });
   };
+
+  useEffect(() => {
+    const numberOfPost = 20;
+    searchPublicPost({
+      title,
+      numberOfPost,
+      category,
+      dispatch,
+    });
+  }, []);
 
   return (
     <Container className="mt-4">
@@ -85,9 +94,9 @@ const SearchPost = () => {
       </Container>
 
       <Container fluid>
-        {appState.searchPostData ? (
+        {appState.searchPublicData ? (
           <>
-            {Object.entries(appState.searchPostData).map(([key, value]) => (
+            {Object.entries(appState.searchPublicData).map(([key, value]) => (
               <PostInfoCard value={value} key={key} />
             ))}
           </>
@@ -99,4 +108,4 @@ const SearchPost = () => {
   );
 };
 
-export default SearchPost;
+export default PublicPost;

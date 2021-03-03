@@ -29,6 +29,8 @@ import ViewPost from "./Pages/ViewPost";
 import { getUserPost } from "./context/databasefunction";
 import EditPost from "./Pages/EditPost";
 import SearchPost from "./Pages/SearchPost";
+import PublicPost from "./Pages/PublicPost";
+import BinPost from "./Pages/BinPost";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
@@ -70,6 +72,8 @@ const App = () => {
         <Route exact path="/viewPost" component={ViewPost} />
         <Route exact path="/editPost" component={EditPost} />
         <Route exact path="/searchPost" component={SearchPost} />
+        <Route exact path="/publicPost" component={PublicPost} />
+        <Route exact path="/binPost" component={BinPost} />
 
         <Route exact path="/signIn" component={SignIn} />
         <Route exact path="/signUp" component={SignUp} />

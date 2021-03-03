@@ -53,8 +53,6 @@ const AddPost = () => {
     if (user.uid && !postId) getPostId();
   }, [user.uid]);
 
-  console.log("postState", postState);
-
   return (
     <Container className="mb-5">
       <h3>Add Posts</h3>

@@ -3,9 +3,11 @@
 export const IS_AUTHTHENTICATED = "IS_AUTHTHENTICATED";
 export const SET_USER = "SET_USER";
 export const SET_USER_POST = "SET_USER_POST";
+export const SET_USER_BIN_POST = "SET_USER_BIN_POST";
 export const SET_VIEW_POST_DATA = "SET_VIEW_POST_DATA";
 export const SET_EDIT_POST_DATA = "SET_EDIT_POST_DATA";
 export const SET_SEARCH_POST_DATA = "SET_SEARCH_POST_DATA";
+export const SET_PUBLIC_POST_DATA = "SET_PUBLIC_POST_DATA";
 
 // Add post reducer action
 

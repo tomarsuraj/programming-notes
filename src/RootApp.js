@@ -41,9 +41,11 @@ const initialState = {
   isAuthenticated: false,
   user: {},
   post: {},
+  BinPostData: {},
   viewPostData: {},
   editPostData: {},
   searchPostData: {},
+  searchPublicData: {},
 };
 
 const RootApp = () => {

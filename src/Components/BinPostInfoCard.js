@@ -3,19 +3,15 @@ import { useHistory } from "react-router-dom";
 import { Row, Card, Button } from "react-bootstrap";
 import { SET_EDIT_POST_DATA, SET_VIEW_POST_DATA } from "../context/action.type";
 import { UserContext } from "../context/context";
-import { moveTobin } from "../context/databasefunction";
+import { deleteBinPost, restoreBinPost } from "../context/databasefunction";
 
-const PostInfoCard = ({ value }) => {
+const BinPostInfoCard = ({ value }) => {
   const { dispatch, appState } = useContext(UserContext);
   const history = useHistory();
 
   const handleViewClick = () => {
     dispatch({ type: SET_VIEW_POST_DATA, payload: value });
     history.push("viewPost");
-  };
-  const handleEditClick = () => {
-    dispatch({ type: SET_EDIT_POST_DATA, payload: value });
-    history.push("editPost");
   };
 
   console.log("value", value);
@@ -40,24 +36,23 @@ const PostInfoCard = ({ value }) => {
           >
             View
           </Button>
-          {value.authorUid === appState.user.uid ? (
-            <Button
-              variant="outline-success"
-              className="mr-3"
-              onClick={() => handleEditClick()}
-            >
-              Edit
-            </Button>
-          ) : null}
-
           <Button
             variant="outline-primary"
             className="mr-3"
             onClick={() =>
-              moveTobin({ postData: value, uid: appState.user.uid })
+              deleteBinPost({ postId: value.id, uid: appState.user.uid })
             }
           >
-            Move to bin
+            Delete
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="mr-3"
+            onClick={() =>
+              restoreBinPost({ postData: value, uid: appState.user.uid })
+            }
+          >
+            Restore
           </Button>
         </Card.Footer>
       </Card>
@@ -65,4 +60,4 @@ const PostInfoCard = ({ value }) => {
   );
 };
 
-export default PostInfoCard;
+export default BinPostInfoCard;

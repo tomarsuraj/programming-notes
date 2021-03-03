@@ -3,8 +3,10 @@ import {
   IS_AUTHTHENTICATED,
   SET_EDIT_POST_DATA,
   SET_IS_PRIVATE,
+  SET_PUBLIC_POST_DATA,
   SET_SEARCH_POST_DATA,
   SET_USER,
+  SET_USER_BIN_POST,
   SET_USER_POST,
   SET_VIEW_POST_DATA,
   UPDATE_EDITOR_STATE,
@@ -41,6 +43,11 @@ export const appReducer = (state, action) => {
         ...state,
         post: action.payload,
       };
+    case SET_USER_BIN_POST:
+      return {
+        ...state,
+        BinPostData: action.payload,
+      };
     case SET_VIEW_POST_DATA:
       return {
         ...state,
@@ -51,6 +58,8 @@ export const appReducer = (state, action) => {
       return { ...state, editPostData: action.payload };
     case SET_SEARCH_POST_DATA:
       return { ...state, searchPostData: action.payload };
+    case SET_PUBLIC_POST_DATA:
+      return { ...state, searchPublicData: action.payload };
 
     default:
       return state;
