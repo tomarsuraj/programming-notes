@@ -14,8 +14,6 @@ const BinPostInfoCard = ({ value }) => {
     history.push("viewPost");
   };
 
-  console.log("value", value);
-
   return (
     <Row className="mb-4">
       <Card className="w-100" border="success">
