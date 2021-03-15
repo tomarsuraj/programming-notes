@@ -9,6 +9,7 @@ import {
   SET_USER_BIN_POST,
 } from "./action.type";
 
+
 export const getUserPost = async ({ uid, dispatch }) => {
   try {
     const post = await firestore()
@@ -73,7 +74,6 @@ export const searchUserPost = async ({
       post
         .where("postTitle", "==", title)
         .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
@@ -110,7 +110,6 @@ export const searchUserPost = async ({
     } else if (title !== "" && category === "All") {
       post
         .where("postTitle", "==", title)
-        .orderBy("timeStamp", "desc")
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
@@ -160,7 +159,6 @@ export const searchPublicPost = async ({
       post
         .where("postTitle", "==", title)
         .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
@@ -197,7 +195,6 @@ export const searchPublicPost = async ({
     } else if (title !== "" && category === "All") {
       post
         .where("postTitle", "==", title)
-        .orderBy("timeStamp", "desc")
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {

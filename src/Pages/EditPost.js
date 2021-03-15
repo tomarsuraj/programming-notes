@@ -116,6 +116,7 @@ const EditPost = () => {
                   <option>Python</option>
                   <option>Javascript</option>
                   <option>Java</option>
+                  <option>C sharp</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="postCategory">

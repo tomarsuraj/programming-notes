@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Row, Card, Button } from "react-bootstrap";
 import { SET_EDIT_POST_DATA, SET_VIEW_POST_DATA } from "../context/action.type";
 import { UserContext } from "../context/context";
-import { deleteBinPost, restoreBinPost } from "../context/databasefunction";
+import { deleteBinPost, getUserBinPost, restoreBinPost } from "../context/databasefunction";
 
 const BinPostInfoCard = ({ value }) => {
   const { dispatch, appState } = useContext(UserContext);
@@ -38,7 +38,11 @@ const BinPostInfoCard = ({ value }) => {
             variant="outline-primary"
             className="mr-3"
             onClick={() =>
+            {
               deleteBinPost({ postId: value.id, uid: appState.user.uid })
+              getUserBinPost({uid: appState.user.uid ,dispatch})
+            
+            }
             }
           >
             Delete
@@ -46,8 +50,9 @@ const BinPostInfoCard = ({ value }) => {
           <Button
             variant="outline-primary"
             className="mr-3"
-            onClick={() =>
+            onClick={() =>{
               restoreBinPost({ postData: value, uid: appState.user.uid })
+              getUserBinPost({uid: appState.user.uid ,dispatch})}
             }
           >
             Restore

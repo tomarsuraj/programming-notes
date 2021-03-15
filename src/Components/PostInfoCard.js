@@ -31,6 +31,7 @@ const PostInfoCard = ({ value }) => {
           <Card.Text className="">
             {value.isPrivate ? "Private" : "Public"}
           </Card.Text>
+          <Card.Text className="">Category: {value.postCategory}</Card.Text>
         </Card.Body>
         <Card.Footer className="text-muted">
           <Button
@@ -41,24 +42,25 @@ const PostInfoCard = ({ value }) => {
             View
           </Button>
           {value.authorUid === appState.user.uid ? (
-            <Button
+            <><Button
               variant="outline-success"
               className="mr-3"
               onClick={() => handleEditClick()}
             >
               Edit
             </Button>
+                   <Button
+                   variant="outline-primary"
+                   className="mr-3"
+                   onClick={() =>
+                     moveTobin({ postData: value, uid: appState.user.uid })
+                   }
+                 >
+                   Move to bin
+                 </Button></>
           ) : null}
 
-          <Button
-            variant="outline-primary"
-            className="mr-3"
-            onClick={() =>
-              moveTobin({ postData: value, uid: appState.user.uid })
-            }
-          >
-            Move to bin
-          </Button>
+   
         </Card.Footer>
       </Card>
     </Row>
