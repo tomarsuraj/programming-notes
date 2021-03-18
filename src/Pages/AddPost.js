@@ -1,14 +1,13 @@
-import React, { useReducer, useContext, useEffect, useState } from "react";
-import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import React, { useReducer, useContext, useEffect, useState } from 'react'
+import { Container, Form, Button, Row, Col } from 'react-bootstrap'
 
-import { addPostReducer } from "../context/reducer";
+import { addPostReducer } from '../context/reducer'
 
 // Editior
-import { EditorState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
 
-import ImagePicker from "../Components/imagePicker";
+import ImagePicker from '../Components/imagePicker'
 import {
   UPDATE_EDITOR_STATE,
   UPDATE_POST_CATEGORY,
@@ -16,45 +15,45 @@ import {
   UPDATE_POST_TITLE,
   UPDATE_POST_ID,
   SET_IS_PRIVATE,
-} from "../context/action.type";
-import { uploadPost } from "../context/databasefunction";
-import { UserContext } from "../context/context";
-import { firestore } from "firebase";
+} from '../context/action.type'
+import { uploadPost } from '../context/databasefunction'
+import { UserContext } from '../context/context'
+import { firestore } from 'firebase'
 
 const initialState = {
   postId: null,
   editorState: EditorState.createEmpty(),
-  postTitle: "",
-  postSample: "",
-  postCategory: "Python",
+  postTitle: '',
+  postSample: '',
+  postCategory: 'Python',
   isPrivate: true,
-};
+}
 
 const AddPost = () => {
-  const [postState, dispatchPost] = useReducer(addPostReducer, initialState);
-  const { appState } = useContext(UserContext);
-  const { postId } = postState;
+  const [postState, dispatchPost] = useReducer(addPostReducer, initialState)
+  const { appState } = useContext(UserContext)
+  const { postId } = postState
 
-  const { user } = appState;
+  const { user } = appState
 
   const getPostId = async () => {
-    console.log("get Post ID Calsle");
+    console.log('get Post ID Calsle')
 
     const postdoc = await firestore()
-      .collection("Users")
+      .collection('Users')
       .doc(appState.user.uid)
-      .collection("post")
-      .doc();
+      .collection('post')
+      .doc()
 
-    dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id });
-  };
+    dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id })
+  }
 
   useEffect(() => {
-    if (user.uid && !postId) getPostId();
-  }, [user.uid]);
+    if (user.uid && !postId) getPostId()
+  }, [user.uid])
 
   return (
-    <Container className="mb-5">
+    <Container>
       <h3>Add Posts</h3>
 
       <Row>
@@ -70,7 +69,7 @@ const AddPost = () => {
                   dispatchPost({
                     type: UPDATE_POST_TITLE,
                     payload: e.target.value,
-                  });
+                  })
                 }}
               />
             </Form.Group>
@@ -83,7 +82,7 @@ const AddPost = () => {
                   dispatchPost({
                     type: UPDATE_POST_CATEGORY,
                     payload: e.target.value,
-                  });
+                  })
                 }}
               >
                 <option>Python</option>
@@ -96,18 +95,18 @@ const AddPost = () => {
               <Form.Label>Select Private/Public</Form.Label>
               <Form.Control
                 as="select"
-                value={`${postState.isPrivate ? "Private" : "Public"}`}
+                value={`${postState.isPrivate ? 'Private' : 'Public'}`}
                 onChange={(e) => {
-                  if (e.target.value === "Private") {
+                  if (e.target.value === 'Private') {
                     dispatchPost({
                       type: SET_IS_PRIVATE,
                       payload: true,
-                    });
+                    })
                   } else {
                     dispatchPost({
                       type: SET_IS_PRIVATE,
                       payload: false,
-                    });
+                    })
                   }
                 }}
               >
@@ -126,7 +125,7 @@ const AddPost = () => {
                   dispatchPost({
                     type: UPDATE_POST_SAMPLE,
                     payload: e.target.value,
-                  });
+                  })
                 }}
               />
             </Form.Group>
@@ -143,13 +142,11 @@ const AddPost = () => {
         <Col sm={12}>
           <Editor
             editorState={postState.editorState}
-            wrapperClassName="demo-wrapper"
-            editorClassName="demo-editor"
             onEditorStateChange={(e) => {
               dispatchPost({
                 type: UPDATE_EDITOR_STATE,
                 payload: e,
-              });
+              })
             }}
           />
         </Col>
@@ -180,7 +177,7 @@ const AddPost = () => {
         )}
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default AddPost;
+export default AddPost

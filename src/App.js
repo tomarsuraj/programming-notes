@@ -1,65 +1,66 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react'
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
+} from 'react-router-dom'
 
 // Bootstrap Css
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 //toast
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
-import { UserContext } from "./context/context";
+import { UserContext } from './context/context'
 // Pages
-import Home from "./Pages/Home";
-import NotFound from "./Pages/NotFound";
-import SignIn from "./Pages/SignIn";
-import SignUp from "./Pages/SignUp";
+import Home from './Pages/Home'
+import NotFound from './Pages/NotFound'
+import SignIn from './Pages/SignIn'
+import SignUp from './Pages/SignUp'
 
 // Components
-import Header from "./Components/header";
-import { IS_AUTHTHENTICATED, SET_USER } from "./context/action.type";
-import { auth, firestore } from "firebase";
-import AddPost from "./Pages/AddPost";
-import ViewPost from "./Pages/ViewPost";
-import { getUserPost } from "./context/databasefunction";
-import EditPost from "./Pages/EditPost";
-import SearchPost from "./Pages/SearchPost";
-import PublicPost from "./Pages/PublicPost";
-import BinPost from "./Pages/BinPost";
+import Header from './Components/header'
+import { IS_AUTHTHENTICATED, SET_USER } from './context/action.type'
+import { auth, firestore } from 'firebase'
+import AddPost from './Pages/AddPost'
+import ViewPost from './Pages/ViewPost'
+import { getUserPost } from './context/databasefunction'
+import EditPost from './Pages/EditPost'
+import SearchPost from './Pages/SearchPost'
+import PublicPost from './Pages/PublicPost'
+import BinPost from './Pages/BinPost'
 
 const App = () => {
-  const { dispatch, appState } = useContext(UserContext);
-  const { user } = appState;
+  const { dispatch, appState } = useContext(UserContext)
+  const { user } = appState
 
   const onAuthStateChanged = async (user) => {
     if (user) {
-      dispatch({ type: IS_AUTHTHENTICATED, payload: true });
+      dispatch({ type: IS_AUTHTHENTICATED, payload: true })
 
       firestore()
-        .collection("Users")
+        .collection('Users')
         .doc(user.uid)
         .get()
         .then((doc) => {
-          dispatch({ type: SET_USER, payload: doc.data() });
-        });
+          dispatch({ type: SET_USER, payload: doc.data() })
+        })
     } else {
-      dispatch({ type: IS_AUTHTHENTICATED, payload: false });
+      dispatch({ type: IS_AUTHTHENTICATED, payload: false })
     }
-  };
+  }
 
   useEffect(() => {
-    const susbcriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return susbcriber;
-  }, []);
+    const susbcriber = auth().onAuthStateChanged(onAuthStateChanged)
+    return susbcriber
+  }, [])
 
   useEffect(() => {
-    if (user.uid) getUserPost({ uid: user.uid, dispatch });
-  }, [user.uid]);
+    if (user.uid) getUserPost({ uid: user.uid, dispatch })
+  }, [user.uid])
 
   return (
     <Router>
@@ -81,7 +82,7 @@ const App = () => {
         <Route exact path="*" component={NotFound} />
       </Switch>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -415,7 +415,13 @@ export const uploadPost = async ({
       authorUid: appState.user.uid,
       timeStamp: firestore.Timestamp.now(),
 
-      authorDetails: { name: appState.user.name, bio: appState.user.bio },
+      authorDetails: {
+        name: appState.user.name,
+        bio: appState.user.bio,
+        profilePicUrl: `${
+          appState.user.profilePicUrl ? appState.user.profilePicUrl : ''
+        }`,
+      },
     })
     .then(() => {
       toast.success('Private Post Uploaded.', {

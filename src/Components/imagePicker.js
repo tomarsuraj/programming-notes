@@ -24,7 +24,7 @@ const ImagePicker = ({ postId }) => {
       const compressedFile = await imageCompression(imageFile, options)
 
       var metadata = {
-        contentType: compressedFile.type,
+        contentType: imageFile.type,
       }
 
       const storageRef = await firebase.storage().ref()

@@ -21,32 +21,38 @@ const PostInfoCard = ({ value }) => {
   console.log('value', value)
 
   return (
-    <Row className="mb-4">
-      <Card className="w-100" border="success">
+    <Row className="pt-4">
+      <Card className="w-100" border="light" bg="dark" text="white">
         <Card.Header>
-          <Row>
-            <Col xs={4} sm={2} md={1}>
-              <Image
-                src="https://firebasestorage.googleapis.com/v0/b/notes-programming.appspot.com/o/Photo%2083X%20110.jpg?alt=media&token=8fefb1c6-fa59-4e72-b4a8-1ef9c97adadd"
-                width="50"
-                height="50"
-                roundedCircle
-              />
-            </Col>
-            <Col xs={6}>
-              {value.authorDetails ? (
-                <Card.Title>{value.authorDetails.name}</Card.Title>
-              ) : null}
-            </Col>
-          </Row>
+          <Card.Title>{value.postTitle}</Card.Title>
         </Card.Header>
         <Card.Body>
-          <Card.Title>{value.postTitle}</Card.Title>
-          <Card.Text>{value.postSample}</Card.Text>
-          <Card.Text className="">
-            {value.isPrivate ? 'Private' : 'Public'}
-          </Card.Text>
-          <Card.Text className="">Category: {value.postCategory}</Card.Text>
+          <blockquote className="blockquote mb-0">
+            <Card.Text>{value.postSample}</Card.Text>
+            <Card.Text>Category: {value.postCategory}</Card.Text>
+            <div
+              className="float-right"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}
+            >
+              <footer className="blockquote-footer " style={{ color: '#fff' }}>
+                Author:
+                {value.authorDetails
+                  ? ` ${value.authorDetails.name}`
+                  : ' Unknown'}
+              </footer>
+
+              <Image
+                src="https://firebasestorage.googleapis.com/v0/b/notes-programming.appspot.com/o/Default%20Profiole%20pic.jpg?alt=media&token=5b752049-7083-4911-8f7b-8bb0874c22d3"
+                height="30px"
+                width="30px"
+                roundedCircle
+                className="ml-2"
+              />
+            </div>
+          </blockquote>
         </Card.Body>
         <Card.Footer className="text-muted">
           <Button
@@ -66,7 +72,7 @@ const PostInfoCard = ({ value }) => {
                 Edit
               </Button>
               <Button
-                variant="outline-primary"
+                variant="outline-warning"
                 className="mr-3"
                 onClick={() =>
                   moveTobin({ postData: value, uid: appState.user.uid })

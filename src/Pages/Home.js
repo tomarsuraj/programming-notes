@@ -1,22 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from 'react'
 
-import { UserContext } from "../context/context";
+import { UserContext } from '../context/context'
 
 // To Redirect Page
-import { Redirect } from "react-router-dom";
-import { getUserPost } from "../context/databasefunction";
-import { Button, Container, Row } from "react-bootstrap";
-import PostInfoCard from "../Components/PostInfoCard";
+import { Redirect } from 'react-router-dom'
+import { getUserPost } from '../context/databasefunction'
+import { Button, Container, Row } from 'react-bootstrap'
+import PostInfoCard from '../Components/PostInfoCard'
 
 const Home = () => {
-  const { appState, dispatch } = useContext(UserContext);
+  const { appState, dispatch } = useContext(UserContext)
 
   if (!appState.isAuthenticated) {
-    return <Redirect to="/signIn" />;
+    return <Redirect to="/signIn" />
   }
 
   return (
-    <Container className="mt-4">
+    <Container>
       {appState.post ? (
         <>
           {Object.entries(appState.post).map(([key, value]) => (
@@ -27,7 +27,7 @@ const Home = () => {
         <h3> No post Fetch</h3>
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
