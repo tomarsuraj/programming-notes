@@ -1,71 +1,7 @@
-import React, { useState, useContext } from "react";
-import { Container, Button, Form } from "react-bootstrap";
-import firebase from "firebase/app";
-import { toast } from "react-toastify";
-
-// To Redirect Page
-import { Redirect } from "react-router-dom";
-import { UserContext } from "../context/context";
+import React from 'react'
 
 const SignIn = () => {
-  const { appState } = useContext(UserContext);
+  return <div>Sing iNNN</div>
+}
 
-  const [email, setEmail] = useState("@gmail.com");
-  const [password, setPassword] = useState("");
-
-  const handleSignIn = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        toast("Sign In", {
-          type: "success",
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        toast(error.message, {
-          type: "error",
-        });
-      });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleSignIn();
-  };
-  if (appState.isAuthenticated) {
-    return <Redirect to="/" />;
-  }
-  return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            value={email}
-            type="email"
-            placeholder="Enter Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            placeholder="Enter password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </Container>
-  );
-};
-
-export default SignIn;
+export default SignIn

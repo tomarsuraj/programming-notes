@@ -1,7 +1,7 @@
 import React from 'react'
 import PostInfoCard from '../Components/PostInfoCard'
 
-const SearchPost = () => {
+const Explore = () => {
   return (
     <div className="screenContainer">
       <div className="searchFilterContainer">
@@ -32,4 +32,4 @@ const SearchPost = () => {
   )
 }
 
-export default SearchPost
+export default Explore

@@ -12,7 +12,6 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage'
 import 'firebase/auth'
-import { Container } from 'react-bootstrap'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -54,18 +53,7 @@ const RootApp = () => {
 
   return (
     <UserContext.Provider value={{ appState: appState, dispatch }}>
-      <div
-        style={{
-          display: 'flex',
-          flexGrow: '1',
-          flexDirection: 'column',
-          backgroundColor: '#666666',
-          paddingBottom: '30px',
-          minHeight: '100vh',
-        }}
-      >
-        <App />
-      </div>
+      <App />
     </UserContext.Provider>
   )
 }
