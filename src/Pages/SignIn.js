@@ -1,9 +1,13 @@
-import { auth } from 'firebase'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { apps, auth } from 'firebase'
+import React, { useContext, useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { UserContext } from '../context/context'
+import Loading from './Loading'
 
 const SignIn = () => {
+  const { appState } = useContext(UserContext)
+
   const [email, setEmail] = useState('@gmail.com')
   const [password, setPassword] = useState('')
 
@@ -23,6 +27,13 @@ const SignIn = () => {
       })
   }
 
+  if (!appState.isEmailVerified && appState.isSignIn) {
+    return <Redirect to="/verifyEmail" />
+  }
+
+  if (appState.isLoading) {
+    return <Loading />
+  }
   return (
     <div className="screenContainer">
       <h1 className="heading">Sign in</h1>

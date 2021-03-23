@@ -40,6 +40,7 @@ firebase
 const initialState = {
   isAuthenticated: false,
   isEmailVerified: false,
+  isSignIn: false,
   user: {},
   post: {},
   BinPostData: {},
@@ -47,6 +48,7 @@ const initialState = {
   editPostData: {},
   searchPostData: {},
   searchPublicData: {},
+  isLoading: false,
 }
 
 const RootApp = () => {

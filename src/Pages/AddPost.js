@@ -21,6 +21,7 @@ import { UserContext } from '../context/context'
 import { firestore } from 'firebase'
 import ImagePicker from '../Components/ImagePicker'
 import { uploadPost } from '../context/databasefunction'
+import Loading from './Loading'
 
 const initialState = {
   postId: null,
@@ -51,6 +52,10 @@ const AddPost = () => {
   useEffect(() => {
     if (user.uid && !postId) getPostId()
   }, [user.uid])
+
+  if (appState.isLoading) {
+    return <Loading />
+  }
   return (
     <div className="screenContainer">
       <h1 className="heading">Add Post</h1>

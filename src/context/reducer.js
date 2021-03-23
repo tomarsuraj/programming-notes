@@ -4,7 +4,9 @@ import {
   DELETE_POST_FROM_SEARCH_POST_DATA,
   IS_AUTHTHENTICATED,
   IS_EMAIL_VERIFIED,
+  IS_SIGNIN,
   SET_EDIT_POST_DATA,
+  SET_IS_LOADING,
   SET_IS_PRIVATE,
   SET_PUBLIC_POST_DATA,
   SET_SEARCH_POST_DATA,
@@ -27,9 +29,10 @@ import {
   ContentState,
 } from 'draft-js'
 
-const initialState = {
+const appInitialState = {
   isAuthenticated: false,
   isEmailVerified: false,
+  isSignIn: false,
   user: {},
   post: {},
   BinPostData: {},
@@ -37,14 +40,16 @@ const initialState = {
   editPostData: {},
   searchPostData: {},
   searchPublicData: {},
+  isLoading: false,
 }
+
 export const appReducer = (state, action) => {
   switch (action.type) {
     case SET_USER:
       return {
         ...state,
         user: action.payload,
-        loading: false,
+        isLoading: false,
       }
     case IS_AUTHTHENTICATED:
       return {
@@ -56,15 +61,22 @@ export const appReducer = (state, action) => {
         ...state,
         isEmailVerified: action.payload,
       }
+    case IS_SIGNIN:
+      return {
+        ...state,
+        isSignIn: action.payload,
+      }
     case SET_USER_POST:
       return {
         ...state,
         post: action.payload,
+        isLoading: false,
       }
     case SET_USER_BIN_POST:
       return {
         ...state,
         BinPostData: action.payload,
+        isLoading: false,
       }
     case SET_VIEW_POST_DATA:
       return {
@@ -74,11 +86,12 @@ export const appReducer = (state, action) => {
 
     case SET_EDIT_POST_DATA:
       return { ...state, editPostData: action.payload }
+
     case SET_SEARCH_POST_DATA:
       return { ...state, searchPostData: action.payload }
+
     case DELETE_POST_FROM_SEARCH_POST_DATA: {
       const { searchPostData } = state
-
       return {
         ...state,
         searchPostData: searchPostData.filter(
@@ -89,8 +102,12 @@ export const appReducer = (state, action) => {
     case SET_PUBLIC_POST_DATA:
       return { ...state, searchPublicData: action.payload }
 
+    case SET_IS_LOADING:
+      return { ...state, isLoading: action.payload }
+
     case CLEAR_APP_STATE:
-      return initialState
+      return appInitialState
+
     default:
       return state
   }

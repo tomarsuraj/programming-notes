@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import PostInfoCard from '../Components/PostInfoCard'
 import { UserContext } from '../context/context'
 import { getUserBinPost } from '../context/databasefunction'
+import Loading from './Loading'
 
 const Bin = () => {
   const { appState, dispatch } = useContext(UserContext)
@@ -10,6 +11,9 @@ const Bin = () => {
     getUserBinPost({ uid: appState.user.uid, dispatch })
   }, [])
 
+  if (appState.isLoading) {
+    return <Loading />
+  }
   return (
     <div className="screenContainer">
       <h1 className="heading">Bin</h1>

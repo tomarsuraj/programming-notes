@@ -13,7 +13,7 @@ import {
   restoreBinPost,
 } from '../context/databasefunction'
 
-const PostInfoCard = ({ isBin, value, isSearchPost }) => {
+const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
   const { appState, dispatch } = useContext(UserContext)
   const history = useHistory()
 
@@ -56,7 +56,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost }) => {
               Delete
             </button>
           </>
-        ) : value.authorUid === appState.user.uid ? (
+        ) : isPrivate ? (
           <>
             <button className="editbtn" onClick={() => handleEditClick()}>
               Edit

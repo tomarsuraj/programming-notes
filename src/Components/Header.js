@@ -34,7 +34,7 @@ const Header = () => {
             <li>
               <NavLink
                 exact
-                to="/home"
+                to="/"
                 activeStyle={{
                   fontWeight: '900',
                   color: 'red',
@@ -96,13 +96,9 @@ const Header = () => {
                 Bin
               </NavLink>
             </li>
-            {appState.isAuthenticated ? (
+            {appState.isSignIn ? (
               <li>
-                <Link
-                  to="/signUp"
-                  onClick={() => handleSignOut()}
-                  className={!isAuthenticated ? 'disableLink' : null}
-                >
+                <Link to="/signUp" onClick={() => handleSignOut()}>
                   Sign Out
                 </Link>
               </li>

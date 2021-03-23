@@ -3,6 +3,7 @@ import PostCategorySelector from '../Components/PostCategorySelector'
 import PostInfoCard from '../Components/PostInfoCard'
 import { UserContext } from '../context/context'
 import { searchUserPost } from '../context/databasefunction'
+import Loading from './Loading'
 
 const SearchPost = () => {
   const { appState, dispatch } = useContext(UserContext)
@@ -19,6 +20,10 @@ const SearchPost = () => {
       dispatch,
       uid: appState.user.uid,
     })
+  }
+
+  if (appState.isLoading) {
+    return <Loading />
   }
 
   return (
@@ -72,6 +77,7 @@ const SearchPost = () => {
               key={key}
               isBin={false}
               isSearchPost={true}
+              isPrivate={true}
             />
           ))}
         </>

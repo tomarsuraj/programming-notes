@@ -7,10 +7,13 @@ import {
   SET_SEARCH_POST_DATA,
   SET_PUBLIC_POST_DATA,
   SET_USER_BIN_POST,
+  SET_IS_LOADING,
 } from './action.type'
 import { toast } from 'react-toastify'
 
 export const getUserPost = async ({ uid, dispatch }) => {
+  dispatch({ type: SET_IS_LOADING, payload: true })
+
   try {
     const post = await firestore()
       .collection('Users')
@@ -45,6 +48,8 @@ export const getUserPost = async ({ uid, dispatch }) => {
   }
 }
 export const getUserBinPost = async ({ uid, dispatch }) => {
+  dispatch({ type: SET_IS_LOADING, payload: true })
+
   try {
     const post = await firestore()
       .collection('Users')
@@ -85,14 +90,8 @@ export const searchUserPost = async ({
   dispatch,
   uid,
 }) => {
-  console.log(
-    'title',
-    title,
-    'number of post',
-    numberOfPost,
-    'category',
-    category,
-  )
+  dispatch({ type: SET_IS_LOADING, payload: true })
+
   try {
     const post = await firestore()
       .collection('Users')
@@ -231,6 +230,7 @@ export const searchUserPost = async ({
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc })
         })
     }
+    dispatch({ type: SET_IS_LOADING, isLoading: false })
   } catch (error) {
     console.log('error', error)
     toast(error.message, {
@@ -245,6 +245,8 @@ export const searchPublicPost = async ({
   category,
   dispatch,
 }) => {
+  dispatch({ type: SET_IS_LOADING, payload: true })
+
   try {
     const post = await firestore().collection('PublicPost')
     if (title !== '' && category !== 'All') {
@@ -379,6 +381,7 @@ export const searchPublicPost = async ({
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc })
         })
     }
+    dispatch({ type: SET_IS_LOADING, isLoading: false })
   } catch (error) {
     console.log('error', error)
     toast(error.message, {
@@ -394,6 +397,8 @@ export const uploadPost = async ({
   dispatch,
   initialState,
 }) => {
+  dispatch({ type: SET_IS_LOADING, payload: true })
+
   const postBody = draftToHtml(
     convertToRaw(postState.editorState.getCurrentContent()),
   )
@@ -434,6 +439,7 @@ export const uploadPost = async ({
         progress: undefined,
       })
       dispatch({ type: CLEAR_POST_STATE, payload: initialState })
+      dispatch({ type: SET_IS_LOADING, payload: false })
     })
     .catch((error) => {
       toast(error.message, {
@@ -466,6 +472,7 @@ export const uploadPost = async ({
           progress: undefined,
         })
         dispatch({ type: CLEAR_POST_STATE, payload: initialState })
+        dispatch({ type: SET_IS_LOADING, payload: false })
       })
       .catch((error) =>
         toast(error.message, {

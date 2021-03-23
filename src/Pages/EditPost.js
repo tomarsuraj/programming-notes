@@ -19,6 +19,7 @@ import {
   SET_IS_PRIVATE,
   SET_EDIT_POST_DATA,
 } from '../context/action.type'
+import Loading from './Loading'
 
 const initialState = {
   postId: null,
@@ -73,6 +74,10 @@ const EditPost = () => {
       }
     }
   }, [editPostData])
+
+  if (appState.isLoading) {
+    return <Loading />
+  }
   return (
     <div className="screenContainer">
       <h1 className="heading">Add Post</h1>

@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
-import { Redirect } from 'react-router'
 import PostInfoCard from '../Components/PostInfoCard'
 import { UserContext } from '../context/context'
+import Loading from './Loading'
 
 const Home = () => {
   const { appState, dispatch } = useContext(UserContext)
 
-  if (!appState.isAuthenticated) {
-    return <Redirect to="/signIn" />
+  if (appState.isLoading) {
+    return <Loading />
   }
 
   return (

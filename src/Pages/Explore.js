@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import PostCategorySelector from '../Components/PostCategorySelector'
 import PostInfoCard from '../Components/PostInfoCard'
+import { SET_IS_LOADING } from '../context/action.type'
 import { UserContext } from '../context/context'
 import { searchPublicPost } from '../context/databasefunction'
+import Loading from './Loading'
 
 const Explore = () => {
   const { appState, dispatch } = useContext(UserContext)
@@ -29,6 +31,10 @@ const Explore = () => {
       dispatch,
     })
   }, [])
+
+  if (appState.isLoading) {
+    return <Loading />
+  }
   return (
     <div className="screenContainer">
       <h1 className="heading">Explore</h1>
@@ -74,7 +80,12 @@ const Explore = () => {
       {appState.searchPublicData ? (
         <>
           {Object.entries(appState.searchPublicData).map(([key, value]) => (
-            <PostInfoCard value={value} key={key} />
+            <PostInfoCard
+              value={value}
+              key={key}
+              isBin={false}
+              isPrivate={false}
+            />
           ))}
         </>
       ) : (
