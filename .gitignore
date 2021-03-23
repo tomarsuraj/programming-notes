@@ -105,3 +105,9 @@ dist
 
 # firebase config
 /src/config.js
+
+# production
+/build
+
+.firebase/hosting.YnVpbGQ.cache
+.firebaserc

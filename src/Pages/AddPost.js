@@ -129,6 +129,14 @@ const AddPost = () => {
               payload: e,
             })
           }}
+          toolbar={{
+            image: {
+              defaultSize: {
+                height: 'auto',
+                width: '80%',
+              },
+            },
+          }}
         />
         {postId ? (
           <>

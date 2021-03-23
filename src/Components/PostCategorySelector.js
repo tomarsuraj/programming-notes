@@ -8,6 +8,9 @@ const PostCategorySelector = ({ value, onChange, name, showAll }) => {
       <option>Javascript</option>
       <option>Java</option>
       <option>C sharp</option>
+      <option>C</option>
+      <option>C ++</option>
+      <option>PHP</option>
     </select>
   )
 }

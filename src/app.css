@@ -113,17 +113,17 @@ h6 {
 
 /* editor Css */
 .editorWrapperClass {
-  padding: 1rem;
+  padding: 10px;
   border: 3px solid #ccc;
   border-radius: 15px;
   margin: 10px 0px 10px 0px;
 }
 .editorBodyClass {
   background-color: rgba(255, 255, 255, 0);
-  padding: 1rem;
+  padding: 10px;
   border: 2px solid #5a20cb;
   border-radius: 15px;
-  color: #35bdd0;
+  color: #cad5e2;
 }
 .editorToolbarClass {
   position: -webkit-sticky; /* Safari */
@@ -244,8 +244,7 @@ h6 {
 .addPostFormContainer {
   display: flex;
   flex-direction: column;
-  max-width: 1920px;
-  width: 80%;
+  width: 85%;
   margin: 10px 0px 10px 0px;
   border: 3px solid #e03b8b;
   border-radius: 15px;
@@ -306,4 +305,14 @@ h6 {
 
 .displayNone {
   display: none;
+}
+
+/* View Post Container */
+.viewContainer {
+  max-width: 1920px;
+  width: 90%;
+  margin: 10px 0px 10px 0px;
+  border: 3px solid #e03b8b;
+  border-radius: 15px;
+  padding: 10px 15px 15px 15px;
 }

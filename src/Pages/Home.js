@@ -15,7 +15,12 @@ const Home = () => {
       {appState.post ? (
         <>
           {Object.entries(appState.post).map(([key, value]) => (
-            <PostInfoCard value={value} key={key} isBin={false} />
+            <PostInfoCard
+              value={value}
+              key={key}
+              isBin={false}
+              isPrivate={true}
+            />
           ))}
         </>
       ) : (

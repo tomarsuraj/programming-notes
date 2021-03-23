@@ -51,7 +51,6 @@ const App = () => {
       dispatch({ type: IS_SIGNIN, payload: true })
 
       if (!user.emailVerified) {
-        console.log('verif if calle')
         user
           .sendEmailVerification()
           .then(function () {
@@ -73,8 +72,6 @@ const App = () => {
           dispatch({ type: SET_USER, payload: doc.data() })
           dispatch({ type: SET_IS_LOADING, payload: false })
         })
-
-      console.log('USer', user)
     } else {
       dispatch({ type: SET_IS_LOADING, payload: false })
     }

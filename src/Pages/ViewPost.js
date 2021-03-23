@@ -8,16 +8,18 @@ const ViewPost = () => {
 
   return (
     <div className="screenContainer">
-      {viewPostData ? (
-        <>
-          <div>
-            <h2>{viewPostData.postTitle}</h2>
-          </div>
-          {parse(viewPostData.postBody)}
-        </>
-      ) : (
-        <h4>No Post Data</h4>
-      )}
+      <div className="viewContainer">
+        {viewPostData ? (
+          <>
+            <div>
+              <h2>{viewPostData.postTitle}</h2>
+            </div>
+            {parse(viewPostData.postBody)}
+          </>
+        ) : (
+          <h4>No Post Data</h4>
+        )}
+      </div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ const ImagePicker = ({ postId }) => {
   const imagePickerFun = async (e) => {
     const options = {
       maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
+      maxWidthOrHeight: 1080,
       useWebWorker: true,
     }
     try {
