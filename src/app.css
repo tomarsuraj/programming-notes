@@ -1,27 +1,98 @@
 body {
-  background-color: #272626;
+  background-color: #242b2e;
 }
+
+/* Css For All App */
 
 .screenContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-/* header Css */
-.HeaderContainer {
-  width: 960px;
-  max-width: 100%;
-  padding-bottom: 10px;
-  margin: 0 auto;
+.heading {
+  align-self: center;
+  color: blue;
+}
+div {
+  word-wrap: break-word;
 }
 
-.mainHeader .HeaderContainer {
+input {
+  margin: 0px 0px 10px 0px;
+  background-color: rgba(0, 0, 0, 0);
+  outline: none;
+  height: 30px;
+  color: #46b2e0;
+  font-size: large;
+  border: none;
+  border-bottom: 2px solid red;
+  border-radius: 15px;
+  padding: 0px 0px 5px 10px;
+}
+
+button {
+  align-self: center;
+  outline: none;
+  background-color: #4dd637;
+  text-align: center;
+  color: aliceblue;
+  border-radius: 25px;
+  border: none;
+  margin: 10px 0px 10px 0px;
+  box-shadow: 0 5px #cad5e2;
+  padding: 5px 10px 5px 10px;
+}
+button:active {
+  background-color: #3e8e8a;
+  box-shadow: 0 1px #cad5e2;
+  transform: translateY(4px);
+}
+
+select {
+  margin: 0px 0px 10px 0px;
+  background-color: #242b2e;
+  outline: none;
+  height: 30px;
+  color: #46b2e0;
+  font-size: large;
+  border: none;
+  border-bottom: 2px solid red;
+  border-radius: 15px;
+  padding: 0px 0px 5px 10px;
+}
+
+p {
+  color: #cad5e2;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #50dbb4;
+}
+
+/* header Css */
+
+.mainHeader,
+.HeaderContainer {
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-wrap: wrap;
 }
+
+.HeaderContainer {
+  width: 1080px;
+  max-width: 100%;
+  padding-bottom: 10px;
+  margin: 0 auto;
+}
+.userNameHeader {
+  margin-right: 10px;
+}
+
 .mainNav ul {
   margin: 1em 0 0.5em;
   text-align: center;
@@ -32,25 +103,37 @@ body {
 .mainNav a {
   display: inline-block;
   padding: 0.5em 1.5em;
-  color: rgb(240, 238, 238);
+  color: #cad5e2;
   font-size: 20px;
+}
+
+.disableLink {
+  pointer-events: none;
 }
 
 /* editor Css */
 .editorWrapperClass {
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 3px solid #ccc;
+  border-radius: 15px;
+  margin: 10px 0px 10px 0px;
 }
 .editorBodyClass {
-  background-color: lightgray;
+  background-color: rgba(255, 255, 255, 0);
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 2px solid #5a20cb;
+  border-radius: 15px;
+  color: #35bdd0;
 }
 .editorToolbarClass {
-  border: 1px solid #ccc;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
+  z-index: 2;
+  color: #000;
+}
+.editorToolbarClass input {
+  color: #000;
 }
 
 /* post info Card css */
@@ -64,9 +147,9 @@ body {
   padding-right: 15px;
   padding-bottom: 10px;
 }
-.postInfoCardContainer h2,
-p {
-  color: rgb(228, 147, 217);
+.postInfoCardContainer p,
+.postInfoCardContainer h2 {
+  color: #50dbb4;
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -76,16 +159,24 @@ p {
   flex-wrap: wrap-reverse;
 }
 .cardFooter button {
-  background-color: aquamarine;
-  border: none;
   color: #272626;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 20px;
-  padding-right: 10px;
-  padding-left: 10px;
-  border-radius: 12px;
+}
+
+.viewbtn {
+  background-color: #22cb5c;
+}
+
+.editbtn {
+  background-color: #50dbb4;
+}
+
+.restorebtn {
+  background-color: #5a20cb;
+}
+
+.deletebtn {
+  background-color: #e21717;
 }
 
 /* search Post Filetr Container */
@@ -110,19 +201,109 @@ p {
   font-size: larger;
   margin-bottom: 10px;
 }
-.searchFilterInput input,
-select {
-  padding: 10px;
-  font-size: large;
-}
+
 .searchFilterContainer button {
-  align-self: center;
   height: 50px;
   width: max-content;
-  text-align: center;
   font-size: 20px;
+  background-color: #4dd637;
+}
+
+/* Sign UP Screen */
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1920px;
+  width: 80%;
+  margin: 10px 0px 10px 0px;
+  border: 3px solid #ff6666;
+  border-radius: 15px;
+  padding: 10px 15px 15px 15px;
+}
+
+.authContainer label {
+  margin: 10px 0px 0px 0px;
   color: aliceblue;
-  border-radius: 12px;
-  background-color: rgba(10, 150, 40, 0.808);
-  border: none;
+  font-size: large;
+}
+.authContainer p {
+  margin: 10px 0px 0px 0px;
+  color: #cad5e2;
+  font-size: large;
+  text-align: center;
+}
+
+.authContainer button {
+  height: 50px;
+  width: 100%;
+  font-size: 20px;
+  background-color: #4dd637;
+}
+
+/* Add Post  */
+.addPostFormContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1920px;
+  width: 80%;
+  margin: 10px 0px 10px 0px;
+  border: 3px solid #e03b8b;
+  border-radius: 15px;
+  padding: 10px 15px 15px 15px;
+}
+
+.addPostFormContainer label {
+  font-size: larger;
+  margin-bottom: 10px;
+  color: #46b2e0;
+}
+.uploadImageContainer {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #ff6666;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.addPostFormContainer button {
+  height: 50px;
+  width: 100%;
+  font-size: 20px;
+  background-color: #4dd637;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modalMain {
+  position: fixed;
+  background: white;
+  width: 80%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modalMain h2,
+.modalMain p {
+  color: #000;
+  margin-left: 20px;
+}
+.modalMain button {
+  margin: 5px 10px 20px 20px;
+}
+
+.displaBlock {
+  display: block;
+  z-index: 3;
+}
+
+.displayNone {
+  display: none;
 }

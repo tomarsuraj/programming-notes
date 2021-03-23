@@ -39,6 +39,7 @@ firebase
 
 const initialState = {
   isAuthenticated: false,
+  isEmailVerified: false,
   user: {},
   post: {},
   BinPostData: {},

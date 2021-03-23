@@ -1,6 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './app.css'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+  Redirect,
+} from 'react-router-dom'
 
 //toast
 import { ToastContainer } from 'react-toastify'
@@ -23,14 +29,20 @@ import NotFound from './Pages/NotFound'
 // Components
 import Header from './Components/Header'
 
-import { IS_AUTHTHENTICATED, SET_USER } from './context/action.type'
+import {
+  IS_AUTHTHENTICATED,
+  IS_EMAIL_VERIFIED,
+  SET_USER,
+} from './context/action.type'
 import { auth, firestore } from 'firebase'
 
 import { getUserPost } from './context/databasefunction'
+import VerifyEmail from './Pages/VerifyEmail'
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext)
   const { user } = appState
+  const history = useHistory()
 
   const onAuthStateChanged = async (user) => {
     if (user) {
@@ -43,6 +55,21 @@ const App = () => {
         .then((doc) => {
           dispatch({ type: SET_USER, payload: doc.data() })
         })
+
+      if (!user.emailVerified) {
+        dispatch({ type: IS_EMAIL_VERIFIED, payload: false })
+        console.log('verif if calle')
+        user
+          .sendEmailVerification()
+          .then(function () {
+            console.log('Email send')
+          })
+          .catch(function (error) {
+            console.log('error', error)
+          })
+      } else {
+        dispatch({ type: IS_EMAIL_VERIFIED, payload: true })
+      }
     } else {
       dispatch({ type: IS_AUTHTHENTICATED, payload: false })
     }
@@ -57,27 +84,42 @@ const App = () => {
     if (user.uid) getUserPost({ uid: user.uid, dispatch })
   }, [user.uid])
 
-  return (
-    <Router>
-      <ToastContainer />
+  if (appState.isAuthenticated && appState.isEmailVerified) {
+    return (
+      <Router>
+        <ToastContainer />
 
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/addPost" component={AddPost} />
-        <Route exact path="/viewPost" component={ViewPost} />
-        <Route exact path="/editPost" component={EditPost} />
-        <Route exact path="/searchPost" component={SearchPost} />
-        <Route exact path="/explore" component={Explore} />
-        <Route exact path="/bin" component={Bin} />
+        <Header />
+        <Switch>
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/addPost" component={AddPost} />
+          <Route exact path="/viewPost" component={ViewPost} />
+          <Route exact path="/editPost" component={EditPost} />
+          <Route exact path="/searchPost" component={SearchPost} />
+          <Route exact path="/explore" component={Explore} />
+          <Route exact path="/bin" component={Bin} />
 
-        <Route exact path="/signIn" component={SignIn} />
-        <Route exact path="/signUp" component={SignUp} />
+          <Route exact path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    )
+  } else if (appState.isAuthenticated && !appState.isEmailVerified) {
+    return <VerifyEmail />
+  } else {
+    return (
+      <Router>
+        <ToastContainer />
 
-        <Route exact path="*" component={NotFound} />
-      </Switch>
-    </Router>
-  )
+        <Header />
+        <Switch>
+          <Route exact path="/signIn" component={SignIn} />
+          <Route exact path="/signUp" component={SignUp} />
+
+          <Route exact path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default App
