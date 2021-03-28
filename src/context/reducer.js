@@ -1,4 +1,5 @@
 import {
+  ADD_POST_IMAGE,
   CLEAR_APP_STATE,
   CLEAR_POST_STATE,
   DELETE_POST_FROM_SEARCH_POST_DATA,
@@ -149,6 +150,14 @@ export const addPostReducer = (state, action) => {
         ...state,
         isPrivate: action.payload,
       }
+    case ADD_POST_IMAGE:
+      var array = state.postImagesArray
+      array.push(action.payload)
+
+      return {
+        ...state,
+        postImagesArray: array,
+      }
 
     default:
       return state
@@ -198,6 +207,10 @@ export const editPostReducer = (state, action) => {
       )
       const editorState = EditorState.createWithContent(editorStateTemp)
 
+      console.log(
+        'action.payload.postImagesArray',
+        action.payload.postImagesArray,
+      )
       return {
         ...state,
         postId: action.payload.postId,
@@ -206,8 +219,18 @@ export const editPostReducer = (state, action) => {
         postCategory: action.payload.postCategory,
         isPrivate: action.payload.isPrivate,
         editorState: editorState,
+        postImagesArray: action.payload.postImagesArray,
       }
     }
+
+    case ADD_POST_IMAGE:
+      var array = state.postImagesArray
+      array.push(action.payload)
+
+      return {
+        ...state,
+        postImagesArray: array,
+      }
 
     default:
       return state

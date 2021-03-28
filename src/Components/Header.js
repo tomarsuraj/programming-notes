@@ -57,19 +57,7 @@ const Header = () => {
                 Add Post
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                exact
-                to="/searchPost"
-                activeStyle={{
-                  fontWeight: '900',
-                  color: 'red',
-                }}
-                className={!isAuthenticated ? 'disableLink' : null}
-              >
-                Search Post
-              </NavLink>
-            </li>
+
             <li>
               <NavLink
                 exact

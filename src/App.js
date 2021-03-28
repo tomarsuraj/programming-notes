@@ -18,7 +18,6 @@ import Home from './Pages/Home'
 import AddPost from './Pages/AddPost'
 import ViewPost from './Pages/ViewPost'
 import EditPost from './Pages/EditPost'
-import SearchPost from './Pages/SearchPost'
 import Explore from './Pages/Explore'
 import Bin from './Pages/Bin'
 import SignIn from './Pages/SignIn'
@@ -39,7 +38,6 @@ import { auth, firestore } from 'firebase'
 
 import { getUserPost } from './context/databasefunction'
 import VerifyEmail from './Pages/VerifyEmail'
-import Loading from './Pages/Loading'
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext)
@@ -84,10 +82,6 @@ const App = () => {
     return susbcriber
   }, [])
 
-  useEffect(() => {
-    if (user.uid) getUserPost({ uid: user.uid, dispatch })
-  }, [user.uid])
-
   return (
     <Router>
       <ToastContainer />
@@ -106,9 +100,7 @@ const App = () => {
         <Route exact path="/editPost" component={EditPost}>
           {isAuthenticated ? <EditPost /> : <Redirect to="/signIn" />}
         </Route>
-        <Route exact path="/searchPost" component={SearchPost}>
-          {isAuthenticated ? <SearchPost /> : <Redirect to="/signIn" />}
-        </Route>
+
         <Route exact path="/explore" component={Explore}>
           {isAuthenticated ? <Explore /> : <Redirect to="/signIn" />}
         </Route>

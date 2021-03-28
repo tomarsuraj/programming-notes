@@ -1,6 +1,6 @@
 import { convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import { firestore } from 'firebase'
+import { firestore, storage } from 'firebase'
 import {
   CLEAR_POST_STATE,
   SET_USER_POST,
@@ -30,7 +30,7 @@ export const getUserPost = async ({ uid, dispatch }) => {
       dispatch({ type: SET_USER_POST, payload: tempDoc })
       if (tempDoc.length == 0) {
         toast.warn('🦄 No Post Found!', {
-          position: 'top-center',
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -65,7 +65,7 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       dispatch({ type: SET_USER_BIN_POST, payload: tempDoc })
       if (tempDoc.length == 0) {
         toast.warn('🦄 No Post Found!', {
-          position: 'top-center',
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -108,7 +108,7 @@ export const searchUserPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -131,7 +131,7 @@ export const searchUserPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -153,7 +153,7 @@ export const searchUserPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -174,7 +174,7 @@ export const searchUserPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -197,7 +197,7 @@ export const searchUserPost = async ({
 
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -218,7 +218,7 @@ export const searchUserPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -260,7 +260,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -283,7 +283,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -305,7 +305,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -326,7 +326,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -348,7 +348,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -369,7 +369,7 @@ export const searchPublicPost = async ({
           })
           if (tempDoc.length == 0) {
             toast.warn('🦄 No Post Found!', {
-              position: 'top-center',
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -395,6 +395,7 @@ export const uploadPost = async ({
   appState,
   postId,
   dispatch,
+  history,
   initialState,
 }) => {
   dispatch({ type: SET_IS_LOADING, payload: true })
@@ -419,18 +420,16 @@ export const uploadPost = async ({
       isPrivate: postState.isPrivate,
       authorUid: appState.user.uid,
       timeStamp: firestore.Timestamp.now(),
+      postImagesArray: postState.postImagesArray,
 
       authorDetails: {
         name: appState.user.name,
         bio: appState.user.bio,
-        profilePicUrl: `${
-          appState.user.profilePicUrl ? appState.user.profilePicUrl : ''
-        }`,
       },
     })
     .then(() => {
       toast.success('Private Post Uploaded.', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -440,6 +439,7 @@ export const uploadPost = async ({
       })
       dispatch({ type: CLEAR_POST_STATE, payload: initialState })
       dispatch({ type: SET_IS_LOADING, payload: false })
+      history.push('/')
     })
     .catch((error) => {
       toast(error.message, {
@@ -458,12 +458,18 @@ export const uploadPost = async ({
         postSample: postState.postSample,
         postCategory: postState.postCategory,
         authorUid: appState.user.uid,
+        postImagesArray: postState.postImagesArray,
         isPrivate: postState.isPrivate,
+        authorDetails: {
+          name: appState.user.name,
+          bio: appState.user.bio,
+        },
+
         timeStamp: firestore.Timestamp.now(),
       })
       .then(() => {
         toast.success('Public Post Uploaded.', {
-          position: 'top-center',
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -508,24 +514,25 @@ export const deletePrivatePost = async ({ postId, uid }) => {
       }),
     )
 }
-export const deleteBinPost = async ({ postId, uid }) => {
-  firestore()
+export const deleteBinPost = async ({ postId, uid, isShowToast }) => {
+  await firestore()
     .collection('Users')
     .doc(uid)
     .collection('bin')
     .doc(postId)
     .delete()
-    .then(() =>
-      toast.success('Post Deleted From Bin', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }),
-    )
+    .then(() => {
+      if (isShowToast)
+        toast.success('Post Deleted From Bin', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+    })
     .catch((error) =>
       toast(error.message, {
         type: 'error',
@@ -542,7 +549,7 @@ export const moveTobin = async ({ postData, uid }) => {
     .set(postData)
     .then(() =>
       toast.success('Post Move to bin.', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -568,8 +575,8 @@ export const restoreBinPost = async ({ postData, uid }) => {
     .doc(postData.id)
     .set(postData)
     .then(() =>
-      toast.success('Private Post Restore.', {
-        position: 'top-center',
+      toast.success('Post Restore.', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -590,8 +597,8 @@ export const restoreBinPost = async ({ postData, uid }) => {
       .doc(postData.id)
       .set(postData)
       .then(() =>
-        toast.success('Private Post Restore.', {
-          position: 'top-center',
+        toast.success('Post Restore.', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -607,5 +614,34 @@ export const restoreBinPost = async ({ postData, uid }) => {
       )
   }
 
-  deleteBinPost({ postId: postData.id, uid })
+  deleteBinPost({ postId: postData.id, uid, isShowToast: false })
+}
+
+export const deletePostDataFromStorage = async ({ postId, uid }) => {
+  let ref = storage().ref(uid + '/' + postId)
+
+  console.log('ref', ref.getMetadata())
+
+  ref
+    .listAll()
+    .then((dir) => {
+      dir.items.forEach((fileRef) => {
+        var dirRef = storage().ref(fileRef.fullPath)
+        console.log('fileRef.fullPath', fileRef.fullPath)
+        dirRef.getDownloadURL().then(function (url) {
+          var imgRef = storage().refFromURL(url)
+          imgRef
+            .delete()
+            .then(function () {
+              console.log('// File deleted successfully')
+            })
+            .catch(function (error) {
+              console.log('// There has been an error')
+            })
+        })
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }

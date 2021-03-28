@@ -5,12 +5,12 @@ import firebase from 'firebase/app'
 import { UserContext } from '../context/context'
 
 import imageCompression from 'browser-image-compression'
+import { ADD_POST_IMAGE } from '../context/action.type'
 
-const ImagePicker = ({ postId }) => {
+const ImagePicker = ({ postId, postImagesArray, dispatchPost }) => {
   const { appState } = useContext(UserContext)
 
   const [uploadingStatus, setUploadingStatus] = useState(null)
-  const [imageUrl, setImageUrl] = useState(null)
 
   const imagePickerFun = async (e) => {
     const options = {
@@ -84,7 +84,7 @@ const ImagePicker = ({ postId }) => {
         function () {
           // Upload completed successfully, now we can get the download URL
           uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            setImageUrl(downloadURL)
+            dispatchPost({ type: ADD_POST_IMAGE, payload: downloadURL })
           })
         },
       )
@@ -92,6 +92,8 @@ const ImagePicker = ({ postId }) => {
       console.log('Error', error)
     }
   }
+
+  console.log('postImagesArray', postImagesArray)
 
   return (
     <div className="uploadImageContainer">
@@ -108,8 +110,14 @@ const ImagePicker = ({ postId }) => {
         className="hidden"
       />
       <p>Image Uploading Status: {uploadingStatus}</p>
-      <p>Last Image url is:</p>
-      <p>{imageUrl}</p>
+
+      <div className="showImageContainer">
+        {postImagesArray
+          ? postImagesArray.map((downloadURL) => (
+              <img src={downloadURL} width="200px" />
+            ))
+          : null}
+      </div>
     </div>
   )
 }

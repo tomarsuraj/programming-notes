@@ -124,6 +124,7 @@ h6 {
   border: 2px solid #5a20cb;
   border-radius: 15px;
   color: #cad5e2;
+  min-height: 200px;
 }
 .editorToolbarClass {
   position: -webkit-sticky; /* Safari */
@@ -241,7 +242,7 @@ h6 {
 }
 
 /* Add Post  */
-.addPostFormContainer {
+.addPostContainer {
   display: flex;
   flex-direction: column;
   width: 85%;
@@ -250,12 +251,24 @@ h6 {
   border-radius: 15px;
   padding: 10px 15px 15px 15px;
 }
+.addPostFormContainer {
+  display: flex;
+  flex-direction: row;
+}
+.addPostBasicFormContainer {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin: 0px 20px 0px 0px;
+}
 
-.addPostFormContainer label {
+.addPostBasicFormContainer label,
+.uploadImageContainer label {
   font-size: larger;
   margin-bottom: 10px;
   color: #46b2e0;
 }
+
 .uploadImageContainer {
   display: flex;
   flex-direction: column;
@@ -263,8 +276,13 @@ h6 {
   border-radius: 15px;
   padding: 10px;
 }
+.showImageContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
-.addPostFormContainer button {
+.addPostContainer button {
   height: 50px;
   width: 100%;
   font-size: 20px;

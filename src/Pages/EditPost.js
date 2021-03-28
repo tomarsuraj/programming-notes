@@ -28,6 +28,7 @@ const initialState = {
   postSample: '',
   postCategory: 'Python',
   isPrivate: true,
+  postImagesArray: [],
 }
 
 const EditPost = () => {
@@ -56,6 +57,7 @@ const EditPost = () => {
       postId,
       dispatch: dispatchEditPost,
       initialState,
+      history,
     })
   }
 
@@ -64,6 +66,7 @@ const EditPost = () => {
       uploadPostFun()
     } else setShowPostIsPrivateChangeModal(true)
   }
+  console.log('editPostData', editPostData)
 
   useEffect(() => {
     if (editPostData) {
@@ -81,67 +84,77 @@ const EditPost = () => {
   return (
     <div className="screenContainer">
       <h1 className="heading">Add Post</h1>
-      <div className="addPostFormContainer">
-        <label>Enter Post Title:</label>
-        <input
-          type="text"
-          name="postTitle"
-          value={editPostState.postTitle}
-          onChange={(e) => {
-            dispatchEditPost({
-              type: UPDATE_POST_TITLE,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <label>Enter Category:</label>
-        <PostCategorySelector
-          name="postCategory"
-          showAll={false}
-          value={editPostState.postCategory}
-          onChange={(e) => {
-            dispatchEditPost({
-              type: UPDATE_POST_CATEGORY,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <label>Post Private/Public:</label>
-        <select
-          name="isPrivate"
-          value={`${editPostState.isPrivate ? 'Private' : 'Public'}`}
-          onChange={(e) => {
-            if (e.target.value === 'Private') {
-              dispatchEditPost({
-                type: SET_IS_PRIVATE,
-                payload: true,
-              })
-            } else {
-              dispatchEditPost({
-                type: SET_IS_PRIVATE,
-                payload: false,
-              })
-            }
-          }}
-        >
-          <option>Private</option>
-          <option>Public</option>
-        </select>
+      <div className="addPostContainer">
+        <div className="addPostFormContainer">
+          <div className="addPostBasicFormContainer">
+            <label>Enter Post Title:</label>
+            <input
+              type="text"
+              name="postTitle"
+              value={editPostState.postTitle}
+              onChange={(e) => {
+                dispatchEditPost({
+                  type: UPDATE_POST_TITLE,
+                  payload: e.target.value,
+                })
+              }}
+            />
+            <label>Enter Category:</label>
+            <PostCategorySelector
+              name="postCategory"
+              showAll={false}
+              value={editPostState.postCategory}
+              onChange={(e) => {
+                dispatchEditPost({
+                  type: UPDATE_POST_CATEGORY,
+                  payload: e.target.value,
+                })
+              }}
+            />
+            <label>Post Private/Public:</label>
+            <select
+              name="isPrivate"
+              value={`${editPostState.isPrivate ? 'Private' : 'Public'}`}
+              onChange={(e) => {
+                if (e.target.value === 'Private') {
+                  dispatchEditPost({
+                    type: SET_IS_PRIVATE,
+                    payload: true,
+                  })
+                } else {
+                  dispatchEditPost({
+                    type: SET_IS_PRIVATE,
+                    payload: false,
+                  })
+                }
+              }}
+            >
+              <option>Private</option>
+              <option>Public</option>
+            </select>
 
-        <label>Post Sample:</label>
-        <input
-          type="text"
-          name="postSample"
-          value={editPostState.postSample}
-          placeholder="Post Smaple"
-          onChange={(e) => {
-            dispatchEditPost({
-              type: UPDATE_POST_SAMPLE,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <ImagePicker postId={postId} />
+            <label>Post Sample:</label>
+            <input
+              type="text"
+              name="postSample"
+              value={editPostState.postSample}
+              placeholder="Post Smaple"
+              onChange={(e) => {
+                dispatchEditPost({
+                  type: UPDATE_POST_SAMPLE,
+                  payload: e.target.value,
+                })
+              }}
+            />
+          </div>
+          <div className="addPostImagePickerContainer">
+            <ImagePicker
+              postId={postId}
+              postImagesArray={editPostState.postImagesArray}
+              dispatchPost={dispatchEditPost}
+            />
+          </div>
+        </div>
         <Editor
           editorState={editPostState.editorState}
           wrapperClassName="editorWrapperClass"

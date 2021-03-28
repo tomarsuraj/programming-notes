@@ -22,6 +22,7 @@ import { firestore } from 'firebase'
 import ImagePicker from '../Components/ImagePicker'
 import { uploadPost } from '../context/databasefunction'
 import Loading from './Loading'
+import { useHistory } from 'react-router'
 
 const initialState = {
   postId: null,
@@ -30,12 +31,14 @@ const initialState = {
   postSample: '',
   postCategory: 'Python',
   isPrivate: true,
+  postImagesArray: [],
 }
 
 const AddPost = () => {
   const [postState, dispatchPost] = useReducer(addPostReducer, initialState)
   const { appState } = useContext(UserContext)
   const { postId } = postState
+  const history = useHistory()
 
   const { user } = appState
 
@@ -59,65 +62,75 @@ const AddPost = () => {
   return (
     <div className="screenContainer">
       <h1 className="heading">Add Post</h1>
-      <div className="addPostFormContainer">
-        <label>Enter Post Title:</label>
-        <input
-          type="text"
-          name="postTitle"
-          value={postState.postTitle}
-          onChange={(e) => {
-            dispatchPost({
-              type: UPDATE_POST_TITLE,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <label>Enter Category:</label>
-        <PostCategorySelector
-          name="postCategory"
-          value={postState.postCategory}
-          showAll={false}
-          onChange={(e) => {
-            dispatchPost({
-              type: UPDATE_POST_CATEGORY,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <label>Post Private/Public:</label>
-        <select
-          name="isPrivate"
-          value={`${postState.isPrivate ? 'Private' : 'Public'}`}
-          onChange={(e) => {
-            if (e.target.value === 'Private') {
-              dispatchPost({
-                type: SET_IS_PRIVATE,
-                payload: true,
-              })
-            } else {
-              dispatchPost({
-                type: SET_IS_PRIVATE,
-                payload: false,
-              })
-            }
-          }}
-        >
-          <option>Private</option>
-          <option>Public</option>
-        </select>
-        <label>Post Sample:</label>
-        <input
-          type="text"
-          name="postSample"
-          value={postState.postSample}
-          onChange={(e) => {
-            dispatchPost({
-              type: UPDATE_POST_SAMPLE,
-              payload: e.target.value,
-            })
-          }}
-        />
-        <ImagePicker postId={postId} />
+      <div className="addPostContainer">
+        <div className="addPostFormContainer">
+          <div className="addPostBasicFormContainer">
+            <label>Enter Post Title:</label>
+            <input
+              type="text"
+              name="postTitle"
+              value={postState.postTitle}
+              onChange={(e) => {
+                dispatchPost({
+                  type: UPDATE_POST_TITLE,
+                  payload: e.target.value,
+                })
+              }}
+            />
+            <label>Enter Category:</label>
+            <PostCategorySelector
+              name="postCategory"
+              value={postState.postCategory}
+              showAll={false}
+              onChange={(e) => {
+                dispatchPost({
+                  type: UPDATE_POST_CATEGORY,
+                  payload: e.target.value,
+                })
+              }}
+            />
+            <label>Post Private/Public:</label>
+            <select
+              name="isPrivate"
+              value={`${postState.isPrivate ? 'Private' : 'Public'}`}
+              onChange={(e) => {
+                if (e.target.value === 'Private') {
+                  dispatchPost({
+                    type: SET_IS_PRIVATE,
+                    payload: true,
+                  })
+                } else {
+                  dispatchPost({
+                    type: SET_IS_PRIVATE,
+                    payload: false,
+                  })
+                }
+              }}
+            >
+              <option>Private</option>
+              <option>Public</option>
+            </select>
+            <label>Post Sample:</label>
+            <input
+              type="text"
+              name="postSample"
+              value={postState.postSample}
+              onChange={(e) => {
+                dispatchPost({
+                  type: UPDATE_POST_SAMPLE,
+                  payload: e.target.value,
+                })
+              }}
+            />
+          </div>
+          <div className="addPostImagePickerContainer">
+            <ImagePicker
+              postId={postId}
+              postImagesArray={postState.postImagesArray}
+              dispatchPost={dispatchPost}
+            />
+          </div>
+        </div>
         <Editor
           editorState={postState.editorState}
           wrapperClassName="editorWrapperClass"
@@ -149,6 +162,7 @@ const AddPost = () => {
                     postId,
                     dispatch: dispatchPost,
                     initialState,
+                    history,
                   })
                 }
               >

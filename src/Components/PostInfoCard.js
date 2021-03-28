@@ -8,6 +8,7 @@ import {
 } from '../context/action.type'
 import {
   deleteBinPost,
+  deletePostDataFromStorage,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
@@ -49,8 +50,16 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
             <button
               className="deletebtn"
               onClick={() => {
-                deleteBinPost({ postId: value.id, uid: appState.user.uid })
+                deleteBinPost({
+                  postId: value.id,
+                  uid: appState.user.uid,
+                  isShowToast: true,
+                })
                 getUserBinPost({ uid: appState.user.uid, dispatch })
+                deletePostDataFromStorage({
+                  postId: value.id,
+                  uid: appState.user.uid,
+                })
               }}
             >
               Delete
