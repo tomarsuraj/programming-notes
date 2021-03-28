@@ -147,13 +147,12 @@ const EditPost = () => {
               }}
             />
           </div>
-          <div className="addPostImagePickerContainer">
-            <ImagePicker
-              postId={postId}
-              postImagesArray={editPostState.postImagesArray}
-              dispatchPost={dispatchEditPost}
-            />
-          </div>
+
+          <ImagePicker
+            postId={postId}
+            postImagesArray={editPostState.postImagesArray}
+            dispatchPost={dispatchEditPost}
+          />
         </div>
         <Editor
           editorState={editPostState.editorState}

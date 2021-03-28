@@ -123,13 +123,12 @@ const AddPost = () => {
               }}
             />
           </div>
-          <div className="addPostImagePickerContainer">
-            <ImagePicker
-              postId={postId}
-              postImagesArray={postState.postImagesArray}
-              dispatchPost={dispatchPost}
-            />
-          </div>
+
+          <ImagePicker
+            postId={postId}
+            postImagesArray={postState.postImagesArray}
+            dispatchPost={dispatchPost}
+          />
         </div>
         <Editor
           editorState={postState.editorState}

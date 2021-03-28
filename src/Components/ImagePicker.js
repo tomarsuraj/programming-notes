@@ -97,19 +97,21 @@ const ImagePicker = ({ postId, postImagesArray, dispatchPost }) => {
 
   return (
     <div className="uploadImageContainer">
-      <label>Choose File To Upload</label>
-      <input
-        type="file"
-        name="image"
-        id="imagepicker"
-        accept="image/*"
-        multiple={false}
-        onChange={(e) => {
-          imagePickerFun(e)
-        }}
-        className="hidden"
-      />
-      <p>Image Uploading Status: {uploadingStatus}</p>
+      <div>
+        <label>Choose File To Upload</label>
+        <input
+          type="file"
+          name="image"
+          id="imagepicker"
+          accept="image/*"
+          multiple={false}
+          onChange={(e) => {
+            imagePickerFun(e)
+          }}
+          className="hidden"
+        />
+        <p>Image Uploading Status: {uploadingStatus}</p>
+      </div>
 
       <div className="showImageContainer">
         {postImagesArray
