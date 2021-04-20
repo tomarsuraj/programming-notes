@@ -620,14 +620,11 @@ export const restoreBinPost = async ({ postData, uid }) => {
 export const deletePostDataFromStorage = async ({ postId, uid }) => {
   let ref = storage().ref(uid + '/' + postId)
 
-  console.log('ref', ref.getMetadata())
-
   ref
     .listAll()
     .then((dir) => {
       dir.items.forEach((fileRef) => {
         var dirRef = storage().ref(fileRef.fullPath)
-        console.log('fileRef.fullPath', fileRef.fullPath)
         dirRef.getDownloadURL().then(function (url) {
           var imgRef = storage().refFromURL(url)
           imgRef
