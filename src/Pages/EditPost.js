@@ -66,7 +66,6 @@ const EditPost = () => {
       uploadPostFun()
     } else setShowPostIsPrivateChangeModal(true)
   }
-  console.log('editPostData', editPostData)
 
   useEffect(() => {
     if (editPostData) {

@@ -93,8 +93,6 @@ const ImagePicker = ({ postId, postImagesArray, dispatchPost }) => {
     }
   }
 
-  console.log('postImagesArray', postImagesArray)
-
   return (
     <div className="uploadImageContainer">
       <div>

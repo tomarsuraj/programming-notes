@@ -207,10 +207,6 @@ export const editPostReducer = (state, action) => {
       )
       const editorState = EditorState.createWithContent(editorStateTemp)
 
-      console.log(
-        'action.payload.postImagesArray',
-        action.payload.postImagesArray,
-      )
       return {
         ...state,
         postId: action.payload.postId,
