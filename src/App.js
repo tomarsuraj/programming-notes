@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './app.css'
 import {
   BrowserRouter as Router,
@@ -36,12 +36,10 @@ import {
 } from './context/action.type'
 import { auth, firestore } from 'firebase'
 
-import { getUserPost } from './context/databasefunction'
 import VerifyEmail from './Pages/VerifyEmail'
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext)
-  const { user } = appState
   const { isAuthenticated } = appState
 
   const onAuthStateChanged = async (user) => {

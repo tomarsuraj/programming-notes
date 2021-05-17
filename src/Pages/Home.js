@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import PostCategorySelector from '../Components/PostCategorySelector'
 import PostInfoCard from '../Components/PostInfoCard'
-import { SET_SEARCH_POST_DATA } from '../context/action.type'
 import { UserContext } from '../context/context'
 import { searchUserPost } from '../context/databasefunction'
 import Loading from './Loading'
