@@ -1,32 +1,32 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../context/context'
-import { useHistory } from 'react-router-dom'
+import React, { useContext } from "react";
+import { UserContext } from "../context/context";
+import { useHistory } from "react-router-dom";
 import {
   DELETE_POST_FROM_SEARCH_POST_DATA,
   SET_EDIT_POST_DATA,
   SET_VIEW_POST_DATA,
-} from '../context/action.type'
+} from "../context/action.type";
 import {
   deleteBinPost,
   deletePostDataFromStorage,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
-} from '../context/databasefunction'
+} from "../context/databasefunction";
 
 const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
-  const { appState, dispatch } = useContext(UserContext)
-  const history = useHistory()
+  const { appState, dispatch } = useContext(UserContext);
+  const history = useHistory();
 
   const handleViewClick = () => {
-    dispatch({ type: SET_VIEW_POST_DATA, payload: value })
-    history.push('viewPost')
-  }
+    dispatch({ type: SET_VIEW_POST_DATA, payload: value });
+    history.push("viewPost");
+  };
 
   const handleEditClick = () => {
-    dispatch({ type: SET_EDIT_POST_DATA, payload: value })
-    history.push('editPost')
-  }
+    dispatch({ type: SET_EDIT_POST_DATA, payload: value });
+    history.push("editPost");
+  };
   return (
     <div className="postInfoCardContainer">
       <h2>{value.postTitle}</h2>
@@ -41,8 +41,8 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
             <button
               className="restorebtn"
               onClick={() => {
-                restoreBinPost({ postData: value, uid: appState.user.uid })
-                getUserBinPost({ uid: appState.user.uid, dispatch })
+                restoreBinPost({ postData: value, uid: appState.user.uid });
+                getUserBinPost({ uid: appState.user.uid, dispatch });
               }}
             >
               Restore
@@ -54,12 +54,12 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
                   postId: value.id,
                   uid: appState.user.uid,
                   isShowToast: true,
-                })
-                getUserBinPost({ uid: appState.user.uid, dispatch })
+                });
+                getUserBinPost({ uid: appState.user.uid, dispatch });
                 deletePostDataFromStorage({
                   postId: value.id,
                   uid: appState.user.uid,
-                })
+                });
               }}
             >
               Delete
@@ -74,12 +74,12 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
             <button
               className="deletebtn"
               onClick={() => {
-                moveTobin({ postData: value, uid: appState.user.uid })
+                moveTobin({ postData: value, uid: appState.user.uid });
                 if (isSearchPost) {
                   dispatch({
                     type: DELETE_POST_FROM_SEARCH_POST_DATA,
                     payload: value.postId,
-                  })
+                  });
                 }
               }}
             >
@@ -94,7 +94,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PostInfoCard
+export default PostInfoCard;

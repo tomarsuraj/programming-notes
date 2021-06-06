@@ -20,7 +20,7 @@ import {
   UPDATE_POST_ID,
   UPDATE_POST_SAMPLE,
   UPDATE_POST_TITLE,
-} from './action.type'
+} from "./action.type";
 
 // Editior
 import {
@@ -28,7 +28,8 @@ import {
   convertToRaw,
   convertFromHTML,
   ContentState,
-} from 'draft-js'
+  convertFromRaw,
+} from "draft-js";
 
 const appInitialState = {
   isAuthenticated: false,
@@ -42,7 +43,7 @@ const appInitialState = {
   searchPostData: {},
   searchPublicData: {},
   isLoading: false,
-}
+};
 
 export const appReducer = (state, action) => {
   switch (action.type) {
@@ -51,68 +52,68 @@ export const appReducer = (state, action) => {
         ...state,
         user: action.payload,
         isLoading: false,
-      }
+      };
     case IS_AUTHTHENTICATED:
       return {
         ...state,
         isAuthenticated: action.payload,
-      }
+      };
     case IS_EMAIL_VERIFIED:
       return {
         ...state,
         isEmailVerified: action.payload,
-      }
+      };
     case IS_SIGNIN:
       return {
         ...state,
         isSignIn: action.payload,
-      }
+      };
     case SET_USER_POST:
       return {
         ...state,
         post: action.payload,
         isLoading: false,
-      }
+      };
     case SET_USER_BIN_POST:
       return {
         ...state,
         BinPostData: action.payload,
         isLoading: false,
-      }
+      };
     case SET_VIEW_POST_DATA:
       return {
         ...state,
         viewPostData: action.payload,
-      }
+      };
 
     case SET_EDIT_POST_DATA:
-      return { ...state, editPostData: action.payload }
+      return { ...state, editPostData: action.payload };
 
     case SET_SEARCH_POST_DATA:
-      return { ...state, searchPostData: action.payload }
+      return { ...state, searchPostData: action.payload };
 
     case DELETE_POST_FROM_SEARCH_POST_DATA: {
-      const { searchPostData } = state
+      const { searchPostData } = state;
       return {
         ...state,
         searchPostData: searchPostData.filter(
-          (searchPost) => searchPost.postId != action.payload,
+          (searchPost) => searchPost.postId != action.payload
         ),
-      }
+      };
     }
     case SET_PUBLIC_POST_DATA:
-      return { ...state, searchPublicData: action.payload }
+      return { ...state, searchPublicData: action.payload };
 
     case SET_IS_LOADING:
-      return { ...state, isLoading: action.payload }
+      return { ...state, isLoading: action.payload };
 
     case CLEAR_APP_STATE:
-      return appInitialState
+      return appInitialState;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const addPostReducer = (state, action) => {
   switch (action.type) {
@@ -120,49 +121,49 @@ export const addPostReducer = (state, action) => {
       return {
         ...state,
         editorState: action.payload,
-      }
+      };
 
     case UPDATE_POST_TITLE:
       return {
         ...state,
         postTitle: action.payload,
-      }
+      };
 
     case UPDATE_POST_SAMPLE:
       return {
         ...state,
         postSample: action.payload,
-      }
+      };
     case UPDATE_POST_CATEGORY:
       return {
         ...state,
         postCategory: action.payload,
-      }
+      };
     case CLEAR_POST_STATE:
-      return action.payload
+      return action.payload;
     case UPDATE_POST_ID:
       return {
         ...state,
         postId: action.payload,
-      }
+      };
     case SET_IS_PRIVATE:
       return {
         ...state,
         isPrivate: action.payload,
-      }
+      };
     case ADD_POST_IMAGE:
-      var array = state.postImagesArray
-      array.push(action.payload)
+      var array = state.postImagesArray;
+      array.push(action.payload);
 
       return {
         ...state,
         postImagesArray: array,
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const editPostReducer = (state, action) => {
   switch (action.type) {
@@ -170,65 +171,80 @@ export const editPostReducer = (state, action) => {
       return {
         ...state,
         editorState: action.payload,
-      }
+      };
 
     case UPDATE_POST_TITLE:
       return {
         ...state,
         postTitle: action.payload,
-      }
+      };
 
     case UPDATE_POST_SAMPLE:
       return {
         ...state,
         postSample: action.payload,
-      }
+      };
 
     case UPDATE_POST_CATEGORY:
       return {
         ...state,
         postCategory: action.payload,
-      }
+      };
 
     case CLEAR_POST_STATE:
-      return action.payload
+      return action.payload;
 
     case SET_IS_PRIVATE:
       return {
         ...state,
         isPrivate: action.payload,
-      }
+      };
 
     case SET_EDIT_POST_DATA: {
-      const htmlPostBody = convertFromHTML(action.payload.postBody)
-      const editorStateTemp = ContentState.createFromBlockArray(
-        htmlPostBody.contentBlocks,
-        htmlPostBody.entityMap,
-      )
-      const editorState = EditorState.createWithContent(editorStateTemp)
+      if (action.payload.editorStateRaw) {
+        const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
 
-      return {
-        ...state,
-        postId: action.payload.postId,
-        postTitle: action.payload.postTitle,
-        postSample: action.payload.postSample,
-        postCategory: action.payload.postCategory,
-        isPrivate: action.payload.isPrivate,
-        editorState: editorState,
-        postImagesArray: action.payload.postImagesArray,
+        const editorState = EditorState.createWithContent(DBEditorState);
+        return {
+          ...state,
+          postId: action.payload.postId,
+          postTitle: action.payload.postTitle,
+          postSample: action.payload.postSample,
+          postCategory: action.payload.postCategory,
+          isPrivate: action.payload.isPrivate,
+          editorState: editorState,
+          postImagesArray: action.payload.postImagesArray,
+        };
+      } else {
+        const htmlPostBody = convertFromHTML(action.payload.postBody);
+        const editorStateTemp = ContentState.createFromBlockArray(
+          htmlPostBody.contentBlocks,
+          htmlPostBody.entityMap
+        );
+        const editorState = EditorState.createWithContent(editorStateTemp);
+        return {
+          ...state,
+          postId: action.payload.postId,
+          postTitle: action.payload.postTitle,
+          postSample: action.payload.postSample,
+          postCategory: action.payload.postCategory,
+          isPrivate: action.payload.isPrivate,
+          editorState: editorState,
+          postImagesArray: action.payload.postImagesArray,
+        };
       }
     }
 
     case ADD_POST_IMAGE:
-      var array = state.postImagesArray
-      array.push(action.payload)
+      var array = state.postImagesArray;
+      array.push(action.payload);
 
       return {
         ...state,
         postImagesArray: array,
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};

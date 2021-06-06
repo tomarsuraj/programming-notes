@@ -1,10 +1,18 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../context/context'
-import parse from 'html-react-parser'
+import React, { useContext } from "react";
+import { UserContext } from "../context/context";
+import parse from "html-react-parser";
+import { SET_EDIT_POST_DATA } from "../context/action.type";
+import { useHistory } from "react-router";
 
 const ViewPost = () => {
-  const { appState } = useContext(UserContext)
-  const { viewPostData } = appState
+  const { appState, dispatch } = useContext(UserContext);
+  const history = useHistory();
+  const { viewPostData } = appState;
+
+  const handleEditClick = () => {
+    dispatch({ type: SET_EDIT_POST_DATA, payload: viewPostData });
+    history.push("editPost");
+  };
 
   return (
     <div className="screenContainer">
@@ -19,9 +27,20 @@ const ViewPost = () => {
         ) : (
           <h4>No Post Data</h4>
         )}
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+          }}
+        >
+          <button className="editbtn" onClick={() => handleEditClick()}>
+            Edit
+          </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ViewPost
+export default ViewPost;

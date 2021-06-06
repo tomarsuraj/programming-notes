@@ -151,7 +151,7 @@ h6 {
 .postInfoCardContainer p,
 .postInfoCardContainer h2 {
   color: #50dbb4;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .cardFooter {
@@ -343,4 +343,10 @@ h6 {
   border: 3px solid #e03b8b;
   border-radius: 15px;
   padding: 10px 15px 15px 15px;
+}
+.viewContainer button {
+  color: #272626;
+  font-size: 24px;
+  width: 50%;
+  justify-self: center;
 }
