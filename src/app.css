@@ -8,6 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 .heading {
   align-self: center;
@@ -184,6 +185,7 @@ h6 {
 .searchFilterContainer {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   max-width: 1920px;
   width: 80%;
@@ -343,10 +345,4 @@ h6 {
   border: 3px solid #e03b8b;
   border-radius: 15px;
   padding: 10px 15px 15px 15px;
-}
-.viewContainer button {
-  color: #272626;
-  font-size: 24px;
-  width: 50%;
-  justify-self: center;
 }

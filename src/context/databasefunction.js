@@ -28,7 +28,7 @@ export const getUserPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_POST, payload: tempDoc });
-      if (tempDoc.length == 0) {
+      if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
           autoClose: 5000,
@@ -63,7 +63,7 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_BIN_POST, payload: tempDoc });
-      if (tempDoc.length == 0) {
+      if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
           autoClose: 5000,
@@ -106,7 +106,7 @@ export const searchUserPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -129,7 +129,7 @@ export const searchUserPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -142,7 +142,7 @@ export const searchUserPost = async ({
           }
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost == 0 && category !== "All") {
+    } else if (title === "" && numberOfPost === 0 && category !== "All") {
       post
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
@@ -151,7 +151,7 @@ export const searchUserPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -172,7 +172,7 @@ export const searchUserPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -195,7 +195,7 @@ export const searchUserPost = async ({
             return { id: doc.id, ...doc.data() };
           });
 
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -216,7 +216,7 @@ export const searchUserPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -258,7 +258,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -281,7 +281,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -294,7 +294,7 @@ export const searchPublicPost = async ({
           }
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost == 0 && category !== "All") {
+    } else if (title === "" && numberOfPost === 0 && category !== "All") {
       post
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
@@ -303,7 +303,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -324,7 +324,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -346,7 +346,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -367,7 +367,7 @@ export const searchPublicPost = async ({
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
-          if (tempDoc.length == 0) {
+          if (tempDoc.length === 0) {
             toast.warn("🦄 No Post Found!", {
               position: "top-right",
               autoClose: 5000,
@@ -450,7 +450,7 @@ export const uploadPost = async ({
       });
     });
 
-  if (postState.isPrivate == false) {
+  if (postState.isPrivate === false) {
     const uploadPost = await firestore().collection("PublicPost").doc(postId);
 
     uploadPost

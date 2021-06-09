@@ -27,17 +27,26 @@ const ViewPost = () => {
         ) : (
           <h4>No Post Data</h4>
         )}
-        <div
+      </div>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          flexDirection: "column",
+        }}
+      >
+        <button
+          className="editbtn"
           style={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "column",
+            color: "#272626",
+            fontSize: "24px",
+            width: "50%",
+            justifySelf: "center",
           }}
+          onClick={() => handleEditClick()}
         >
-          <button className="editbtn" onClick={() => handleEditClick()}>
-            Edit
-          </button>
-        </div>
+          Edit
+        </button>
       </div>
     </div>
   );

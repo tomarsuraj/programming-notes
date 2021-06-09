@@ -1,16 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react'
-import PostCategorySelector from '../Components/PostCategorySelector'
-import PostInfoCard from '../Components/PostInfoCard'
-import { UserContext } from '../context/context'
-import { searchUserPost } from '../context/databasefunction'
-import Loading from './Loading'
+import React, { useContext, useState, useEffect } from "react";
+import PostCategorySelector from "../Components/PostCategorySelector";
+import PostInfoCard from "../Components/PostInfoCard";
+import { UserContext } from "../context/context";
+import { searchUserPost } from "../context/databasefunction";
+import Loading from "./Loading";
 
 const Home = () => {
-  const { appState, dispatch } = useContext(UserContext)
+  const { appState, dispatch } = useContext(UserContext);
 
-  const [title, setTitle] = useState('')
-  const [numberOfPost, setNumberOfPost] = useState(0)
-  const [category, setCategory] = useState('All')
+  const [title, setTitle] = useState("");
+  const [numberOfPost, setNumberOfPost] = useState(0);
+  const [category, setCategory] = useState("All");
 
   const handleSearch = () => {
     searchUserPost({
@@ -19,8 +19,8 @@ const Home = () => {
       category,
       dispatch,
       uid: appState.user.uid,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (appState.user.uid)
@@ -30,11 +30,11 @@ const Home = () => {
         category,
         dispatch,
         uid: appState.user.uid,
-      })
-  }, [appState.user.uid])
+      });
+  }, [appState.user.uid]);
 
   if (appState.isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -47,15 +47,15 @@ const Home = () => {
             name="title"
             value={title}
             onChange={(e) => {
-              setNumberOfPost(0)
-              setTitle(e.target.value)
+              setNumberOfPost(0);
+              setTitle(e.target.value);
             }}
           />
         </div>
         <div className="searchFilterInput">
-          <label for="noOfPost">Number Of Post TO Fetch:</label>
+          <label for="noOfPost">Number of Post To Fetch:</label>
 
-          {title === '' ? (
+          {title === "" ? (
             <input
               type="number"
               name="noOfPost"
@@ -94,7 +94,7 @@ const Home = () => {
         <h3> No post Fetch</h3>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
