@@ -2,7 +2,21 @@
 
 A website to take down notes
 
-# Webapp Screenshots
+# Running this project
+
+To get this project up and running you should start by having Node js installed on your computer.
+
+```
+npm install
+```
+
+Go to firebase console and make a project and copy firebase config in config file in src dir
+
+```
+npm start
+```
+
+# Screenshots
 
 ### Home page
 
@@ -27,3 +41,9 @@ A website to take down notes
 ### Sign Up page
 
 <img src="mdFileImg/singUp.png" alt="image text" title="imae Title" />
+
+---
+
+## About this Project
+
+This project is part of list of project that i make during learning React JS.

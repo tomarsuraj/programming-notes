@@ -1,19 +1,19 @@
-import React, { useReducer } from 'react'
+import React, { useReducer } from "react";
 
-import App from './App'
+import App from "./App";
 
 //Context
-import { UserContext } from './context/context'
-import { appReducer } from './context/reducer'
+import { UserContext } from "./context/context";
+import { appReducer } from "./context/reducer";
 
 // firebase
-import { firebaseConfig } from './config'
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/storage'
-import 'firebase/auth'
+import { firebaseConfig } from "./config";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import "firebase/auth";
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 const initialState = {
   isAuthenticated: false,
@@ -27,16 +27,16 @@ const initialState = {
   searchPostData: {},
   searchPublicData: {},
   isLoading: false,
-}
+};
 
 const RootApp = () => {
-  const [appState, dispatch] = useReducer(appReducer, initialState)
+  const [appState, dispatch] = useReducer(appReducer, initialState);
 
   return (
-    <UserContext.Provider value={{ appState: appState, dispatch,}}>
+    <UserContext.Provider value={{ appState: appState, dispatch }}>
       <App />
     </UserContext.Provider>
-  )
-}
+  );
+};
 
-export default RootApp
+export default RootApp;
