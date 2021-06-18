@@ -1,5 +1,4 @@
 import { convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import { firestore, storage } from "firebase";
 import {
   CLEAR_POST_STATE,
@@ -400,9 +399,6 @@ export const uploadPost = async ({
 }) => {
   dispatch({ type: SET_IS_LOADING, payload: true });
 
-  const postBody = draftToHtml(
-    convertToRaw(postState.editorState.getCurrentContent())
-  );
   const editorStateRaw = convertToRaw(
     postState.editorState.getCurrentContent()
   );
@@ -418,7 +414,6 @@ export const uploadPost = async ({
       editorStateRaw,
       isPrivate: postState.isPrivate,
       postId,
-      postBody,
       postTitle: postState.postTitle,
       postSample: postState.postSample,
       postCategory: postState.postCategory,
@@ -456,7 +451,6 @@ export const uploadPost = async ({
     uploadPost
       .set({
         postId,
-        postBody,
         editorStateRaw,
         postTitle: postState.postTitle,
         postSample: postState.postSample,

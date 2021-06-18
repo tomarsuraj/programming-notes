@@ -3,6 +3,7 @@ import { UserContext } from "../context/context";
 import parse from "html-react-parser";
 import { SET_EDIT_POST_DATA } from "../context/action.type";
 import { useHistory } from "react-router";
+import draftToHtml from "draftjs-to-html";
 
 const ViewPost = () => {
   const { appState, dispatch } = useContext(UserContext);
@@ -22,7 +23,7 @@ const ViewPost = () => {
             <div>
               <h2>{viewPostData.postTitle}</h2>
             </div>
-            {parse(viewPostData.postBody)}
+            {parse(draftToHtml(viewPostData.editorStateRaw))}
           </>
         ) : (
           <h4>No Post Data</h4>

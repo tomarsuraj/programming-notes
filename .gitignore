@@ -111,3 +111,5 @@ dist
 
 .firebase/hosting.YnVpbGQ.cache
 .firebaserc
+
+firebase.json

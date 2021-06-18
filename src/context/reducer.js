@@ -201,38 +201,19 @@ export const editPostReducer = (state, action) => {
       };
 
     case SET_EDIT_POST_DATA: {
-      if (action.payload.editorStateRaw) {
-        const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
+      const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
 
-        const editorState = EditorState.createWithContent(DBEditorState);
-        return {
-          ...state,
-          postId: action.payload.postId,
-          postTitle: action.payload.postTitle,
-          postSample: action.payload.postSample,
-          postCategory: action.payload.postCategory,
-          isPrivate: action.payload.isPrivate,
-          editorState: editorState,
-          postImagesArray: action.payload.postImagesArray,
-        };
-      } else {
-        const htmlPostBody = convertFromHTML(action.payload.postBody);
-        const editorStateTemp = ContentState.createFromBlockArray(
-          htmlPostBody.contentBlocks,
-          htmlPostBody.entityMap
-        );
-        const editorState = EditorState.createWithContent(editorStateTemp);
-        return {
-          ...state,
-          postId: action.payload.postId,
-          postTitle: action.payload.postTitle,
-          postSample: action.payload.postSample,
-          postCategory: action.payload.postCategory,
-          isPrivate: action.payload.isPrivate,
-          editorState: editorState,
-          postImagesArray: action.payload.postImagesArray,
-        };
-      }
+      const editorState = EditorState.createWithContent(DBEditorState);
+      return {
+        ...state,
+        postId: action.payload.postId,
+        postTitle: action.payload.postTitle,
+        postSample: action.payload.postSample,
+        postCategory: action.payload.postCategory,
+        isPrivate: action.payload.isPrivate,
+        editorState: editorState,
+        postImagesArray: action.payload.postImagesArray,
+      };
     }
 
     case ADD_POST_IMAGE:

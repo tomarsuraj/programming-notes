@@ -1,16 +1,16 @@
-import React, { useContext, useReducer, useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
-import { UserContext } from '../context/context'
-import { deletePublicPost, uploadPost } from '../context/databasefunction'
-import { editPostReducer } from '../context/reducer'
+import React, { useContext, useReducer, useState, useEffect } from "react";
+import { useHistory } from "react-router";
+import { UserContext } from "../context/context";
+import { deletePublicPost, uploadPost } from "../context/databasefunction";
+import { editPostReducer } from "../context/reducer";
 
 // Editior
-import { EditorState } from 'draft-js'
-import { Editor } from 'react-draft-wysiwyg'
+import { EditorState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
-import PostCategorySelector from '../Components/PostCategorySelector'
+import PostCategorySelector from "../Components/PostCategorySelector";
 
-import ImagePicker from '../Components/ImagePicker'
+import ImagePicker from "../Components/ImagePicker";
 import {
   UPDATE_EDITOR_STATE,
   UPDATE_POST_CATEGORY,
@@ -18,37 +18,35 @@ import {
   UPDATE_POST_TITLE,
   SET_IS_PRIVATE,
   SET_EDIT_POST_DATA,
-} from '../context/action.type'
-import Loading from './Loading'
+} from "../context/action.type";
+import Loading from "./Loading";
 
 const initialState = {
   postId: null,
   editorState: EditorState.createEmpty(),
-  postTitle: '',
-  postSample: '',
-  postCategory: 'Python',
+  postTitle: "",
+  postSample: "",
+  postCategory: "Python",
   isPrivate: true,
   postImagesArray: [],
-}
+};
 
 const EditPost = () => {
-  const history = useHistory()
+  const history = useHistory();
 
   const [editPostState, dispatchEditPost] = useReducer(
     editPostReducer,
-    initialState,
-  )
+    initialState
+  );
 
-  const { appState } = useContext(UserContext)
-  const { postId } = editPostState
+  const { appState } = useContext(UserContext);
+  const { postId } = editPostState;
 
-  const [
-    showPostIsPrivateChangeModal,
-    setShowPostIsPrivateChangeModal,
-  ] = useState(false)
+  const [showPostIsPrivateChangeModal, setShowPostIsPrivateChangeModal] =
+    useState(false);
 
-  const { editPostData } = appState
-  const postPrevIsPrivate = editPostData.isPrivate
+  const { editPostData } = appState;
+  const postPrevIsPrivate = editPostData.isPrivate;
 
   const uploadPostFun = () => {
     uploadPost({
@@ -58,27 +56,27 @@ const EditPost = () => {
       dispatch: dispatchEditPost,
       initialState,
       history,
-    })
-  }
+    });
+  };
 
   const handleSubmit = () => {
     if (postPrevIsPrivate === editPostState.isPrivate) {
-      uploadPostFun()
-    } else setShowPostIsPrivateChangeModal(true)
-  }
+      uploadPostFun();
+    } else setShowPostIsPrivateChangeModal(true);
+  };
 
   useEffect(() => {
     if (editPostData) {
-      if (editPostData.postBody) {
-        dispatchEditPost({ type: SET_EDIT_POST_DATA, payload: editPostData })
+      if (editPostData.editorStateRaw) {
+        dispatchEditPost({ type: SET_EDIT_POST_DATA, payload: editPostData });
       } else {
-        history.push('/')
+        history.push("/");
       }
     }
-  }, [editPostData])
+  }, [editPostData]);
 
   if (appState.isLoading) {
-    return <Loading />
+    return <Loading />;
   }
   return (
     <div className="screenContainer">
@@ -95,7 +93,7 @@ const EditPost = () => {
                 dispatchEditPost({
                   type: UPDATE_POST_TITLE,
                   payload: e.target.value,
-                })
+                });
               }}
             />
             <label>Enter Category:</label>
@@ -107,24 +105,24 @@ const EditPost = () => {
                 dispatchEditPost({
                   type: UPDATE_POST_CATEGORY,
                   payload: e.target.value,
-                })
+                });
               }}
             />
             <label>Post Private/Public:</label>
             <select
               name="isPrivate"
-              value={`${editPostState.isPrivate ? 'Private' : 'Public'}`}
+              value={`${editPostState.isPrivate ? "Private" : "Public"}`}
               onChange={(e) => {
-                if (e.target.value === 'Private') {
+                if (e.target.value === "Private") {
                   dispatchEditPost({
                     type: SET_IS_PRIVATE,
                     payload: true,
-                  })
+                  });
                 } else {
                   dispatchEditPost({
                     type: SET_IS_PRIVATE,
                     payload: false,
-                  })
+                  });
                 }
               }}
             >
@@ -142,7 +140,7 @@ const EditPost = () => {
                 dispatchEditPost({
                   type: UPDATE_POST_SAMPLE,
                   payload: e.target.value,
-                })
+                });
               }}
             />
           </div>
@@ -162,13 +160,13 @@ const EditPost = () => {
             dispatchEditPost({
               type: UPDATE_EDITOR_STATE,
               payload: e,
-            })
+            });
           }}
           toolbar={{
             image: {
               defaultSize: {
-                height: 'auto',
-                width: '80%',
+                height: "auto",
+                width: "80%",
               },
             },
           }}
@@ -189,8 +187,8 @@ const EditPost = () => {
       <div
         className={
           showPostIsPrivateChangeModal
-            ? 'modal displaBlock'
-            : 'modal displayNone'
+            ? "modal displaBlock"
+            : "modal displayNone"
         }
       >
         <div className="modalMain">
@@ -202,8 +200,8 @@ const EditPost = () => {
               <button
                 className="restorebtn"
                 onClick={() => {
-                  uploadPostFun()
-                  setShowPostIsPrivateChangeModal(false)
+                  uploadPostFun();
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Keep Public Post
@@ -211,9 +209,9 @@ const EditPost = () => {
               <button
                 className="deletebtn"
                 onClick={() => {
-                  uploadPostFun()
-                  deletePublicPost({ postId })
-                  setShowPostIsPrivateChangeModal(false)
+                  uploadPostFun();
+                  deletePublicPost({ postId });
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Delete Public Post
@@ -221,7 +219,7 @@ const EditPost = () => {
               <button
                 className="deletebtn"
                 onClick={() => {
-                  setShowPostIsPrivateChangeModal(false)
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Close
@@ -238,8 +236,8 @@ const EditPost = () => {
               <button
                 className="viewbtn"
                 onClick={() => {
-                  uploadPostFun()
-                  setShowPostIsPrivateChangeModal(false)
+                  uploadPostFun();
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Continue with Public Post
@@ -248,7 +246,7 @@ const EditPost = () => {
                 className="viewbtn"
                 variant="secondary"
                 onClick={() => {
-                  setShowPostIsPrivateChangeModal(false)
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Change to Private
@@ -257,7 +255,7 @@ const EditPost = () => {
               <button
                 className="deletebtn"
                 onClick={() => {
-                  setShowPostIsPrivateChangeModal(false)
+                  setShowPostIsPrivateChangeModal(false);
                 }}
               >
                 Close
@@ -267,7 +265,7 @@ const EditPost = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EditPost
+export default EditPost;
