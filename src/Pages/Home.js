@@ -9,13 +9,11 @@ const Home = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
-  const [numberOfPost, setNumberOfPost] = useState(0);
   const [category, setCategory] = useState("All");
 
   const handleSearch = () => {
     searchUserPost({
       title,
-      numberOfPost,
       category,
       dispatch,
       uid: appState.user.uid,
@@ -26,7 +24,6 @@ const Home = () => {
     if (appState.user.uid)
       searchUserPost({
         title,
-        numberOfPost: 20,
         category,
         dispatch,
         uid: appState.user.uid,
@@ -38,46 +35,41 @@ const Home = () => {
   }
 
   return (
-    <div className="screenContainer">
-      <div className="searchFilterContainer">
-        <div className="searchFilterInput">
-          <label for="title">Post Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => {
-              setNumberOfPost(0);
-              setTitle(e.target.value);
-            }}
-          />
-        </div>
-        <div className="searchFilterInput">
-          <label for="noOfPost">Number of Post To Fetch:</label>
-
-          {title === "" ? (
-            <input
-              type="number"
-              name="noOfPost"
-              value={numberOfPost}
-              onChange={(e) => setNumberOfPost(parseInt(e.target.value))}
-            />
-          ) : (
-            <>
-              <p>You cant slect with post title</p>
-            </>
-          )}
-        </div>
-        <div className="searchFilterInput">
-          <label for="postCategory">Post Category:</label>
-          <PostCategorySelector
-            value={category}
-            showAll={true}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-        </div>
-        <button onClick={() => handleSearch()}>Submit</button>
+    <div>
+      <div className="p-4 myborder-orange mt-4">
+        <form onSubmit={() => handleSearch()}>
+          <div className="row ">
+            <div className="col-md-6">
+              <label for="title" className="form-label">
+                Post Title:
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                name="title"
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              />
+            </div>
+            <div className="col-md-4">
+              <label for="postCategory" className="form-label">
+                Post Category:
+              </label>
+              <PostCategorySelector
+                value={category}
+                showAll={true}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </div>
+            <div className="col-md-2 d-flex flex-column justify-content-end ">
+              <button className="mybtn">Submit</button>
+            </div>
+          </div>
+        </form>
       </div>
+
       {appState.searchPostData != {} ? (
         <>
           {Object.entries(appState.searchPostData).map(([key, value]) => (

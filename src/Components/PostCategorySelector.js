@@ -2,7 +2,12 @@ import React from "react";
 
 const PostCategorySelector = ({ value, onChange, name, showAll }) => {
   return (
-    <select name={name} value={value} onChange={onChange}>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="form-control "
+    >
       {showAll ? <option>All</option> : null}
       <option>Python</option>
       <option>Javascript</option>

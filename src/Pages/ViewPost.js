@@ -12,7 +12,7 @@ const ViewPost = () => {
 
   const handleEditClick = () => {
     dispatch({ type: SET_EDIT_POST_DATA, payload: viewPostData });
-    history.push("editPost");
+    history.push("post/editpost");
   };
 
   return (
