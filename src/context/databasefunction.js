@@ -1,5 +1,5 @@
 import { convertToRaw } from "draft-js";
-import { firestore, storage } from "firebase";
+import { firestore } from "firebase";
 import {
   CLEAR_POST_STATE,
   SET_USER_POST,
@@ -7,6 +7,7 @@ import {
   SET_PUBLIC_POST_DATA,
   SET_USER_BIN_POST,
   SET_IS_LOADING,
+  SET_VIEW_POST_DATA,
 } from "./action.type";
 import { toast } from "react-toastify";
 
@@ -27,6 +28,8 @@ export const getUserPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_POST, payload: tempDoc });
+      dispatch({ type: SET_IS_LOADING, payload: false });
+
       if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
@@ -62,6 +65,8 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_BIN_POST, payload: tempDoc });
+      dispatch({ type: SET_IS_LOADING, payload: false });
+
       if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
@@ -82,16 +87,10 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
   }
 };
 
-export const searchUserPost = async ({
-  title,
-  numberOfPost,
-  category,
-  dispatch,
-  uid,
-}) => {
-  dispatch({ type: SET_IS_LOADING, payload: true });
-
+export const searchUserPost = async ({ title, category, dispatch, uid }) => {
   try {
+    dispatch({ type: SET_IS_LOADING, payload: true });
+
     const post = await firestore()
       .collection("Users")
       .doc(uid)
@@ -118,30 +117,7 @@ export const searchUserPost = async ({
           }
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost !== 0 && category !== "All") {
-      post
-        .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
-        .limit(numberOfPost)
-        .get()
-        .then((querySnapshot) => {
-          const tempDoc = querySnapshot.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() };
-          });
-          if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-          dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
-        });
-    } else if (title === "" && numberOfPost === 0 && category !== "All") {
+    } else if (title === "" && category !== "All") {
       post
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
@@ -184,29 +160,6 @@ export const searchUserPost = async ({
           }
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost !== 0 && category === "All") {
-      post
-        .orderBy("timeStamp", "desc")
-        .limit(numberOfPost)
-        .get()
-        .then((querySnapshot) => {
-          const tempDoc = querySnapshot.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() };
-          });
-
-          if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-          dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
-        });
     } else {
       post
         .orderBy("timeStamp", "desc")
@@ -229,7 +182,7 @@ export const searchUserPost = async ({
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
         });
     }
-    dispatch({ type: SET_IS_LOADING, isLoading: false });
+    dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
     console.log("error", error);
     toast(error.message, {
@@ -240,13 +193,13 @@ export const searchUserPost = async ({
 
 export const searchPublicPost = async ({
   title,
-  numberOfPost,
+
   category,
   dispatch,
 }) => {
-  dispatch({ type: SET_IS_LOADING, payload: true });
-
   try {
+    dispatch({ type: SET_IS_LOADING, payload: true });
+
     const post = await firestore().collection("PublicPost");
     if (title !== "" && category !== "All") {
       post
@@ -270,30 +223,7 @@ export const searchPublicPost = async ({
           }
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost !== 0 && category !== "All") {
-      post
-        .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
-        .limit(numberOfPost)
-        .get()
-        .then((querySnapshot) => {
-          const tempDoc = querySnapshot.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() };
-          });
-          if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-          dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
-        });
-    } else if (title === "" && numberOfPost === 0 && category !== "All") {
+    } else if (title === "" && category !== "All") {
       post
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
@@ -336,28 +266,6 @@ export const searchPublicPost = async ({
           }
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
         });
-    } else if (title === "" && numberOfPost !== 0 && category === "All") {
-      post
-        .orderBy("timeStamp", "desc")
-        .limit(numberOfPost)
-        .get()
-        .then((querySnapshot) => {
-          const tempDoc = querySnapshot.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() };
-          });
-          if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-          dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
-        });
     } else {
       post
         .orderBy("timeStamp", "desc")
@@ -380,7 +288,7 @@ export const searchPublicPost = async ({
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
         });
     }
-    dispatch({ type: SET_IS_LOADING, isLoading: false });
+    dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
     console.log("error", error);
     toast(error.message, {
@@ -389,10 +297,21 @@ export const searchPublicPost = async ({
   }
 };
 
+export const getPublicPost = async ({ postId, dispatch }) => {
+  const post = await firestore().collection("PublicPost").doc(postId);
+  post.get().then((doc) => {
+    if (doc.exists) {
+      dispatch({ type: SET_VIEW_POST_DATA, payload: doc.data() });
+    } else {
+      console.log("No such document!");
+      dispatch({ type: SET_VIEW_POST_DATA, payload: null });
+    }
+  });
+};
+
 export const uploadPost = async ({
   postState,
   appState,
-  postId,
   dispatch,
   history,
   initialState,
@@ -402,6 +321,8 @@ export const uploadPost = async ({
   const editorStateRaw = convertToRaw(
     postState.editorState.getCurrentContent()
   );
+  const { postId } = postState;
+
   const uploadPost = await firestore()
     .collection("Users")
     .doc(appState.user.uid)
@@ -410,20 +331,19 @@ export const uploadPost = async ({
 
   uploadPost
     .set({
-      authorUid: appState.user.uid,
-      editorStateRaw,
-      isPrivate: postState.isPrivate,
-      postId,
-      postTitle: postState.postTitle,
-      postSample: postState.postSample,
-      postCategory: postState.postCategory,
-      postImagesArray: postState.postImagesArray,
-      timeStamp: firestore.Timestamp.now(),
-
       authorDetails: {
         name: appState.user.name,
         bio: appState.user.bio,
       },
+      authorUid: appState.user.uid,
+      editorStateRaw,
+      isPrivate: postState.isPrivate,
+      postCategory: postState.postCategory,
+      postId,
+      postImagesArray: postState.postImagesArray,
+      postTitle: postState.postTitle,
+      postSample: postState.postSample,
+      timeStamp: firestore.Timestamp.now(),
     })
     .then(() => {
       toast.success("Private Post Uploaded.", {
@@ -437,7 +357,7 @@ export const uploadPost = async ({
       });
       dispatch({ type: CLEAR_POST_STATE, payload: initialState });
       dispatch({ type: SET_IS_LOADING, payload: false });
-      history.push("/");
+      history.push("/home");
     })
     .catch((error) => {
       toast(error.message, {
@@ -450,18 +370,18 @@ export const uploadPost = async ({
 
     uploadPost
       .set({
-        postId,
-        editorStateRaw,
-        postTitle: postState.postTitle,
-        postSample: postState.postSample,
-        postCategory: postState.postCategory,
-        authorUid: appState.user.uid,
-        postImagesArray: postState.postImagesArray,
-        isPrivate: postState.isPrivate,
         authorDetails: {
           name: appState.user.name,
           bio: appState.user.bio,
         },
+        authorUid: appState.user.uid,
+        editorStateRaw,
+        isPrivate: postState.isPrivate,
+        postCategory: postState.postCategory,
+        postId,
+        postImagesArray: postState.postImagesArray,
+        postTitle: postState.postTitle,
+        postSample: postState.postSample,
 
         timeStamp: firestore.Timestamp.now(),
       })
@@ -613,30 +533,4 @@ export const restoreBinPost = async ({ postData, uid }) => {
   }
 
   deleteBinPost({ postId: postData.id, uid, isShowToast: false });
-};
-
-export const deletePostDataFromStorage = async ({ postId, uid }) => {
-  let ref = storage().ref(uid + "/" + postId);
-
-  ref
-    .listAll()
-    .then((dir) => {
-      dir.items.forEach((fileRef) => {
-        var dirRef = storage().ref(fileRef.fullPath);
-        dirRef.getDownloadURL().then(function (url) {
-          var imgRef = storage().refFromURL(url);
-          imgRef
-            .delete()
-            .then(function () {
-              console.log("// File deleted successfully");
-            })
-            .catch(function (error) {
-              console.log("// There has been an error");
-            });
-        });
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };

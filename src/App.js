@@ -1,31 +1,31 @@
-import React, { useContext, useEffect } from 'react'
-import './app.css'
+import React, { useContext, useEffect } from "react";
+import "./css/app.css";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom'
+  useHistory,
+} from "react-router-dom";
 
 //toast
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
-import { UserContext } from './context/context'
+import { UserContext } from "./context/context";
 
 // Pages
-import Home from './Pages/Home'
-import AddPost from './Pages/AddPost'
-import ViewPost from './Pages/ViewPost'
-import EditPost from './Pages/EditPost'
-import Explore from './Pages/Explore'
-import Bin from './Pages/Bin'
-import SignIn from './Pages/SignIn'
-import SignUp from './Pages/SignUp'
-import NotFound from './Pages/NotFound'
+import Home from "./Pages/Home";
+import AddPost from "./Pages/AddPost";
+import ViewPost from "./Pages/ViewPost";
+import Explore from "./Pages/Explore";
+import Bin from "./Pages/Bin";
+import SignIn from "./Pages/SignIn";
+import SignUp from "./Pages/SignUp";
+import NotFound from "./Pages/NotFound";
 
 // Components
-import Header from './Components/Header'
+import Header from "./Components/Header";
 
 import {
   IS_AUTHTHENTICATED,
@@ -33,91 +33,93 @@ import {
   IS_SIGNIN,
   SET_IS_LOADING,
   SET_USER,
-} from './context/action.type'
-import { auth, firestore } from 'firebase'
+} from "./context/action.type";
+import { auth, firestore } from "firebase";
 
-import VerifyEmail from './Pages/VerifyEmail'
+import VerifyEmail from "./Pages/VerifyEmail";
+import ViewPublicPost from "./Pages/ViewPublicPost";
 
 const App = () => {
-  const { dispatch, appState } = useContext(UserContext)
-  const { isAuthenticated } = appState
+  const { dispatch, appState } = useContext(UserContext);
+  const { isAuthenticated } = appState;
 
   const onAuthStateChanged = async (user) => {
     if (user) {
-      dispatch({ type: IS_SIGNIN, payload: true })
+      dispatch({ type: IS_SIGNIN, payload: true });
 
       if (!user.emailVerified) {
         user
           .sendEmailVerification()
           .then(function () {
-            console.log('Email send')
+            console.log("Email send");
           })
           .catch(function (error) {
-            console.log('error', error)
-          })
+            console.log("error", error);
+          });
       } else {
-        dispatch({ type: IS_EMAIL_VERIFIED, payload: true })
-        dispatch({ type: IS_AUTHTHENTICATED, payload: true })
+        dispatch({ type: IS_EMAIL_VERIFIED, payload: true });
+        dispatch({ type: IS_AUTHTHENTICATED, payload: true });
       }
 
       await firestore()
-        .collection('Users')
+        .collection("Users")
         .doc(user.uid)
         .get()
         .then((doc) => {
-          dispatch({ type: SET_USER, payload: doc.data() })
-          dispatch({ type: SET_IS_LOADING, payload: false })
-        })
+          dispatch({ type: SET_USER, payload: doc.data() });
+          dispatch({ type: SET_IS_LOADING, payload: false });
+        });
     } else {
-      dispatch({ type: SET_IS_LOADING, payload: false })
+      dispatch({ type: SET_IS_LOADING, payload: false });
     }
-  }
+  };
 
   useEffect(() => {
-    dispatch({ type: SET_IS_LOADING, payload: true })
+    dispatch({ type: SET_IS_LOADING, payload: true });
 
-    const susbcriber = auth().onAuthStateChanged(onAuthStateChanged)
-    return susbcriber
-  }, [])
+    const susbcriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return susbcriber;
+  }, []);
 
   return (
-    <Router>
-      <ToastContainer />
+    <div className="container text-light ">
+      <Router>
+        <ToastContainer />
 
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          {isAuthenticated ? <Home /> : <Redirect to="/signIn" />}
-        </Route>
-        <Route exact path="/addPost" component={AddPost}>
-          {isAuthenticated ? <AddPost /> : <Redirect to="/signIn" />}
-        </Route>
-        <Route exact path="/viewPost" component={ViewPost}>
-          {isAuthenticated ? <ViewPost /> : <Redirect to="/signIn" />}
-        </Route>
-        <Route exact path="/editPost" component={EditPost}>
-          {isAuthenticated ? <EditPost /> : <Redirect to="/signIn" />}
-        </Route>
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <Explore />
+          </Route>
+          <Route exact path="/publicPost/:postId">
+            <ViewPublicPost />
+          </Route>
+          <Route exact path="/home">
+            {isAuthenticated ? <Home /> : <Redirect to="/signIn" />}
+          </Route>
+          <Route exact path="/post/:isAddPost">
+            {isAuthenticated ? <AddPost /> : <Redirect to="/signIn" />}
+          </Route>
+          <Route exact path="/viewPost">
+            {isAuthenticated ? <ViewPost /> : <Redirect to="/signIn" />}
+          </Route>
 
-        <Route exact path="/explore" component={Explore}>
-          {isAuthenticated ? <Explore /> : <Redirect to="/signIn" />}
-        </Route>
+          <Route exact path="/bin">
+            {isAuthenticated ? <Bin /> : <SignIn />}
+          </Route>
+          <Route exact path="/signIn">
+            {isAuthenticated ? <Redirect to="/home" /> : <SignIn />}
+          </Route>
+          <Route exact path="/signUp">
+            {isAuthenticated ? <Redirect to="/home" /> : <SignUp />}
+          </Route>
+          <Route exact path="/verifyEmail" component={VerifyEmail} />
 
-        <Route exact path="/bin" component={NotFound}>
-          {isAuthenticated ? <Bin /> : <SignIn />}
-        </Route>
-        <Route exact path="/signIn">
-          {isAuthenticated ? <Redirect to="/" /> : <SignIn />}
-        </Route>
-        <Route exact path="/signUp" component={SignUp}>
-          {isAuthenticated ? <Redirect to="/" /> : <SignUp />}
-        </Route>
-        <Route exact path="/verifyEmail" component={VerifyEmail} />
+          <Route exact path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    </div>
+  );
+};
 
-        <Route exact path="*" component={NotFound} />
-      </Switch>
-    </Router>
-  )
-}
-
-export default App
+export default App;

@@ -1,0 +1,150 @@
+$color-light: #fff;
+$color-light-grey: #cad5e2;
+$color-grey: #758283;
+$color-bg: #242b2e;
+$color-success: #4dd637;
+$color-primary: #1b98f5;
+$color-warning: #ffa500;
+$color-danger: #e21717;
+
+body {
+  background-color: $color-bg;
+}
+
+.mybg-grey {
+  background-color: $color-grey;
+  z-index: -1;
+}
+.mybg-light-grey {
+  background-color: $color-light-grey;
+  z-index: -1;
+}
+
+.mybtn {
+  outline: none;
+  background-color: $color-primary;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: larger;
+  font-weight: bolder;
+  border-radius: 25px;
+  border: none;
+  margin: 10px 0px 10px 0px;
+  box-shadow: 0 5px #cad5e2;
+  padding: 5px 10px 5px 10px;
+}
+.mybtn:active {
+  background-color: #3e8e8a;
+  box-shadow: 0 1px #cad5e2;
+  transform: translateY(4px);
+}
+
+.mybtn-success {
+  background-color: $color-success;
+}
+.mybtn-warning {
+  background-color: $color-warning;
+}
+.mybtn-danger {
+  background-color: $color-danger;
+}
+
+.myborder-1 {
+  border: 1px solid $color-light;
+  border-radius: 10px;
+}
+.myborder-3 {
+  border: 3px solid $color-light;
+  border-radius: 15px;
+}
+.myborder-5 {
+  border: 5px solid $color-light;
+  border-radius: 20px;
+}
+.myborder-sucess {
+  border-color: $color-success;
+}
+.myborder-primary {
+  border-color: $color-primary;
+}
+.myborder-warning {
+  border-color: $color-warning;
+}
+.myborder-danger {
+  border-color: $color-danger;
+}
+.myborder-light-grey {
+  border-color: $color-light-grey;
+}
+
+.mytext-primary {
+  color: $color-primary;
+}
+.mytext-success {
+  color: $color-success;
+}
+.mytext-warning {
+  color: $color-warning;
+}
+.mytext-danger {
+  color: $color-danger;
+}
+
+/* editor Css */
+.editorWrapperClass {
+  padding: 10px;
+  border: 3px solid $color-grey;
+  border-radius: 15px;
+  margin: 10px 0px 10px 0px;
+}
+.editorBodyClass {
+  background-color: $color-bg;
+  padding: 10px;
+  border: 3px solid #35bdd0;
+  border-radius: 15px;
+  color: #cad5e2;
+  min-height: 200px;
+}
+.editorToolbarClass {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  color: #000;
+}
+.editorToolbarClass input {
+  color: #000;
+}
+
+// Modal CSS
+
+.mymodal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0);
+}
+
+.mymodalMain {
+  position: fixed;
+  background: $color-bg;
+  width: 80%;
+  height: auto;
+  top: 40%;
+  left: 40%;
+  transform: translate(-40%, -40%);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.displaBlock {
+  display: block;
+  z-index: 3;
+}
+
+.displayNone {
+  display: none;
+}

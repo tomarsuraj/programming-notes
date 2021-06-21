@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import React, { useContext, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-import { toast } from 'react-toastify'
-import { UserContext } from '../context/context'
-import { auth, firestore } from 'firebase'
-import Loading from './Loading'
+import { toast } from "react-toastify";
+import { UserContext } from "../context/context";
+import { auth, firestore } from "firebase";
+import Loading from "../Components/Loading";
 
 const SignUp = () => {
-  const { appState } = useContext(UserContext)
+  const { appState } = useContext(UserContext);
 
-  const [email, setEmail] = useState('@gmail.com')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [bio, setBio] = useState('')
+  const [email, setEmail] = useState("@gmail.com");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
 
   const handleSignUp = async () => {
     await auth()
       .createUserWithEmailAndPassword(email, password)
       .then((data) => {
         firestore()
-          .collection('Users')
+          .collection("Users")
           .doc(data.user.uid)
           .set({
             name,
@@ -28,74 +28,87 @@ const SignUp = () => {
             uid: data.user.uid,
           })
           .then(() => {
-            toast('Sign Up successfully', {
-              type: 'success',
-            })
-          })
+            toast("Sign Up successfully", {
+              type: "success",
+            });
+          });
       })
 
       .catch((error) => {
-        console.log('Error', error)
+        console.log("Error", error);
         toast(error.message, {
-          type: 'error',
-        })
-      })
-  }
+          type: "error",
+        });
+      });
+  };
 
   if (!appState.isEmailVerified && appState.isSignIn) {
-    return <Redirect to="/verifyEmail" />
+    return <Redirect to="/verifyEmail" />;
   }
 
-  if (appState.isLoading) {
-    return <Loading />
-  }
   return (
-    <div className="screenContainer">
-      <h1 className="heading">Sign Up</h1>
-      <div className="authContainer">
-        <label for="name">Name:</label>
+    <div>
+      <h1 className="mytext-primary text-center border-bottom pb-1">Sign Up</h1>
+      {appState.isLoading ? <Loading /> : null}
+
+      <div className="p-4 myborder-5 myborder-orange mt-4">
+        <label for="name" className="form-label">
+          Name:
+        </label>
         <input
+          className="form-control"
           type="text"
           name="name"
           value={name}
           placeholder="Enter name"
           onChange={(e) => setName(e.target.value)}
         />
-        <label for="bio">Bio:</label>
+        <label for="bio" className="form-label">
+          Bio:
+        </label>
         <input
+          className="form-control"
           type="text"
           name="bio"
           value={bio}
           placeholder="Enter Bio"
           onChange={(e) => setBio(e.target.value)}
         />
-        <label for="email">Email:</label>
+        <label for="email" className="form-label">
+          Email:
+        </label>
         <input
+          className="form-control"
           type="email"
           name="email"
           placeholder="Enter Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label for="password">Password:</label>
+        <label for="password" className="form-label">
+          Password:
+        </label>
         <input
+          className="form-control"
           type="password"
           name="password"
           value={password}
           placeholder="Enter password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={() => handleSignUp()}>Sign Up</button>
+        <button onClick={() => handleSignUp()} className="mybtn mybtn-success">
+          Sign Up
+        </button>
 
-        <p>
-          Have an account?{' '}
-          <Link to="/signIn" style={{ color: '#35BDD0' }}>
+        <p className="text-center">
+          Have an account?{" "}
+          <Link to="/signIn" style={{ color: "#35BDD0" }}>
             Sign In
           </Link>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

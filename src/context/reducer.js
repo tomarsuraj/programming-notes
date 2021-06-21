@@ -7,6 +7,7 @@ import {
   IS_EMAIL_VERIFIED,
   IS_SIGNIN,
   SET_EDIT_POST_DATA,
+  SET_EDIT_POST_STATE,
   SET_IS_LOADING,
   SET_IS_PRIVATE,
   SET_PUBLIC_POST_DATA,
@@ -23,13 +24,7 @@ import {
 } from "./action.type";
 
 // Editior
-import {
-  EditorState,
-  convertToRaw,
-  convertFromHTML,
-  ContentState,
-  convertFromRaw,
-} from "draft-js";
+import { EditorState, convertFromRaw } from "draft-js";
 
 const appInitialState = {
   isAuthenticated: false,
@@ -51,7 +46,6 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         user: action.payload,
-        isLoading: false,
       };
     case IS_AUTHTHENTICATED:
       return {
@@ -72,13 +66,11 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         post: action.payload,
-        isLoading: false,
       };
     case SET_USER_BIN_POST:
       return {
         ...state,
         BinPostData: action.payload,
-        isLoading: false,
       };
     case SET_VIEW_POST_DATA:
       return {
@@ -90,14 +82,14 @@ export const appReducer = (state, action) => {
       return { ...state, editPostData: action.payload };
 
     case SET_SEARCH_POST_DATA:
-      return { ...state, searchPostData: action.payload };
+      return { ...state, searchPostData: action.payload, isLoading: false };
 
     case DELETE_POST_FROM_SEARCH_POST_DATA: {
       const { searchPostData } = state;
       return {
         ...state,
         searchPostData: searchPostData.filter(
-          (searchPost) => searchPost.postId != action.payload
+          (searchPost) => searchPost.postId !== action.payload
         ),
       };
     }
@@ -160,47 +152,7 @@ export const addPostReducer = (state, action) => {
         postImagesArray: array,
       };
 
-    default:
-      return state;
-  }
-};
-
-export const editPostReducer = (state, action) => {
-  switch (action.type) {
-    case UPDATE_EDITOR_STATE:
-      return {
-        ...state,
-        editorState: action.payload,
-      };
-
-    case UPDATE_POST_TITLE:
-      return {
-        ...state,
-        postTitle: action.payload,
-      };
-
-    case UPDATE_POST_SAMPLE:
-      return {
-        ...state,
-        postSample: action.payload,
-      };
-
-    case UPDATE_POST_CATEGORY:
-      return {
-        ...state,
-        postCategory: action.payload,
-      };
-
-    case CLEAR_POST_STATE:
-      return action.payload;
-
-    case SET_IS_PRIVATE:
-      return {
-        ...state,
-        isPrivate: action.payload,
-      };
-
-    case SET_EDIT_POST_DATA: {
+    case SET_EDIT_POST_STATE: {
       const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
 
       const editorState = EditorState.createWithContent(DBEditorState);
@@ -215,15 +167,6 @@ export const editPostReducer = (state, action) => {
         postImagesArray: action.payload.postImagesArray,
       };
     }
-
-    case ADD_POST_IMAGE:
-      var array = state.postImagesArray;
-      array.push(action.payload);
-
-      return {
-        ...state,
-        postImagesArray: array,
-      };
 
     default:
       return state;

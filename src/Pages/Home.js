@@ -3,19 +3,19 @@ import PostCategorySelector from "../Components/PostCategorySelector";
 import PostInfoCard from "../Components/PostInfoCard";
 import { UserContext } from "../context/context";
 import { searchUserPost } from "../context/databasefunction";
-import Loading from "./Loading";
+import Loading from "../Components/Loading";
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
-  const [numberOfPost, setNumberOfPost] = useState(0);
   const [category, setCategory] = useState("All");
+  const history = useHistory();
 
   const handleSearch = () => {
     searchUserPost({
       title,
-      numberOfPost,
       category,
       dispatch,
       uid: appState.user.uid,
@@ -26,59 +26,53 @@ const Home = () => {
     if (appState.user.uid)
       searchUserPost({
         title,
-        numberOfPost: 20,
         category,
         dispatch,
         uid: appState.user.uid,
       });
   }, [appState.user.uid]);
 
-  if (appState.isLoading) {
-    return <Loading />;
-  }
+  console.log("appState.isLoading", appState.isLoading);
 
   return (
-    <div className="screenContainer">
-      <div className="searchFilterContainer">
-        <div className="searchFilterInput">
-          <label for="title">Post Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => {
-              setNumberOfPost(0);
-              setTitle(e.target.value);
-            }}
-          />
-        </div>
-        <div className="searchFilterInput">
-          <label for="noOfPost">Number of Post To Fetch:</label>
+    <div>
+      {appState.isLoading ? <Loading /> : null}
 
-          {title === "" ? (
+      <div className="p-4 myborder-5 myborder-orange mt-4">
+        <div className="row ">
+          <div className="col-md-6">
+            <label for="title" className="form-label">
+              Post Title:
+            </label>
             <input
-              type="number"
-              name="noOfPost"
-              value={numberOfPost}
-              onChange={(e) => setNumberOfPost(parseInt(e.target.value))}
+              className="form-control"
+              type="text"
+              name="title"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
             />
-          ) : (
-            <>
-              <p>You cant slect with post title</p>
-            </>
-          )}
+          </div>
+          <div className="col-md-4">
+            <label for="postCategory" className="form-label">
+              Post Category:
+            </label>
+            <PostCategorySelector
+              value={category}
+              showAll={true}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+          <div className="col-md-2 d-flex flex-column justify-content-end ">
+            <button className="mybtn" onClick={() => handleSearch()}>
+              Submit
+            </button>
+          </div>
         </div>
-        <div className="searchFilterInput">
-          <label for="postCategory">Post Category:</label>
-          <PostCategorySelector
-            value={category}
-            showAll={true}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-        </div>
-        <button onClick={() => handleSearch()}>Submit</button>
       </div>
-      {appState.searchPostData != {} ? (
+
+      {appState.searchPostData.length !== 0 ? (
         <>
           {Object.entries(appState.searchPostData).map(([key, value]) => (
             <PostInfoCard
@@ -91,7 +85,21 @@ const Home = () => {
           ))}
         </>
       ) : (
-        <h3> No post Fetch</h3>
+        <div className="mt-4 mt-4 myborder-3 p-4">
+          <h3 className="mytext-warning">You don't have any post.</h3>
+
+          <h4>Got to Explore page </h4>
+          <button className="mybtn" onClick={() => history.push("/")}>
+            Explore
+          </button>
+          <h4>Got to Add new post page</h4>
+          <button
+            className="mybtn"
+            onClick={() => history.push("/post/" + "addpost")}
+          >
+            ADD Post
+          </button>
+        </div>
       )}
     </div>
   );
