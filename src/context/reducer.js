@@ -46,7 +46,6 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         user: action.payload,
-        isLoading: false,
       };
     case IS_AUTHTHENTICATED:
       return {
@@ -67,13 +66,11 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         post: action.payload,
-        isLoading: false,
       };
     case SET_USER_BIN_POST:
       return {
         ...state,
         BinPostData: action.payload,
-        isLoading: false,
       };
     case SET_VIEW_POST_DATA:
       return {
@@ -85,14 +82,14 @@ export const appReducer = (state, action) => {
       return { ...state, editPostData: action.payload };
 
     case SET_SEARCH_POST_DATA:
-      return { ...state, searchPostData: action.payload };
+      return { ...state, searchPostData: action.payload, isLoading: false };
 
     case DELETE_POST_FROM_SEARCH_POST_DATA: {
       const { searchPostData } = state;
       return {
         ...state,
         searchPostData: searchPostData.filter(
-          (searchPost) => searchPost.postId != action.payload
+          (searchPost) => searchPost.postId !== action.payload
         ),
       };
     }

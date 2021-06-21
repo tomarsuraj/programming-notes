@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import "./app.css";
+import "./css/app.css";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 
 //toast
@@ -36,6 +37,7 @@ import {
 import { auth, firestore } from "firebase";
 
 import VerifyEmail from "./Pages/VerifyEmail";
+import ViewPublicPost from "./Pages/ViewPublicPost";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
@@ -80,34 +82,36 @@ const App = () => {
   }, []);
 
   return (
-    <div className=" container text-light">
+    <div className="container text-light ">
       <Router>
         <ToastContainer />
 
         <Header />
         <Switch>
           <Route exact path="/">
+            <Explore />
+          </Route>
+          <Route exact path="/publicPost/:postId">
+            <ViewPublicPost />
+          </Route>
+          <Route exact path="/home">
             {isAuthenticated ? <Home /> : <Redirect to="/signIn" />}
           </Route>
-          <Route exact path="/post/:isAddPost" component={AddPost}>
+          <Route exact path="/post/:isAddPost">
             {isAuthenticated ? <AddPost /> : <Redirect to="/signIn" />}
           </Route>
-          <Route exact path="/viewPost" component={ViewPost}>
+          <Route exact path="/viewPost">
             {isAuthenticated ? <ViewPost /> : <Redirect to="/signIn" />}
           </Route>
 
-          <Route exact path="/explore" component={Explore}>
-            {isAuthenticated ? <Explore /> : <Redirect to="/signIn" />}
-          </Route>
-
-          <Route exact path="/bin" component={NotFound}>
+          <Route exact path="/bin">
             {isAuthenticated ? <Bin /> : <SignIn />}
           </Route>
           <Route exact path="/signIn">
-            {isAuthenticated ? <Redirect to="/" /> : <SignIn />}
+            {isAuthenticated ? <Redirect to="/home" /> : <SignIn />}
           </Route>
-          <Route exact path="/signUp" component={SignUp}>
-            {isAuthenticated ? <Redirect to="/" /> : <SignUp />}
+          <Route exact path="/signUp">
+            {isAuthenticated ? <Redirect to="/home" /> : <SignUp />}
           </Route>
           <Route exact path="/verifyEmail" component={VerifyEmail} />
 

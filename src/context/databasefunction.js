@@ -1,5 +1,5 @@
 import { convertToRaw } from "draft-js";
-import { firestore, storage } from "firebase";
+import { firestore } from "firebase";
 import {
   CLEAR_POST_STATE,
   SET_USER_POST,
@@ -7,6 +7,7 @@ import {
   SET_PUBLIC_POST_DATA,
   SET_USER_BIN_POST,
   SET_IS_LOADING,
+  SET_VIEW_POST_DATA,
 } from "./action.type";
 import { toast } from "react-toastify";
 
@@ -27,6 +28,8 @@ export const getUserPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_POST, payload: tempDoc });
+      dispatch({ type: SET_IS_LOADING, payload: false });
+
       if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
@@ -62,6 +65,8 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       });
 
       dispatch({ type: SET_USER_BIN_POST, payload: tempDoc });
+      dispatch({ type: SET_IS_LOADING, payload: false });
+
       if (tempDoc.length === 0) {
         toast.warn("🦄 No Post Found!", {
           position: "top-right",
@@ -83,9 +88,9 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
 };
 
 export const searchUserPost = async ({ title, category, dispatch, uid }) => {
-  dispatch({ type: SET_IS_LOADING, payload: true });
-
   try {
+    dispatch({ type: SET_IS_LOADING, payload: true });
+
     const post = await firestore()
       .collection("Users")
       .doc(uid)
@@ -177,7 +182,7 @@ export const searchUserPost = async ({ title, category, dispatch, uid }) => {
           dispatch({ type: SET_SEARCH_POST_DATA, payload: tempDoc });
         });
     }
-    dispatch({ type: SET_IS_LOADING, isLoading: false });
+    dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
     console.log("error", error);
     toast(error.message, {
@@ -192,9 +197,9 @@ export const searchPublicPost = async ({
   category,
   dispatch,
 }) => {
-  dispatch({ type: SET_IS_LOADING, payload: true });
-
   try {
+    dispatch({ type: SET_IS_LOADING, payload: true });
+
     const post = await firestore().collection("PublicPost");
     if (title !== "" && category !== "All") {
       post
@@ -283,13 +288,25 @@ export const searchPublicPost = async ({
           dispatch({ type: SET_PUBLIC_POST_DATA, payload: tempDoc });
         });
     }
-    dispatch({ type: SET_IS_LOADING, isLoading: false });
+    dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
     console.log("error", error);
     toast(error.message, {
       type: "error",
     });
   }
+};
+
+export const getPublicPost = async ({ postId, dispatch }) => {
+  const post = await firestore().collection("PublicPost").doc(postId);
+  post.get().then((doc) => {
+    if (doc.exists) {
+      dispatch({ type: SET_VIEW_POST_DATA, payload: doc.data() });
+    } else {
+      console.log("No such document!");
+      dispatch({ type: SET_VIEW_POST_DATA, payload: null });
+    }
+  });
 };
 
 export const uploadPost = async ({
@@ -340,7 +357,7 @@ export const uploadPost = async ({
       });
       dispatch({ type: CLEAR_POST_STATE, payload: initialState });
       dispatch({ type: SET_IS_LOADING, payload: false });
-      history.push("/");
+      history.push("/home");
     })
     .catch((error) => {
       toast(error.message, {
@@ -516,30 +533,4 @@ export const restoreBinPost = async ({ postData, uid }) => {
   }
 
   deleteBinPost({ postId: postData.id, uid, isShowToast: false });
-};
-
-export const deletePostDataFromStorage = async ({ postId, uid }) => {
-  let ref = storage().ref(uid + "/" + postId);
-
-  ref
-    .listAll()
-    .then((dir) => {
-      dir.items.forEach((fileRef) => {
-        var dirRef = storage().ref(fileRef.fullPath);
-        dirRef.getDownloadURL().then(function (url) {
-          var imgRef = storage().refFromURL(url);
-          imgRef
-            .delete()
-            .then(function () {
-              console.log("// File deleted successfully");
-            })
-            .catch(function (error) {
-              console.log("// There has been an error");
-            });
-        });
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };

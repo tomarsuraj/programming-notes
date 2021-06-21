@@ -1,14 +1,12 @@
 import { auth } from "firebase";
 import React, { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CLEAR_APP_STATE } from "../context/action.type";
 import { UserContext } from "../context/context";
 
 const Header = () => {
   const { appState, dispatch } = useContext(UserContext);
-  const { user } = appState;
-  const { isAuthenticated } = appState;
 
   const handleSignOut = () => {
     auth()
@@ -30,7 +28,7 @@ const Header = () => {
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/explore">
+          <Link className="navbar-brand" to="/home">
             Notes Programming
           </Link>
           <button
@@ -48,7 +46,7 @@ const Header = () => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  HOME
+                  Explore
                 </Link>
               </li>
               <li className="nav-item">

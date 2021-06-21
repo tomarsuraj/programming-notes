@@ -8,7 +8,6 @@ import {
 } from "../context/action.type";
 import {
   deleteBinPost,
-  deletePostDataFromStorage,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
@@ -19,8 +18,13 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
   const history = useHistory();
 
   const handleViewClick = () => {
-    dispatch({ type: SET_VIEW_POST_DATA, payload: value });
-    history.push("viewPost");
+    if (appState.isAuthenticated && value.isPrivate) {
+      dispatch({ type: SET_VIEW_POST_DATA, payload: value });
+      history.push("viewPost");
+    } else {
+      history.push("publicPost/" + value.id);
+      dispatch({ type: SET_VIEW_POST_DATA, payload: value });
+    }
   };
 
   const handleEditClick = () => {
@@ -28,18 +32,18 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
     history.push("/post/editpost");
   };
   return (
-    <div className="card bg-transparent mt-4 myborder-green">
-      <div className="card-header">
-        <h2 className=" mytext-blue">{value.postTitle}</h2>
+    <div className="card bg-transparent mt-4 myborder-3 myborder-green">
+      <div className="card-header mybg-grey d-flex justify-content-between">
+        <h2 className=" mytext-warning">{value.postTitle}</h2>
       </div>
       <div className="card-body">
         <p>{value.postSample}</p>
-        <p className="mytext-orange">Category: {value.postCategory}</p>
-        <p className="mytext-blue">
+        <p className="mytext-success">Category: {value.postCategory}</p>
+        <p className="mytext-success">
           Privacy : {value.isPrivate ? "Private" : "Public"}
         </p>
         {value.authorDetails ? (
-          <p className="float-end mytext-green">
+          <p className="float-end mytext-success">
             Author Name: {value.authorDetails.name}
           </p>
         ) : (
@@ -47,19 +51,19 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
         )}
       </div>
 
-      <div className="card-footer">
+      <div className="card-footer border-top">
         <div className="row">
           <div className="col-md-4 col-sm-6">
-            <button className="mybtn " onClick={() => handleViewClick()}>
+            <button className="mybtn" onClick={() => handleViewClick()}>
               View
             </button>
           </div>
 
-          {isBin ? (
+          {isBin && value.authorUid === appState.user.uid ? (
             <>
               <div className="col-md-4 col-sm-6">
                 <button
-                  className="mybtn mybtn-orange "
+                  className="mybtn mybtn-success"
                   onClick={() => {
                     restoreBinPost({ postData: value, uid: appState.user.uid });
                     getUserBinPost({ uid: appState.user.uid, dispatch });
@@ -70,7 +74,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
               </div>
               <div className="col-md-4 col-sm-12">
                 <button
-                  className="mybtn mybtn-red "
+                  className="mybtn mybtn-danger"
                   onClick={() => {
                     deleteBinPost({
                       postId: value.id,
@@ -78,21 +82,17 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
                       isShowToast: true,
                     });
                     getUserBinPost({ uid: appState.user.uid, dispatch });
-                    deletePostDataFromStorage({
-                      postId: value.id,
-                      uid: appState.user.uid,
-                    });
                   }}
                 >
                   Delete
                 </button>
               </div>
             </>
-          ) : isPrivate ? (
+          ) : value.authorUid === appState.user.uid ? (
             <>
               <div className="col-md-4 col-sm-6">
                 <button
-                  className="mybtn mybtn-blue "
+                  className="mybtn mybtn-success"
                   onClick={() => handleEditClick()}
                 >
                   Edit
@@ -100,7 +100,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
               </div>
               <div className="col-md-4 col-sm-12">
                 <button
-                  className="mybtn mybtn-orange "
+                  className="mybtn mybtn-warning"
                   onClick={() => {
                     moveTobin({ postData: value, uid: appState.user.uid });
                     if (isSearchPost) {
