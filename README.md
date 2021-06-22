@@ -1,6 +1,6 @@
 # programming-notes
 
-A website to take down notes
+A website to take down notes.
 
 # Running this project
 
