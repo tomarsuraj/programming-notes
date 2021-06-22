@@ -1,5 +1,5 @@
-import { auth } from "firebase";
 import React, { useContext } from "react";
+import { auth } from "firebase";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CLEAR_APP_STATE } from "../context/action.type";
@@ -32,13 +32,13 @@ const Header = () => {
             Notes Programming
           </Link>
           <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            className="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            type="button"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -50,7 +50,7 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"/post/" + "addpost"}>
+                <Link className="nav-link" to="/post/addpost">
                   ADD POST
                 </Link>
               </li>

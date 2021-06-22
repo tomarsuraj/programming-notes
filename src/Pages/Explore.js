@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import PostCategorySelector from "../Components/PostCategorySelector";
 import PostInfoCard from "../Components/PostInfoCard";
-import { SET_IS_LOADING } from "../context/action.type";
 import { UserContext } from "../context/context";
 import { searchPublicPost } from "../context/databasefunction";
 import Loading from "../Components/Loading";
@@ -11,14 +10,12 @@ const Explore = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
-  const [numberOfPost, setNumberOfPost] = useState(0);
   const [category, setCategory] = useState("All");
   const history = useHistory();
 
   const handleSearch = () => {
     searchPublicPost({
       title,
-      numberOfPost,
       category,
       dispatch,
     });
@@ -99,7 +96,7 @@ const Explore = () => {
               <h4>Got to Add new post page</h4>
               <button
                 className="mybtn"
-                onClick={() => history.push("/post/" + "addpost")}
+                onClick={() => history.push("/post/addpost")}
               >
                 ADD Post
               </button>

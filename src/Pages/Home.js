@@ -95,7 +95,7 @@ const Home = () => {
           <h4>Got to Add new post page</h4>
           <button
             className="mybtn"
-            onClick={() => history.push("/post/" + "addpost")}
+            onClick={() => history.push("/post/addpost")}
           >
             ADD Post
           </button>

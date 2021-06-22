@@ -191,12 +191,7 @@ export const searchUserPost = async ({ title, category, dispatch, uid }) => {
   }
 };
 
-export const searchPublicPost = async ({
-  title,
-
-  category,
-  dispatch,
-}) => {
+export const searchPublicPost = async ({ title, category, dispatch }) => {
   try {
     dispatch({ type: SET_IS_LOADING, payload: true });
 

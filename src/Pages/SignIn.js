@@ -1,4 +1,4 @@
-import { apps, auth } from "firebase";
+import { auth } from "firebase";
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -44,7 +44,6 @@ const SignIn = () => {
           className="form-control"
           type="email"
           name="email"
-          type="email"
           placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
         />

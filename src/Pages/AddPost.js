@@ -46,7 +46,7 @@ const AddPost = () => {
   const [showPostIsPrivateChangeModal, setShowPostIsPrivateChangeModal] =
     useState(false);
 
-  const { user, editPostData } = appState;
+  const { editPostData } = appState;
 
   const getPostId = async () => {
     const postdoc = await firestore()

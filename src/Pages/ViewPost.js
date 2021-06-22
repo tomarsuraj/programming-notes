@@ -16,11 +16,11 @@ const ViewPost = () => {
   };
 
   return (
-    <div className="screenContainer">
-      <div className="viewContainer">
+    <div className="myborder-3 myborder-light-grey  p-4 mt-4">
+      <div>
         {viewPostData ? (
           <>
-            <div>
+            <div className="border-bottom">
               <h2>{viewPostData.postTitle}</h2>
             </div>
             {parse(draftToHtml(viewPostData.editorStateRaw))}
@@ -29,23 +29,8 @@ const ViewPost = () => {
           <h4>No Post Data</h4>
         )}
       </div>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          flexDirection: "column",
-        }}
-      >
-        <button
-          className="editbtn"
-          style={{
-            color: "#272626",
-            fontSize: "24px",
-            width: "50%",
-            justifySelf: "center",
-          }}
-          onClick={() => handleEditClick()}
-        >
+      <div className="mt-3 border-top">
+        <button className="mybtn" onClick={() => handleEditClick()}>
           Edit
         </button>
       </div>

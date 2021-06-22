@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/context";
 import { useHistory } from "react-router-dom";
-import {
-  DELETE_POST_FROM_SEARCH_POST_DATA,
-  SET_EDIT_POST_DATA,
-  SET_VIEW_POST_DATA,
-} from "../context/action.type";
+
 import {
   deleteBinPost,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
 } from "../context/databasefunction";
+
+import {
+  DELETE_POST_FROM_SEARCH_POST_DATA,
+  SET_EDIT_POST_DATA,
+  SET_VIEW_POST_DATA,
+} from "../context/action.type";
 
 const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
   const { appState, dispatch } = useContext(UserContext);
