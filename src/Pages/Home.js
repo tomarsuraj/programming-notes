@@ -5,34 +5,63 @@ import { UserContext } from "../context/context";
 import { searchUserPost } from "../context/databasefunction";
 import Loading from "../Components/Loading";
 import { useHistory } from "react-router-dom";
+import {
+  SET_LAST_USER_QUEARY_DOC,
+  SET_USER_POST,
+} from "../context/action.type";
 
 const Home = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("All");
+
   const history = useHistory();
 
   const handleSearch = () => {
+    dispatch({ type: SET_USER_POST, payload: [] });
+    dispatch({
+      type: SET_LAST_USER_QUEARY_DOC,
+      payload: [],
+    });
     searchUserPost({
       title,
       category,
       dispatch,
       uid: appState.user.uid,
+      lastDoc: [],
+    });
+  };
+  const handleFetchNewPost = () => {
+    console.log("handleFetchNewPost", {
+      title,
+      category,
+      dispatch,
+      uid: appState.user.uid,
+      lastDoc: appState.lastUserQuearyDoc,
+    });
+    searchUserPost({
+      title,
+      category,
+      dispatch,
+      uid: appState.user.uid,
+      lastDoc: appState.lastUserQuearyDoc,
     });
   };
 
   useEffect(() => {
-    if (appState.user.uid)
+    if (appState.user.uid) {
       searchUserPost({
         title,
         category,
         dispatch,
         uid: appState.user.uid,
+        lastDoc: [],
       });
+    }
   }, [appState.user.uid]);
 
-  console.log("appState.isLoading", appState.isLoading);
+  console.log("appState.post", appState.post);
 
   return (
     <div>
@@ -72,9 +101,9 @@ const Home = () => {
         </div>
       </div>
 
-      {appState.searchPostData.length !== 0 ? (
+      {appState.post.length !== 0 ? (
         <>
-          {Object.entries(appState.searchPostData).map(([key, value]) => (
+          {Object.entries(appState.post).map(([key, value]) => (
             <PostInfoCard
               value={value}
               key={key}
@@ -83,6 +112,9 @@ const Home = () => {
               isPrivate={true}
             />
           ))}
+          <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
+            More
+          </button>
         </>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">

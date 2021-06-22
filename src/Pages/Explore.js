@@ -31,8 +31,6 @@ const Explore = () => {
     });
   }, []);
 
-  console.log("appState.searchPublicData", appState.searchPublicData);
-
   return (
     <div>
       {appState.isLoading ? <Loading /> : null}

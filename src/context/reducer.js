@@ -1,5 +1,4 @@
 import {
-  ADD_POST_IMAGE,
   CLEAR_APP_STATE,
   CLEAR_POST_STATE,
   DELETE_POST_FROM_SEARCH_POST_DATA,
@@ -10,8 +9,8 @@ import {
   SET_EDIT_POST_STATE,
   SET_IS_LOADING,
   SET_IS_PRIVATE,
+  SET_LAST_USER_QUEARY_DOC,
   SET_PUBLIC_POST_DATA,
-  SET_SEARCH_POST_DATA,
   SET_USER,
   SET_USER_BIN_POST,
   SET_USER_POST,
@@ -21,6 +20,7 @@ import {
   UPDATE_POST_ID,
   UPDATE_POST_SAMPLE,
   UPDATE_POST_TITLE,
+  UPDATE_USER_POST,
 } from "./action.type";
 
 // Editior
@@ -67,6 +67,17 @@ export const appReducer = (state, action) => {
         ...state,
         post: action.payload,
       };
+    case UPDATE_USER_POST:
+      const { post } = state;
+      const { payload } = action;
+      console.log("payload", payload);
+      const newPost = Object.values(post).concat(payload);
+      console.log("newPost", newPost);
+
+      return {
+        ...state,
+        post: newPost,
+      };
     case SET_USER_BIN_POST:
       return {
         ...state,
@@ -80,9 +91,6 @@ export const appReducer = (state, action) => {
 
     case SET_EDIT_POST_DATA:
       return { ...state, editPostData: action.payload };
-
-    case SET_SEARCH_POST_DATA:
-      return { ...state, searchPostData: action.payload, isLoading: false };
 
     case DELETE_POST_FROM_SEARCH_POST_DATA: {
       const { searchPostData } = state;
@@ -98,6 +106,8 @@ export const appReducer = (state, action) => {
 
     case SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
+    case SET_LAST_USER_QUEARY_DOC:
+      return { ...state, lastUserQuearyDoc: action.payload };
 
     case CLEAR_APP_STATE:
       return appInitialState;
@@ -142,14 +152,6 @@ export const addPostReducer = (state, action) => {
       return {
         ...state,
         isPrivate: action.payload,
-      };
-    case ADD_POST_IMAGE:
-      var array = state.postImagesArray;
-      array.push(action.payload);
-
-      return {
-        ...state,
-        postImagesArray: array,
       };
 
     case SET_EDIT_POST_STATE: {

@@ -34,7 +34,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
     history.push("/post/editpost");
   };
   return (
-    <div className="card bg-transparent mt-4 myborder-3 myborder-green">
+    <div className="card bg-transparent mt-4 myborder-3 myborder-success">
       <div className="card-header mybg-grey d-flex justify-content-between">
         <h2 className=" mytext-warning">{value.postTitle}</h2>
       </div>

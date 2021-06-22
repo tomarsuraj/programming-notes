@@ -42,13 +42,14 @@ const initialState = {
   isEmailVerified: false,
   isSignIn: false,
   user: {},
-  post: {},
+  post: [],
   BinPostData: {},
   viewPostData: {},
   editPostData: {},
   searchPostData: {},
   searchPublicData: {},
   isLoading: false,
+  lastUserQuearyDoc: {},
 };
 
 const RootApp = () => {
