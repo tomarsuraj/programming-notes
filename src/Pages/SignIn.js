@@ -37,7 +37,7 @@ const SignIn = () => {
       {appState.isLoading ? <Loading /> : null}
 
       <div className="p-4 myborder-5 myborder-orange mt-4">
-        <label for="email" className="form-label">
+        <label htmlFor="email" className="form-label">
           Email:
         </label>
         <input
@@ -47,7 +47,7 @@ const SignIn = () => {
           placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label for="password" className="form-label">
+        <label htmlFor="password" className="form-label">
           Password:
         </label>
         <input

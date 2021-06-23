@@ -10,7 +10,6 @@ import { appReducer } from "./context/reducer";
 import { firebaseConfig } from "./config";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import "firebase/storage";
 import "firebase/auth";
 
 firebase.initializeApp(firebaseConfig);
@@ -46,8 +45,7 @@ const initialState = {
   BinPostData: {},
   viewPostData: {},
   editPostData: {},
-  searchPostData: {},
-  searchPublicData: {},
+  publicPost: {},
   isLoading: false,
   lastUserQuearyDoc: {},
 };

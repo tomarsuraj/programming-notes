@@ -33,13 +33,6 @@ const Home = () => {
     });
   };
   const handleFetchNewPost = () => {
-    console.log("handleFetchNewPost", {
-      title,
-      category,
-      dispatch,
-      uid: appState.user.uid,
-      lastDoc: appState.lastUserQuearyDoc,
-    });
     searchUserPost({
       title,
       category,
@@ -51,6 +44,8 @@ const Home = () => {
 
   useEffect(() => {
     if (appState.user.uid) {
+      dispatch({ type: SET_USER_POST, payload: [] });
+
       searchUserPost({
         title,
         category,
@@ -61,8 +56,6 @@ const Home = () => {
     }
   }, [appState.user.uid]);
 
-  console.log("appState.post", appState.post);
-
   return (
     <div>
       {appState.isLoading ? <Loading /> : null}
@@ -70,7 +63,7 @@ const Home = () => {
       <div className="p-4 myborder-5 myborder-orange mt-4">
         <div className="row ">
           <div className="col-md-6">
-            <label for="title" className="form-label">
+            <label htmlFor="title" className="form-label">
               Post Title:
             </label>
             <input
@@ -84,7 +77,7 @@ const Home = () => {
             />
           </div>
           <div className="col-md-4">
-            <label for="postCategory" className="form-label">
+            <label htmlFor="postCategory" className="form-label">
               Post Category:
             </label>
             <PostCategorySelector

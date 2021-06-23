@@ -153,7 +153,7 @@ const AddPost = () => {
         rows="3"
         type="text"
         name="postSample"
-        maxlength="250"
+        maxLength="250"
         value={postState.postSample}
         onChange={(e) => {
           dispatchPost({

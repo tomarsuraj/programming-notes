@@ -40,10 +40,14 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
       </div>
       <div className="card-body">
         <p>{value.postSample}</p>
-        <p className="mytext-success">Category: {value.postCategory}</p>
-        <p className="mytext-success">
-          Privacy : {value.isPrivate ? "Private" : "Public"}
-        </p>
+        <h5 className="mytext-success">
+          <strong>Category: </strong>
+          {value.postCategory}
+        </h5>
+        <h6 className="mytext-success">
+          <strong> Privacy: </strong>
+          {value.isPrivate ? "Private" : "Public"}
+        </h6>
         {value.authorDetails ? (
           <p className="float-end mytext-success">
             Author Name: {value.authorDetails.name}

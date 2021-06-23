@@ -52,7 +52,7 @@ const SignUp = () => {
       {appState.isLoading ? <Loading /> : null}
 
       <div className="p-4 myborder-5 myborder-orange mt-4">
-        <label for="name" className="form-label">
+        <label htmlFor="name" className="form-label">
           Name:
         </label>
         <input
@@ -63,7 +63,7 @@ const SignUp = () => {
           placeholder="Enter name"
           onChange={(e) => setName(e.target.value)}
         />
-        <label for="bio" className="form-label">
+        <label htmlFor="bio" className="form-label">
           Bio:
         </label>
         <input
@@ -74,7 +74,7 @@ const SignUp = () => {
           placeholder="Enter Bio"
           onChange={(e) => setBio(e.target.value)}
         />
-        <label for="email" className="form-label">
+        <label htmlFor="email" className="form-label">
           Email:
         </label>
         <input
@@ -85,7 +85,7 @@ const SignUp = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label for="password" className="form-label">
+        <label htmlFor="password" className="form-label">
           Password:
         </label>
         <input
