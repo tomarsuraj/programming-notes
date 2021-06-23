@@ -1,4 +1,4 @@
-import { apps, auth } from "firebase";
+import { auth } from "firebase";
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -37,18 +37,17 @@ const SignIn = () => {
       {appState.isLoading ? <Loading /> : null}
 
       <div className="p-4 myborder-5 myborder-orange mt-4">
-        <label for="email" className="form-label">
+        <label htmlFor="email" className="form-label">
           Email:
         </label>
         <input
           className="form-control"
           type="email"
           name="email"
-          type="email"
           placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label for="password" className="form-label">
+        <label htmlFor="password" className="form-label">
           Password:
         </label>
         <input

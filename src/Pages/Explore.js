@@ -1,40 +1,55 @@
 import React, { useContext, useEffect, useState } from "react";
 import PostCategorySelector from "../Components/PostCategorySelector";
 import PostInfoCard from "../Components/PostInfoCard";
-import { SET_IS_LOADING } from "../context/action.type";
 import { UserContext } from "../context/context";
 import { searchPublicPost } from "../context/databasefunction";
 import Loading from "../Components/Loading";
 import { useHistory } from "react-router-dom";
+import {
+  SET_LAST_USER_QUEARY_DOC,
+  SET_PUBLIC_POST,
+} from "../context/action.type";
 
 const Explore = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
-  const [numberOfPost, setNumberOfPost] = useState(0);
   const [category, setCategory] = useState("All");
   const history = useHistory();
 
   const handleSearch = () => {
+    dispatch({ type: SET_PUBLIC_POST, payload: [] });
+    dispatch({
+      type: SET_LAST_USER_QUEARY_DOC,
+      payload: [],
+    });
     searchPublicPost({
       title,
-      numberOfPost,
       category,
       dispatch,
+      lastDoc: [],
+    });
+  };
+
+  const handleFetchNewPost = () => {
+    searchPublicPost({
+      title,
+      category,
+      dispatch,
+      lastDoc: appState.lastUserQuearyDoc,
     });
   };
 
   useEffect(() => {
-    const numberOfPost = 20;
+    dispatch({ type: SET_PUBLIC_POST, payload: [] });
+
     searchPublicPost({
       title,
-      numberOfPost,
       category,
       dispatch,
+      lastDoc: [],
     });
   }, []);
-
-  console.log("appState.searchPublicData", appState.searchPublicData);
 
   return (
     <div>
@@ -44,7 +59,7 @@ const Explore = () => {
       <div className="p-4 myborder-5 myborder-orange mt-4">
         <div className="row ">
           <div className="col-md-6">
-            <label for="title" className="form-label">
+            <label htmlFor="title" className="form-label">
               Post Title:
             </label>
             <input
@@ -58,7 +73,7 @@ const Explore = () => {
             />
           </div>
           <div className="col-md-4">
-            <label for="postCategory" className="form-label">
+            <label htmlFor="postCategory" className="form-label">
               Post Category:
             </label>
             <PostCategorySelector
@@ -74,9 +89,9 @@ const Explore = () => {
           </div>
         </div>
       </div>
-      {appState.searchPublicData.length !== 0 ? (
+      {appState.publicPost.length !== 0 ? (
         <>
-          {Object.entries(appState.searchPublicData).map(([key, value]) => (
+          {Object.entries(appState.publicPost).map(([key, value]) => (
             <PostInfoCard
               value={value}
               key={key}
@@ -84,6 +99,9 @@ const Explore = () => {
               isPrivate={false}
             />
           ))}
+          <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
+            More
+          </button>
         </>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">
@@ -99,7 +117,7 @@ const Explore = () => {
               <h4>Got to Add new post page</h4>
               <button
                 className="mybtn"
-                onClick={() => history.push("/post/" + "addpost")}
+                onClick={() => history.push("/post/addpost")}
               >
                 ADD Post
               </button>

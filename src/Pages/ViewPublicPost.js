@@ -19,26 +19,17 @@ const ViewPublicPost = () => {
   }, [postId]);
 
   return (
-    <div className="screenContainer">
-      <div className="viewContainer">
-        {viewPostData ? (
-          <>
-            <div>
-              <h2>{viewPostData.postTitle}</h2>
-            </div>
-            {parse(draftToHtml(viewPostData.editorStateRaw))}
-          </>
-        ) : (
-          <h4>No Post Data</h4>
-        )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          flexDirection: "column",
-        }}
-      ></div>
+    <div className="myborder-3 myborder-light-grey  p-4 mt-4">
+      {viewPostData ? (
+        <>
+          <div className="border-bottom">
+            <h2>{viewPostData.postTitle}</h2>
+          </div>
+          {parse(draftToHtml(viewPostData.editorStateRaw))}
+        </>
+      ) : (
+        <h4 className="mytext-warning">No Post exit with ID</h4>
+      )}
     </div>
   );
 };

@@ -34,7 +34,6 @@ const initialState = {
   postSample: "",
   postCategory: "Python",
   isPrivate: true,
-  postImagesArray: [],
 };
 
 const AddPost = () => {
@@ -46,7 +45,7 @@ const AddPost = () => {
   const [showPostIsPrivateChangeModal, setShowPostIsPrivateChangeModal] =
     useState(false);
 
-  const { user, editPostData } = appState;
+  const { editPostData } = appState;
 
   const getPostId = async () => {
     const postdoc = await firestore()
@@ -96,7 +95,9 @@ const AddPost = () => {
 
   return (
     <div className="myborder-5 p-3 mb-2 mt-3">
-      <h1 className="heading text-center border-bottom">Add Post</h1>
+      <h1 className="heading text-center border-bottom">
+        {isAddPost === "editpost" ? "Edit Post" : "Add Post"}
+      </h1>
       {appState.isLoading ? <Loading /> : null}
 
       <label className="form-label mt-2">Enter Post Title:</label>
@@ -152,7 +153,7 @@ const AddPost = () => {
         rows="3"
         type="text"
         name="postSample"
-        maxlength="250"
+        maxLength="250"
         value={postState.postSample}
         onChange={(e) => {
           dispatchPost({

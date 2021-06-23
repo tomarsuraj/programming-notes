@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/context";
 import { useHistory } from "react-router-dom";
-import {
-  DELETE_POST_FROM_SEARCH_POST_DATA,
-  SET_EDIT_POST_DATA,
-  SET_VIEW_POST_DATA,
-} from "../context/action.type";
+
 import {
   deleteBinPost,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
 } from "../context/databasefunction";
+
+import {
+  DELETE_POST_FROM_SEARCH_POST_DATA,
+  SET_EDIT_POST_DATA,
+  SET_VIEW_POST_DATA,
+} from "../context/action.type";
 
 const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
   const { appState, dispatch } = useContext(UserContext);
@@ -32,16 +34,20 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
     history.push("/post/editpost");
   };
   return (
-    <div className="card bg-transparent mt-4 myborder-3 myborder-green">
+    <div className="card bg-transparent mt-4 myborder-3 myborder-success">
       <div className="card-header mybg-grey d-flex justify-content-between">
         <h2 className=" mytext-warning">{value.postTitle}</h2>
       </div>
       <div className="card-body">
         <p>{value.postSample}</p>
-        <p className="mytext-success">Category: {value.postCategory}</p>
-        <p className="mytext-success">
-          Privacy : {value.isPrivate ? "Private" : "Public"}
-        </p>
+        <h5 className="mytext-success">
+          <strong>Category: </strong>
+          {value.postCategory}
+        </h5>
+        <h6 className="mytext-success">
+          <strong> Privacy: </strong>
+          {value.isPrivate ? "Private" : "Public"}
+        </h6>
         {value.authorDetails ? (
           <p className="float-end mytext-success">
             Author Name: {value.authorDetails.name}

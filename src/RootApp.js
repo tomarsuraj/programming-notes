@@ -10,7 +10,6 @@ import { appReducer } from "./context/reducer";
 import { firebaseConfig } from "./config";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import "firebase/storage";
 import "firebase/auth";
 
 firebase.initializeApp(firebaseConfig);
@@ -20,14 +19,14 @@ firebase
   .firestore()
   .enablePersistence()
   .catch((err) => {
-    if (err.code == "failed-precondition") {
+    if (err.code === "failed-precondition") {
       console.log(
         " Multiple tabs open, persistence can only be enabled in one tab at a a time"
       );
       // Multiple tabs open, persistence can only be enabled
       // in one tab at a a time.
       // ...
-    } else if (err.code == "unimplemented") {
+    } else if (err.code === "unimplemented") {
       console.log(
         "// The current browser does not support all of the features required to enable persistence"
       );
@@ -42,13 +41,13 @@ const initialState = {
   isEmailVerified: false,
   isSignIn: false,
   user: {},
-  post: {},
+  post: [],
   BinPostData: {},
   viewPostData: {},
   editPostData: {},
-  searchPostData: {},
-  searchPublicData: {},
+  publicPost: {},
   isLoading: false,
+  lastUserQuearyDoc: {},
 };
 
 const RootApp = () => {

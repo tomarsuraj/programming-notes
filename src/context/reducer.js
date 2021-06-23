@@ -1,5 +1,4 @@
 import {
-  ADD_POST_IMAGE,
   CLEAR_APP_STATE,
   CLEAR_POST_STATE,
   DELETE_POST_FROM_SEARCH_POST_DATA,
@@ -10,8 +9,8 @@ import {
   SET_EDIT_POST_STATE,
   SET_IS_LOADING,
   SET_IS_PRIVATE,
-  SET_PUBLIC_POST_DATA,
-  SET_SEARCH_POST_DATA,
+  SET_LAST_USER_QUEARY_DOC,
+  SET_PUBLIC_POST,
   SET_USER,
   SET_USER_BIN_POST,
   SET_USER_POST,
@@ -21,6 +20,8 @@ import {
   UPDATE_POST_ID,
   UPDATE_POST_SAMPLE,
   UPDATE_POST_TITLE,
+  UPDATE_PUBLIC_POST,
+  UPDATE_USER_POST,
 } from "./action.type";
 
 // Editior
@@ -35,18 +36,24 @@ const appInitialState = {
   BinPostData: {},
   viewPostData: {},
   editPostData: {},
-  searchPostData: {},
-  searchPublicData: {},
+  publicPost: {},
   isLoading: false,
 };
 
 export const appReducer = (state, action) => {
   switch (action.type) {
-    case SET_USER:
+    case CLEAR_APP_STATE:
+      return appInitialState;
+
+    case DELETE_POST_FROM_SEARCH_POST_DATA: {
+      const { searchPostData } = state;
       return {
         ...state,
-        user: action.payload,
+        searchPostData: searchPostData.filter(
+          (searchPost) => searchPost.postId !== action.payload
+        ),
       };
+    }
     case IS_AUTHTHENTICATED:
       return {
         ...state,
@@ -62,96 +69,63 @@ export const appReducer = (state, action) => {
         ...state,
         isSignIn: action.payload,
       };
-    case SET_USER_POST:
+    case SET_EDIT_POST_DATA:
+      return { ...state, editPostData: action.payload };
+    case SET_IS_LOADING:
+      return { ...state, isLoading: action.payload };
+    case SET_LAST_USER_QUEARY_DOC:
+      return { ...state, lastUserQuearyDoc: action.payload };
+    case SET_PUBLIC_POST:
+      return { ...state, publicPost: action.payload };
+    case SET_USER:
       return {
         ...state,
-        post: action.payload,
+        user: action.payload,
       };
     case SET_USER_BIN_POST:
       return {
         ...state,
         BinPostData: action.payload,
       };
+    case SET_USER_POST:
+      return {
+        ...state,
+        post: action.payload,
+      };
+
     case SET_VIEW_POST_DATA:
       return {
         ...state,
         viewPostData: action.payload,
       };
+    case UPDATE_PUBLIC_POST:
+      const { publicPost } = state;
+      const newPublicPost = Object.values(publicPost).concat(action.payload);
 
-    case SET_EDIT_POST_DATA:
-      return { ...state, editPostData: action.payload };
-
-    case SET_SEARCH_POST_DATA:
-      return { ...state, searchPostData: action.payload, isLoading: false };
-
-    case DELETE_POST_FROM_SEARCH_POST_DATA: {
-      const { searchPostData } = state;
       return {
         ...state,
-        searchPostData: searchPostData.filter(
-          (searchPost) => searchPost.postId !== action.payload
-        ),
+        publicPost: newPublicPost,
       };
-    }
-    case SET_PUBLIC_POST_DATA:
-      return { ...state, searchPublicData: action.payload };
 
-    case SET_IS_LOADING:
-      return { ...state, isLoading: action.payload };
+    case UPDATE_USER_POST:
+      const { post } = state;
+      const newPost = Object.values(post).concat(action.payload);
 
-    case CLEAR_APP_STATE:
-      return appInitialState;
+      return {
+        ...state,
+        post: newPost,
+      };
 
     default:
       return state;
   }
 };
 
+// Reducer of Add Post Page
 export const addPostReducer = (state, action) => {
   switch (action.type) {
-    case UPDATE_EDITOR_STATE:
-      return {
-        ...state,
-        editorState: action.payload,
-      };
-
-    case UPDATE_POST_TITLE:
-      return {
-        ...state,
-        postTitle: action.payload,
-      };
-
-    case UPDATE_POST_SAMPLE:
-      return {
-        ...state,
-        postSample: action.payload,
-      };
-    case UPDATE_POST_CATEGORY:
-      return {
-        ...state,
-        postCategory: action.payload,
-      };
     case CLEAR_POST_STATE:
       return action.payload;
-    case UPDATE_POST_ID:
-      return {
-        ...state,
-        postId: action.payload,
-      };
-    case SET_IS_PRIVATE:
-      return {
-        ...state,
-        isPrivate: action.payload,
-      };
-    case ADD_POST_IMAGE:
-      var array = state.postImagesArray;
-      array.push(action.payload);
-
-      return {
-        ...state,
-        postImagesArray: array,
-      };
-
     case SET_EDIT_POST_STATE: {
       const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
 
@@ -167,6 +141,37 @@ export const addPostReducer = (state, action) => {
         postImagesArray: action.payload.postImagesArray,
       };
     }
+    case SET_IS_PRIVATE:
+      return {
+        ...state,
+        isPrivate: action.payload,
+      };
+    case UPDATE_EDITOR_STATE:
+      return {
+        ...state,
+        editorState: action.payload,
+      };
+    case UPDATE_POST_CATEGORY:
+      return {
+        ...state,
+        postCategory: action.payload,
+      };
+    case UPDATE_POST_ID:
+      return {
+        ...state,
+        postId: action.payload,
+      };
+    case UPDATE_POST_SAMPLE:
+      return {
+        ...state,
+        postSample: action.payload,
+      };
+
+    case UPDATE_POST_TITLE:
+      return {
+        ...state,
+        postTitle: action.payload,
+      };
 
     default:
       return state;
