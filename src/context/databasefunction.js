@@ -1,5 +1,5 @@
 import { convertToRaw } from "draft-js";
-import { firestore } from "firebase";
+
 import {
   CLEAR_POST_STATE,
   UPDATE_PUBLIC_POST,
@@ -10,9 +10,12 @@ import {
   UPDATE_USER_POST,
 } from "./action.type";
 import { toast } from "react-toastify";
+// firebase
+import firebase from "firebase/app";
 
 export const deleteBinPost = async ({ postId, uid, isShowToast }) => {
-  await firestore()
+  await firebase
+    .firestore()
     .collection("Users")
     .doc(uid)
     .collection("bin")
@@ -37,7 +40,8 @@ export const deleteBinPost = async ({ postId, uid, isShowToast }) => {
     );
 };
 export const deletePrivatePost = async ({ postId, uid }) => {
-  firestore()
+  firebase
+    .firestore()
     .collection("Users")
     .doc(uid)
     .collection("post")
@@ -51,7 +55,8 @@ export const deletePrivatePost = async ({ postId, uid }) => {
     );
 };
 export const deletePublicPost = async ({ postId }) => {
-  firestore()
+  firebase
+    .firestore()
     .collection("PublicPost")
     .doc(postId)
     .delete()
@@ -66,7 +71,7 @@ export const deletePublicPost = async ({ postId }) => {
 export const getPublicPost = async ({ postId, dispatch }) => {
   dispatch({ type: SET_IS_LOADING, payload: true });
 
-  const post = await firestore().collection("PublicPost").doc(postId);
+  const post = await firebase.firestore().collection("PublicPost").doc(postId);
   post.get().then((doc) => {
     if (doc.exists) {
       dispatch({ type: SET_VIEW_POST_DATA, payload: doc.data() });
@@ -87,7 +92,8 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
   dispatch({ type: SET_IS_LOADING, payload: true });
 
   try {
-    const post = await firestore()
+    const post = await firebase
+      .firestore()
       .collection("Users")
       .doc(uid)
       .collection("bin")
@@ -122,7 +128,8 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
 };
 
 export const moveTobin = async ({ postData, uid }) => {
-  firestore()
+  firebase
+    .firestore()
     .collection("Users")
     .doc(uid)
     .collection("bin")
@@ -151,7 +158,8 @@ export const moveTobin = async ({ postData, uid }) => {
   }
 };
 export const restoreBinPost = async ({ postData, uid }) => {
-  firestore()
+  firebase
+    .firestore()
     .collection("Users")
     .doc(uid)
     .collection("post")
@@ -175,7 +183,8 @@ export const restoreBinPost = async ({ postData, uid }) => {
     );
 
   if (!postData.isPrivate) {
-    firestore()
+    firebase
+      .firestore()
       .collection("PublicPost")
       .doc(postData.id)
       .set(postData)
@@ -199,7 +208,7 @@ export const searchPublicPost = async ({
   try {
     dispatch({ type: SET_IS_LOADING, payload: true });
 
-    const post = await firestore().collection("PublicPost");
+    const post = await firebase.firestore().collection("PublicPost");
     if (title !== "" && category !== "All") {
       post
         .where("postTitle", "==", title)
@@ -318,7 +327,8 @@ export const searchUserPost = async ({
   try {
     dispatch({ type: SET_IS_LOADING, payload: true });
 
-    const post = await firestore()
+    const post = await firebase
+      .firestore()
       .collection("Users")
       .doc(uid)
       .collection("post");
@@ -445,7 +455,8 @@ export const uploadPost = async ({
   );
   const { postId } = postState;
 
-  const uploadPost = await firestore()
+  const uploadPost = await firebase
+    .firestore()
     .collection("Users")
     .doc(appState.user.uid)
     .collection("post")
@@ -464,7 +475,7 @@ export const uploadPost = async ({
       postId,
       postTitle: postState.postTitle,
       postSample: postState.postSample,
-      timeStamp: firestore.Timestamp.now(),
+      timeStamp: firebase.firestore.Timestamp.now(),
     })
     .then(() => {
       toast.success("Private Post Uploaded.", {
@@ -487,7 +498,10 @@ export const uploadPost = async ({
     });
 
   if (postState.isPrivate === false) {
-    const uploadPost = await firestore().collection("PublicPost").doc(postId);
+    const uploadPost = await firebase
+      .firestore()
+      .collection("PublicPost")
+      .doc(postId);
 
     uploadPost
       .set({
@@ -503,7 +517,7 @@ export const uploadPost = async ({
         postTitle: postState.postTitle,
         postSample: postState.postSample,
 
-        timeStamp: firestore.Timestamp.now(),
+        timeStamp: firebase.firestore.Timestamp.now(),
       })
       .then(() => {
         toast.success("Public Post Uploaded.", {

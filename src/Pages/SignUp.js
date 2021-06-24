@@ -3,9 +3,10 @@ import { Link, Redirect } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import { UserContext } from "../context/context";
-import { auth, firestore } from "firebase";
-import Loading from "../Components/Loading";
 
+import Loading from "../Components/Loading";
+// firebase
+import firebase from "firebase/app";
 const SignUp = () => {
   const { appState } = useContext(UserContext);
 
@@ -15,10 +16,12 @@ const SignUp = () => {
   const [bio, setBio] = useState("");
 
   const handleSignUp = async () => {
-    await auth()
+    await firebase
+      .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((data) => {
-        firestore()
+        firebase
+          .firestore()
           .collection("Users")
           .doc(data.user.uid)
           .set({

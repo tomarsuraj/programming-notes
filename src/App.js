@@ -10,7 +10,6 @@ import {
 //toast
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-
 import { UserContext } from "./context/context";
 
 // Pages
@@ -33,10 +32,12 @@ import {
   SET_IS_LOADING,
   SET_USER,
 } from "./context/action.type";
-import { auth, firestore } from "firebase";
 
 import VerifyEmail from "./Pages/VerifyEmail";
 import ViewPublicPost from "./Pages/ViewPublicPost";
+
+// firebase
+import firebase from "firebase/app";
 
 const App = () => {
   const { dispatch, appState } = useContext(UserContext);
@@ -60,7 +61,8 @@ const App = () => {
         dispatch({ type: IS_AUTHTHENTICATED, payload: true });
       }
 
-      await firestore()
+      await firebase
+        .firestore()
         .collection("Users")
         .doc(user.uid)
         .get()
@@ -76,7 +78,7 @@ const App = () => {
   useEffect(() => {
     dispatch({ type: SET_IS_LOADING, payload: true });
 
-    const susbcriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const susbcriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
     return susbcriber;
   }, []);
 

@@ -21,11 +21,14 @@ import {
 
 import { useContext } from "react";
 import { UserContext } from "../context/context";
-import { firestore } from "firebase";
+
 import { deletePublicPost, uploadPost } from "../context/databasefunction";
 import Loading from "../Components/Loading";
 import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
+
+// firebase
+import firebase from "firebase/app";
 
 const initialState = {
   postId: null,
@@ -48,7 +51,8 @@ const AddPost = () => {
   const { editPostData } = appState;
 
   const getPostId = async () => {
-    const postdoc = await firestore()
+    const postdoc = await firebase
+      .firestore()
       .collection("Users")
       .doc(appState.user.uid)
       .collection("post")
