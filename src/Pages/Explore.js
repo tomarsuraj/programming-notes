@@ -51,6 +51,8 @@ const Explore = () => {
     });
   }, []);
 
+  console.log("appState.publicPost", appState.publicPost);
+
   return (
     <div>
       {appState.isLoading ? <Loading /> : null}
@@ -90,7 +92,7 @@ const Explore = () => {
         </div>
       </div>
       {appState.publicPost.length !== 0 ? (
-        <>
+        <div className="row">
           {Object.entries(appState.publicPost).map(([key, value]) => (
             <PostInfoCard
               value={value}
@@ -102,7 +104,7 @@ const Explore = () => {
           <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
             More
           </button>
-        </>
+        </div>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">
           <h3 className="mytext-warning">

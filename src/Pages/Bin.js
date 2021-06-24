@@ -25,11 +25,11 @@ const Bin = () => {
           </button>
         </div>
       ) : (
-        <>
+        <div className="row">
           {Object.entries(appState.BinPostData).map(([key, value]) => (
             <PostInfoCard value={value} key={key} isBin={true} />
           ))}
-        </>
+        </div>
       )}
     </div>
   );
