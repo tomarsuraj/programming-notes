@@ -95,20 +95,19 @@ const Home = () => {
       </div>
 
       {appState.post.length !== 0 ? (
-        <>
+        <div className="row">
           {Object.entries(appState.post).map(([key, value]) => (
             <PostInfoCard
               value={value}
               key={key}
               isBin={false}
-              isSearchPost={true}
               isPrivate={true}
             />
           ))}
           <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
             More
           </button>
-        </>
+        </div>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">
           <h3 className="mytext-warning">You don't have any post.</h3>

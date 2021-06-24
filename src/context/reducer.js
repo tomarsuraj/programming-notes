@@ -1,7 +1,7 @@
 import {
   CLEAR_APP_STATE,
   CLEAR_POST_STATE,
-  FILTER_OUT_USER_POST,
+  REMOVE_MOVE_TO_BIN_POST,
   IS_AUTHTHENTICATED,
   IS_EMAIL_VERIFIED,
   IS_SIGNIN,
@@ -45,13 +45,6 @@ export const appReducer = (state, action) => {
     case CLEAR_APP_STATE:
       return appInitialState;
 
-    case FILTER_OUT_USER_POST: {
-      const { post } = state;
-      return {
-        ...state,
-        post: post.filter((postinfo) => postinfo.postId !== action.payload),
-      };
-    }
     case IS_AUTHTHENTICATED:
       return {
         ...state,
@@ -67,6 +60,18 @@ export const appReducer = (state, action) => {
         ...state,
         isSignIn: action.payload,
       };
+
+    case REMOVE_MOVE_TO_BIN_POST: {
+      const { post, publicPost } = state;
+      console.log("REMOVE_MOVE_TO_BIN_POST");
+      return {
+        ...state,
+        post: post.filter((postinfo) => postinfo.postId !== action.payload),
+        publicPost: publicPost.filter(
+          (postinfo) => postinfo.postId !== action.payload
+        ),
+      };
+    }
     case SET_EDIT_POST_DATA:
       return { ...state, editPostData: action.payload };
     case SET_IS_LOADING:

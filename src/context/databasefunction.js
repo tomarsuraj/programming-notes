@@ -236,7 +236,7 @@ export const searchPublicPost = async ({
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
         .startAfter(lastDoc)
-        .limit(4)
+        .limit(20)
         .get()
         .then((querySnapshot) => {
           dispatch({
@@ -285,7 +285,7 @@ export const searchPublicPost = async ({
       post
         .orderBy("timeStamp", "desc")
         .startAfter(lastDoc)
-        .limit(4)
+        .limit(20)
         .get()
         .then((querySnapshot) => {
           dispatch({
@@ -359,7 +359,7 @@ export const searchUserPost = async ({
         .where("postCategory", "==", category)
         .orderBy("timeStamp", "desc")
         .startAfter(lastDoc)
-        .limit(4)
+        .limit(20)
         .get()
         .then((querySnapshot) => {
           dispatch({
@@ -407,7 +407,7 @@ export const searchUserPost = async ({
       post
         .orderBy("timeStamp", "desc")
         .startAfter(lastDoc)
-        .limit(4)
+        .limit(20)
         .get()
         .then((querySnapshot) => {
           dispatch({
