@@ -10,7 +10,7 @@ import {
 } from "../context/databasefunction";
 
 import {
-  DELETE_POST_FROM_SEARCH_POST_DATA,
+  FILTER_OUT_USER_POST,
   SET_EDIT_POST_DATA,
   SET_VIEW_POST_DATA,
 } from "../context/action.type";
@@ -111,7 +111,7 @@ const PostInfoCard = ({ isBin, value, isSearchPost, isPrivate }) => {
                     moveTobin({ postData: value, uid: appState.user.uid });
                     if (isSearchPost) {
                       dispatch({
-                        type: DELETE_POST_FROM_SEARCH_POST_DATA,
+                        type: FILTER_OUT_USER_POST,
                         payload: value.postId,
                       });
                     }

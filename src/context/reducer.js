@@ -1,7 +1,7 @@
 import {
   CLEAR_APP_STATE,
   CLEAR_POST_STATE,
-  DELETE_POST_FROM_SEARCH_POST_DATA,
+  FILTER_OUT_USER_POST,
   IS_AUTHTHENTICATED,
   IS_EMAIL_VERIFIED,
   IS_SIGNIN,
@@ -45,13 +45,11 @@ export const appReducer = (state, action) => {
     case CLEAR_APP_STATE:
       return appInitialState;
 
-    case DELETE_POST_FROM_SEARCH_POST_DATA: {
-      const { searchPostData } = state;
+    case FILTER_OUT_USER_POST: {
+      const { post } = state;
       return {
         ...state,
-        searchPostData: searchPostData.filter(
-          (searchPost) => searchPost.postId !== action.payload
-        ),
+        post: post.filter((postinfo) => postinfo.postId !== action.payload),
       };
     }
     case IS_AUTHTHENTICATED:

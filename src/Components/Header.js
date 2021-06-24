@@ -1,15 +1,19 @@
 import React, { useContext } from "react";
-import { auth } from "firebase";
+
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CLEAR_APP_STATE } from "../context/action.type";
 import { UserContext } from "../context/context";
 
+// firebase
+import firebase from "firebase/app";
+
 const Header = () => {
   const { appState, dispatch } = useContext(UserContext);
 
   const handleSignOut = () => {
-    auth()
+    firebase
+      .auth()
       .signOut()
       .then(() => {
         dispatch({ type: CLEAR_APP_STATE });

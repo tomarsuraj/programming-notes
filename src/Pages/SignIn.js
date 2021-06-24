@@ -1,9 +1,11 @@
-import { auth } from "firebase";
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserContext } from "../context/context";
 import Loading from "../Components/Loading";
+
+// firebase
+import firebase from "firebase/app";
 
 const SignIn = () => {
   const { appState } = useContext(UserContext);
@@ -12,7 +14,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
 
   const handleSignIn = async () => {
-    auth()
+    firebase
+      .auth()
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         toast("Sign In", {
