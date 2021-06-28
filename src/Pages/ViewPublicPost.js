@@ -14,7 +14,6 @@ const ViewPublicPost = () => {
   useEffect(() => {
     if (viewPostData.id !== postId) {
       getPublicPost({ postId, dispatch });
-      console.log("USEEFFECT");
     }
   }, [postId]);
 

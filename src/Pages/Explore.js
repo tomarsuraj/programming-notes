@@ -51,8 +51,6 @@ const Explore = () => {
     });
   }, []);
 
-  console.log("appState.publicPost", appState.publicPost);
-
   return (
     <div>
       {appState.isLoading ? <Loading /> : null}

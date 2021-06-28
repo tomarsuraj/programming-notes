@@ -63,7 +63,6 @@ export const appReducer = (state, action) => {
 
     case REMOVE_MOVE_TO_BIN_POST: {
       const { post, publicPost } = state;
-      console.log("REMOVE_MOVE_TO_BIN_POST");
       return {
         ...state,
         post: post.filter((postinfo) => postinfo.postId !== action.payload),

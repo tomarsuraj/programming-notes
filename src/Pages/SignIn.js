@@ -47,6 +47,7 @@ const SignIn = () => {
           className="form-control"
           type="email"
           name="email"
+          value={email}
           placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
         />
