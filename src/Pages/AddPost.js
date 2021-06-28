@@ -79,7 +79,6 @@ const AddPost = () => {
       if (editPostData.isPrivate === postState.isPrivate) {
         uploadPostFun();
       } else {
-        console.log("Privace status change ");
         setShowPostIsPrivateChangeModal(true);
       }
     }
