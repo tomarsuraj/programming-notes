@@ -1,20 +1,20 @@
-import React, { useContext, useState, useEffect } from "react";
-import PostCategorySelector from "../Components/PostCategorySelector";
-import PostInfoCard from "../Components/PostInfoCard";
-import { UserContext } from "../context/context";
-import { searchUserPost } from "../context/databasefunction";
-import Loading from "../Components/Loading";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useState, useEffect } from 'react';
+import PostCategorySelector from '../Components/PostCategorySelector';
+import PostInfoCard from '../Components/PostInfoCard';
+import { UserContext } from '../context/context';
+import { searchUserPost } from '../context/databasefunction';
+import Loading from '../Components/Loading';
+import { useHistory } from 'react-router-dom';
 import {
   SET_LAST_USER_QUEARY_DOC,
   SET_USER_POST,
-} from "../context/action.type";
+} from '../context/action.type';
 
 const Home = () => {
   const { appState, dispatch } = useContext(UserContext);
 
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("All");
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('All');
 
   const history = useHistory();
 
@@ -25,7 +25,7 @@ const Home = () => {
       payload: [],
     });
     searchUserPost({
-      title,
+      title: title.toLowerCase(),
       category,
       dispatch,
       uid: appState.user.uid,
@@ -34,7 +34,7 @@ const Home = () => {
   };
   const handleFetchNewPost = () => {
     searchUserPost({
-      title,
+      title: title.toLowerCase(),
       category,
       dispatch,
       uid: appState.user.uid,
@@ -47,7 +47,7 @@ const Home = () => {
       dispatch({ type: SET_USER_POST, payload: [] });
 
       searchUserPost({
-        title,
+        title: title.toLowerCase(),
         category,
         dispatch,
         uid: appState.user.uid,
@@ -113,13 +113,13 @@ const Home = () => {
           <h3 className="mytext-warning">You don't have any post.</h3>
 
           <h4>Got to Explore page </h4>
-          <button className="mybtn" onClick={() => history.push("/")}>
+          <button className="mybtn" onClick={() => history.push('/')}>
             Explore
           </button>
           <h4>Got to Add new post page</h4>
           <button
             className="mybtn"
-            onClick={() => history.push("/post/addpost")}
+            onClick={() => history.push('/post/addpost')}
           >
             ADD Post
           </button>

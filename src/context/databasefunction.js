@@ -1,4 +1,4 @@
-import { convertToRaw } from "draft-js";
+import { convertToRaw } from 'draft-js';
 
 import {
   CLEAR_POST_STATE,
@@ -8,23 +8,23 @@ import {
   SET_VIEW_POST_DATA,
   SET_LAST_USER_QUEARY_DOC,
   UPDATE_USER_POST,
-} from "./action.type";
-import { toast } from "react-toastify";
+} from './action.type';
+import { toast } from 'react-toastify';
 // firebase
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 
 export const deleteBinPost = async ({ postId, uid, isShowToast }) => {
   await firebase
     .firestore()
-    .collection("Users")
+    .collection('Users')
     .doc(uid)
-    .collection("bin")
+    .collection('bin')
     .doc(postId)
     .delete()
     .then(() => {
       if (isShowToast)
-        toast.success("Post Deleted From Bin", {
-          position: "top-right",
+        toast.success('Post Deleted From Bin', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -34,36 +34,36 @@ export const deleteBinPost = async ({ postId, uid, isShowToast }) => {
         });
     })
     .catch((error) =>
-      toast("Error in Deleting Post Form Bin " + error.message, {
-        type: "error",
+      toast('Error in Deleting Post Form Bin ' + error.message, {
+        type: 'error',
       })
     );
 };
 export const deletePrivatePost = async ({ postId, uid }) => {
   firebase
     .firestore()
-    .collection("Users")
+    .collection('Users')
     .doc(uid)
-    .collection("post")
+    .collection('post')
     .doc(postId)
     .delete()
-    .then(() => console.log("deletePrivatePost"))
+    .then(() => console.log('deletePrivatePost'))
     .catch((error) =>
-      toast("Error in Deleting Post " + error.message, {
-        type: "error",
+      toast('Error in Deleting Post ' + error.message, {
+        type: 'error',
       })
     );
 };
 export const deletePublicPost = async ({ postId }) => {
   firebase
     .firestore()
-    .collection("PublicPost")
+    .collection('PublicPost')
     .doc(postId)
     .delete()
-    .then(() => console.log("deletePublicPost"))
+    .then(() => console.log('deletePublicPost'))
     .catch((error) =>
-      toast("Error in Deleting Post " + error.message, {
-        type: "error",
+      toast('Error in Deleting Post ' + error.message, {
+        type: 'error',
       })
     );
 };
@@ -71,7 +71,7 @@ export const deletePublicPost = async ({ postId }) => {
 export const getPublicPost = async ({ postId, dispatch }) => {
   dispatch({ type: SET_IS_LOADING, payload: true });
 
-  const post = await firebase.firestore().collection("PublicPost").doc(postId);
+  const post = await firebase.firestore().collection('PublicPost').doc(postId);
   post.get().then((doc) => {
     if (doc.exists) {
       dispatch({ type: SET_VIEW_POST_DATA, payload: doc.data() });
@@ -79,10 +79,10 @@ export const getPublicPost = async ({ postId, dispatch }) => {
     } else {
       dispatch({ type: SET_IS_LOADING, payload: false });
 
-      console.log("No such document!");
+      console.log('No such document!');
       dispatch({ type: SET_VIEW_POST_DATA, payload: null });
-      toast("No such document!  ", {
-        type: "error",
+      toast('No such document!  ', {
+        type: 'error',
       });
     }
   });
@@ -94,10 +94,10 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
   try {
     const post = await firebase
       .firestore()
-      .collection("Users")
+      .collection('Users')
       .doc(uid)
-      .collection("bin")
-      .orderBy("timeStamp", "desc");
+      .collection('bin')
+      .orderBy('timeStamp', 'desc');
 
     post.get().then((querySnapshot) => {
       const tempDoc = querySnapshot.docs.map((doc) => {
@@ -108,8 +108,8 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       dispatch({ type: SET_IS_LOADING, payload: false });
 
       if (tempDoc.length === 0) {
-        toast.warn("🦄 No Post Found!", {
-          position: "top-right",
+        toast.warn('🦄 No Post Found!', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -120,9 +120,9 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
       }
     });
   } catch (error) {
-    console.log("Error", error);
+    console.log('Error', error);
     toast(error.message, {
-      type: "error",
+      type: 'error',
     });
   }
 };
@@ -130,14 +130,14 @@ export const getUserBinPost = async ({ uid, dispatch }) => {
 export const moveTobin = async ({ postData, uid }) => {
   firebase
     .firestore()
-    .collection("Users")
+    .collection('Users')
     .doc(uid)
-    .collection("bin")
+    .collection('bin')
     .doc(postData.id)
     .set(postData)
     .then(() =>
-      toast.success("Post Move to bin.", {
-        position: "top-right",
+      toast.success('Post Move to bin.', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -147,8 +147,8 @@ export const moveTobin = async ({ postData, uid }) => {
       })
     )
     .catch((error) =>
-      toast("Error in moving Post to Bin " + error.message, {
-        type: "error",
+      toast('Error in moving Post to Bin ' + error.message, {
+        type: 'error',
       })
     );
   deletePrivatePost({ postId: postData.id, uid });
@@ -160,14 +160,14 @@ export const moveTobin = async ({ postData, uid }) => {
 export const restoreBinPost = async ({ postData, uid }) => {
   firebase
     .firestore()
-    .collection("Users")
+    .collection('Users')
     .doc(uid)
-    .collection("post")
+    .collection('post')
     .doc(postData.id)
     .set(postData)
     .then(() =>
-      toast.success("Post Restore.", {
-        position: "top-right",
+      toast.success('Post Restore.', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -177,21 +177,21 @@ export const restoreBinPost = async ({ postData, uid }) => {
       })
     )
     .catch((error) =>
-      toast("Error in restoring Private version of Post " + error.message, {
-        type: "error",
+      toast('Error in restoring Private version of Post ' + error.message, {
+        type: 'error',
       })
     );
 
   if (!postData.isPrivate) {
     firebase
       .firestore()
-      .collection("PublicPost")
+      .collection('PublicPost')
       .doc(postData.id)
       .set(postData)
-      .then(() => console.log("Public Version of post restore"))
+      .then(() => console.log('Public Version of post restore'))
       .catch((error) =>
-        toast("Error in restoring Public version of Post " + error.message, {
-          type: "error",
+        toast('Error in restoring Public version of Post ' + error.message, {
+          type: 'error',
         })
       );
   }
@@ -208,19 +208,19 @@ export const searchPublicPost = async ({
   try {
     dispatch({ type: SET_IS_LOADING, payload: true });
 
-    const post = await firebase.firestore().collection("PublicPost");
-    if (title !== "" && category !== "All") {
+    const post = await firebase.firestore().collection('PublicPost');
+    if (title !== '' && category !== 'All') {
       post
-        .where("postTitle", "==", title)
-        .where("postCategory", "==", category)
+        .where('arrayForSearch', 'array-contains', title.toLowerCase())
+        .where('postCategory', '==', category)
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -231,10 +231,10 @@ export const searchPublicPost = async ({
           }
           dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
         });
-    } else if (title === "" && category !== "All") {
+    } else if (title === '' && category !== 'All') {
       post
-        .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
+        .where('postCategory', '==', category)
+        .orderBy('timeStamp', 'desc')
         .startAfter(lastDoc)
         .limit(20)
         .get()
@@ -247,8 +247,8 @@ export const searchPublicPost = async ({
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -258,19 +258,19 @@ export const searchPublicPost = async ({
             });
           }
           dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
-          console.log("tempDoc", tempDoc);
+          console.log('tempDoc', tempDoc);
         });
-    } else if (title !== "" && category === "All") {
+    } else if (title !== '' && category === 'All') {
       post
-        .where("postTitle", "==", title)
+        .where('arrayForSearch', 'array-contains', title.toLowerCase())
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -283,7 +283,7 @@ export const searchPublicPost = async ({
         });
     } else {
       post
-        .orderBy("timeStamp", "desc")
+        .orderBy('timeStamp', 'desc')
         .startAfter(lastDoc)
         .limit(20)
         .get()
@@ -296,8 +296,8 @@ export const searchPublicPost = async ({
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -311,9 +311,9 @@ export const searchPublicPost = async ({
     }
     dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
     toast(error.message, {
-      type: "error",
+      type: 'error',
     });
   }
 };
@@ -329,21 +329,21 @@ export const searchUserPost = async ({
 
     const post = await firebase
       .firestore()
-      .collection("Users")
+      .collection('Users')
       .doc(uid)
-      .collection("post");
-    if (title !== "" && category !== "All") {
+      .collection('post');
+    if (title !== '' && category !== 'All') {
       post
-        .where("postTitle", "==", title)
-        .where("postCategory", "==", category)
+        .where('arrayForSearch', 'array-contains', title)
+        .where('postCategory', '==', category)
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -354,10 +354,10 @@ export const searchUserPost = async ({
           }
           dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
-    } else if (title === "" && category !== "All") {
+    } else if (title === '' && category !== 'All') {
       post
-        .where("postCategory", "==", category)
-        .orderBy("timeStamp", "desc")
+        .where('postCategory', '==', category)
+        .orderBy('timeStamp', 'desc')
         .startAfter(lastDoc)
         .limit(20)
         .get()
@@ -370,8 +370,8 @@ export const searchUserPost = async ({
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -382,17 +382,17 @@ export const searchUserPost = async ({
           }
           dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
-    } else if (title !== "" && category === "All") {
+    } else if (title !== '' && category === 'All') {
       post
-        .where("postTitle", "==", title)
+        .where('arrayForSearch', 'array-contains', title)
         .get()
         .then((querySnapshot) => {
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -405,7 +405,7 @@ export const searchUserPost = async ({
         });
     } else {
       post
-        .orderBy("timeStamp", "desc")
+        .orderBy('timeStamp', 'desc')
         .startAfter(lastDoc)
         .limit(20)
         .get()
@@ -419,8 +419,8 @@ export const searchUserPost = async ({
             return { id: doc.id, ...doc.data() };
           });
           if (tempDoc.length === 0) {
-            toast.warn("🦄 No Post Found!", {
-              position: "top-right",
+            toast.warn('🦄 No Post Found!', {
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -434,9 +434,9 @@ export const searchUserPost = async ({
     }
     dispatch({ type: SET_IS_LOADING, payload: false });
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
     toast(error.message, {
-      type: "error",
+      type: 'error',
     });
   }
 };
@@ -450,16 +450,21 @@ export const uploadPost = async ({
 }) => {
   dispatch({ type: SET_IS_LOADING, payload: true });
 
-  const editorStateRaw = convertToRaw(
-    postState.editorState.getCurrentContent()
-  );
   const { postId } = postState;
+
+  let arrayForSearch = [];
+  const postTitleWords = postState.postTitle.split(' ');
+
+  postTitleWords.forEach((t) => {
+    if (t) arrayForSearch.push(t.toLowerCase());
+  });
+  arrayForSearch.push(postState.postTitle.toLowerCase());
 
   const uploadPost = await firebase
     .firestore()
-    .collection("Users")
+    .collection('Users')
     .doc(appState.user.uid)
-    .collection("post")
+    .collection('post')
     .doc(postId);
 
   uploadPost
@@ -469,17 +474,18 @@ export const uploadPost = async ({
         bio: appState.user.bio,
       },
       authorUid: appState.user.uid,
-      editorStateRaw,
       isPrivate: postState.isPrivate,
+      editorState: postState.editorState,
       postCategory: postState.postCategory,
       postId,
+      arrayForSearch,
       postTitle: postState.postTitle,
       postSample: postState.postSample,
       timeStamp: firebase.firestore.Timestamp.now(),
     })
     .then(() => {
-      toast.success("Private Post Uploaded.", {
-        position: "top-right",
+      toast.success('Private Post Uploaded.', {
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -489,18 +495,18 @@ export const uploadPost = async ({
       });
       dispatch({ type: CLEAR_POST_STATE, payload: initialState });
       dispatch({ type: SET_IS_LOADING, payload: false });
-      history.push("/home");
+      history.push('/home');
     })
     .catch((error) => {
-      toast("Error in Uploding Private Version of Post " + error.message, {
-        type: "error",
+      toast('Error in Uploding Private Version of Post ' + error.message, {
+        type: 'error',
       });
     });
 
   if (postState.isPrivate === false) {
     const uploadPost = await firebase
       .firestore()
-      .collection("PublicPost")
+      .collection('PublicPost')
       .doc(postId);
 
     uploadPost
@@ -509,19 +515,21 @@ export const uploadPost = async ({
           name: appState.user.name,
           bio: appState.user.bio,
         },
+
         authorUid: appState.user.uid,
-        editorStateRaw,
+        editorState: postState.editorState,
         isPrivate: postState.isPrivate,
         postCategory: postState.postCategory,
         postId,
+        arrayForSearch,
         postTitle: postState.postTitle,
         postSample: postState.postSample,
 
         timeStamp: firebase.firestore.Timestamp.now(),
       })
       .then(() => {
-        toast.success("Public Post Uploaded.", {
-          position: "top-right",
+        toast.success('Public Post Uploaded.', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -534,9 +542,9 @@ export const uploadPost = async ({
       })
       .catch((error) =>
         toast(
-          ("Error in Uploding Public Version of Post " + error.message,
+          ('Error in Uploding Public Version of Post ' + error.message,
           {
-            type: "error",
+            type: 'error',
           })
         )
       );

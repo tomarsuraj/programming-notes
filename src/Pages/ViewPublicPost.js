@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { UserContext } from "../context/context";
-import parse from "html-react-parser";
+import React, { useContext, useEffect } from 'react';
+import { UserContext } from '../context/context';
+import parse from 'html-react-parser';
 
-import draftToHtml from "draftjs-to-html";
-import { useParams } from "react-router-dom";
-import { getPublicPost } from "../context/databasefunction";
+import draftToHtml from 'draftjs-to-html';
+import { useParams } from 'react-router-dom';
+import { getPublicPost } from '../context/databasefunction';
 
 const ViewPublicPost = () => {
   const { appState, dispatch } = useContext(UserContext);
@@ -24,7 +24,7 @@ const ViewPublicPost = () => {
           <div className="border-bottom">
             <h2>{viewPostData.postTitle}</h2>
           </div>
-          {parse(draftToHtml(viewPostData.editorStateRaw))}
+          {viewPostData.editorState && parse(viewPostData.editorState)}
         </>
       ) : (
         <h4 className="mytext-warning">No Post exit with ID</h4>

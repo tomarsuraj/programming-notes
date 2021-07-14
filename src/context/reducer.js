@@ -22,10 +22,7 @@ import {
   UPDATE_POST_TITLE,
   UPDATE_PUBLIC_POST,
   UPDATE_USER_POST,
-} from "./action.type";
-
-// Editior
-import { EditorState, convertFromRaw } from "draft-js";
+} from './action.type';
 
 const appInitialState = {
   isAuthenticated: false,
@@ -129,9 +126,6 @@ export const addPostReducer = (state, action) => {
     case CLEAR_POST_STATE:
       return action.payload;
     case SET_EDIT_POST_STATE: {
-      const DBEditorState = convertFromRaw(action.payload.editorStateRaw);
-
-      const editorState = EditorState.createWithContent(DBEditorState);
       return {
         ...state,
         postId: action.payload.postId,
@@ -139,7 +133,7 @@ export const addPostReducer = (state, action) => {
         postSample: action.payload.postSample,
         postCategory: action.payload.postCategory,
         isPrivate: action.payload.isPrivate,
-        editorState: editorState,
+        editorState: action.payload.editorState,
         postImagesArray: action.payload.postImagesArray,
       };
     }

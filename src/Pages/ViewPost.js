@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/context";
-import parse from "html-react-parser";
-import { SET_EDIT_POST_DATA } from "../context/action.type";
-import { useHistory } from "react-router";
-import draftToHtml from "draftjs-to-html";
+import React, { useContext } from 'react';
+import { UserContext } from '../context/context';
+import parse from 'html-react-parser';
+import { SET_EDIT_POST_DATA } from '../context/action.type';
+import { useHistory } from 'react-router';
 
 const ViewPost = () => {
   const { appState, dispatch } = useContext(UserContext);
@@ -12,7 +11,7 @@ const ViewPost = () => {
 
   const handleEditClick = () => {
     dispatch({ type: SET_EDIT_POST_DATA, payload: viewPostData });
-    history.push("post/editpost");
+    history.push('post/editpost');
   };
 
   return (
@@ -23,7 +22,7 @@ const ViewPost = () => {
             <div className="border-bottom">
               <h2>{viewPostData.postTitle}</h2>
             </div>
-            {parse(draftToHtml(viewPostData.editorStateRaw))}
+            {parse(viewPostData.editorState)}
           </>
         ) : (
           <h4>No Post Data</h4>
