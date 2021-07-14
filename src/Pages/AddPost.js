@@ -167,7 +167,7 @@ const AddPost = () => {
 
       <div className="mt-4">
         <ReactQuill
-          value={postState.editorState}
+          value={postState.editorState ? postState.editorState : ''}
           onChange={(e) => {
             dispatchPost({
               type: UPDATE_EDITOR_STATE,

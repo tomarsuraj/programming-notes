@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../context/context';
 import parse from 'html-react-parser';
 
-import draftToHtml from 'draftjs-to-html';
 import { useParams } from 'react-router-dom';
 import { getPublicPost } from '../context/databasefunction';
 

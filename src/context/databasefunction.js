@@ -1,5 +1,3 @@
-import { convertToRaw } from 'draft-js';
-
 import {
   CLEAR_POST_STATE,
   UPDATE_PUBLIC_POST,
