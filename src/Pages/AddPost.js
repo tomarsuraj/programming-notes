@@ -1,12 +1,11 @@
-import React, { useEffect, useReducer, useState } from "react";
-import PostCategorySelector from "../Components/PostCategorySelector";
+import React, { useEffect, useReducer, useState } from 'react';
+import PostCategorySelector from '../Components/PostCategorySelector';
 
-import { addPostReducer } from "../context/reducer";
+import { addPostReducer } from '../context/reducer';
 
 // Editior
-import { EditorState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import {
   UPDATE_EDITOR_STATE,
@@ -17,25 +16,26 @@ import {
   SET_IS_PRIVATE,
   SET_EDIT_POST_STATE,
   CLEAR_POST_STATE,
-} from "../context/action.type";
+} from '../context/action.type';
 
-import { useContext } from "react";
-import { UserContext } from "../context/context";
+import { useContext } from 'react';
+import { UserContext } from '../context/context';
 
-import { deletePublicPost, uploadPost } from "../context/databasefunction";
-import Loading from "../Components/Loading";
-import { useHistory } from "react-router";
-import { useParams } from "react-router-dom";
+import { deletePublicPost, uploadPost } from '../context/databasefunction';
+import Loading from '../Components/Loading';
+import { useHistory } from 'react-router';
+import { useParams } from 'react-router-dom';
+import { toolbarOptions } from '../Components/editorconfig';
 
 // firebase
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 
 const initialState = {
   postId: null,
-  editorState: EditorState.createEmpty(),
-  postTitle: "",
-  postSample: "",
-  postCategory: "Python",
+  editorState: '',
+  postTitle: '',
+  postSample: '',
+  postCategory: 'Python',
   isPrivate: true,
 };
 
@@ -53,13 +53,12 @@ const AddPost = () => {
   const getPostId = async () => {
     const postdoc = await firebase
       .firestore()
-      .collection("Users")
+      .collection('Users')
       .doc(appState.user.uid)
-      .collection("post")
+      .collection('post')
       .doc();
 
     dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id });
-    console.log("getPOst ID Call");
   };
 
   const uploadPostFun = () => {
@@ -73,9 +72,9 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
-    if (isAddPost === "addpost") {
+    if (isAddPost === 'addpost') {
       uploadPostFun();
-    } else if (isAddPost === "editpost") {
+    } else if (isAddPost === 'editpost') {
       if (editPostData.isPrivate === postState.isPrivate) {
         uploadPostFun();
       } else {
@@ -85,21 +84,21 @@ const AddPost = () => {
   };
 
   useEffect(() => {
-    if (isAddPost === "editpost" || isAddPost === "addpost") {
-      if (isAddPost === "editpost") {
+    if (isAddPost === 'editpost' || isAddPost === 'addpost') {
+      if (isAddPost === 'editpost') {
         dispatchPost({ type: SET_EDIT_POST_STATE, payload: editPostData });
       } else {
         dispatchPost({ type: CLEAR_POST_STATE, payload: initialState });
       }
     } else {
-      history.replace("/");
+      history.replace('/');
     }
   }, [isAddPost]);
 
   return (
     <div className="myborder-5 p-3 mb-2 mt-3">
       <h1 className="heading text-center border-bottom">
-        {isAddPost === "editpost" ? "Edit Post" : "Add Post"}
+        {isAddPost === 'editpost' ? 'Edit Post' : 'Add Post'}
       </h1>
       {appState.isLoading ? <Loading /> : null}
 
@@ -131,10 +130,10 @@ const AddPost = () => {
       <label className="form-label mt-2">Post Privacy:</label>
       <select
         name="isPrivate"
-        value={`${postState.isPrivate ? "Private" : "Public"}`}
+        value={`${postState.isPrivate ? 'Private' : 'Public'}`}
         className="form-select"
         onChange={(e) => {
-          if (e.target.value === "Private") {
+          if (e.target.value === 'Private') {
             dispatchPost({
               type: SET_IS_PRIVATE,
               payload: true,
@@ -167,30 +166,22 @@ const AddPost = () => {
       />
 
       <div className="mt-4">
-        <Editor
-          editorState={postState.editorState}
-          wrapperClassName="editorWrapperClass"
-          editorClassName="editorBodyClass"
-          toolbarClassName="editorToolbarClass"
-          onEditorStateChange={(e) => {
+        <ReactQuill
+          value={postState.editorState}
+          onChange={(e) => {
             dispatchPost({
               type: UPDATE_EDITOR_STATE,
               payload: e,
             });
           }}
-          toolbar={{
-            image: {
-              defaultSize: {
-                height: "auto",
-                width: "80%",
-              },
-            },
+          modules={{
+            toolbar: toolbarOptions,
           }}
         />
       </div>
       {postId ? (
         <button onClick={() => handleSubmit()} className="mybtn mybtn-success">
-          {isAddPost === "addpost" ? " ADD Post" : "Edit Post"}
+          {isAddPost === 'addpost' ? ' ADD Post' : 'Edit Post'}
         </button>
       ) : (
         <button onClick={() => getPostId()} className="mybtn">
@@ -201,8 +192,8 @@ const AddPost = () => {
       <div
         className={
           showPostIsPrivateChangeModal
-            ? "mymodal displaBlock"
-            : "mymodal displayNone"
+            ? 'mymodal displaBlock'
+            : 'mymodal displayNone'
         }
       >
         <div className="mymodalMain myborder-3 myborder-primary">

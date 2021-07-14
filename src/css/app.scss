@@ -94,29 +94,16 @@ body {
 }
 
 /* editor Css */
-.editorWrapperClass {
-  border: 3px solid $color-grey;
-  border-radius: 15px;
-  margin: 10px 0px 10px 0px;
-  padding: 10px;
-}
-.editorBodyClass {
-  background-color: $color-bg;
-  border: 3px solid #35bdd0;
-  border-radius: 15px;
-  color: #cad5e2;
-  min-height: 200px;
-  padding: 10px;
-}
-.editorToolbarClass {
-  color: #000;
+.ql-toolbar {
+  background-color: #fff;
+  color: #1b98f5;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   z-index: 2;
 }
-.editorToolbarClass input {
-  color: #000;
+.ql-container {
+  min-height: 200px;
 }
 
 // Modal CSS
