@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../context/context';
-import parse from 'html-react-parser';
 import { SET_EDIT_POST_DATA } from '../context/action.type';
 import { useHistory } from 'react-router';
+import ReactQuill from 'react-quill';
 
 const ViewPost = () => {
   const { appState, dispatch } = useContext(UserContext);
@@ -22,7 +22,12 @@ const ViewPost = () => {
             <div className="border-bottom">
               <h2>{viewPostData.postTitle}</h2>
             </div>
-            {parse(viewPostData.editorState)}
+
+            <ReactQuill
+              value={viewPostData.editorState}
+              readOnly={true}
+              theme={'bubble'}
+            />
           </>
         ) : (
           <h4>No Post Data</h4>
