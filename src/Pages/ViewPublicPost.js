@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../context/context';
-import parse from 'html-react-parser';
+import ReactQuill from 'react-quill';
 
 import { useParams } from 'react-router-dom';
 import { getPublicPost } from '../context/databasefunction';
@@ -23,7 +23,13 @@ const ViewPublicPost = () => {
           <div className="border-bottom">
             <h2>{viewPostData.postTitle}</h2>
           </div>
-          {viewPostData.editorState && parse(viewPostData.editorState)}
+          {viewPostData.editorState && (
+            <ReactQuill
+              value={viewPostData.editorState}
+              readOnly={true}
+              theme={'bubble'}
+            />
+          )}
         </>
       ) : (
         <h4 className="mytext-warning">No Post exit with ID</h4>
