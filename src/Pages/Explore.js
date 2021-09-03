@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
-import PostCategorySelector from "../Components/PostCategorySelector";
-import PostInfoCard from "../Components/PostInfoCard";
-import { UserContext } from "../context/context";
-import { searchPublicPost } from "../context/databasefunction";
-import Loading from "../Components/Loading";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import PostCategorySelector from '../Components/PostCategorySelector';
+import PostInfoCard from '../Components/PostInfoCard';
+import { UserContext } from '../context/context';
+import { searchPublicPost } from '../context/databasefunction';
+import Loading from '../Components/Loading';
+import { useHistory } from 'react-router-dom';
 import {
   SET_LAST_USER_QUEARY_DOC,
   SET_PUBLIC_POST,
-} from "../context/action.type";
+} from '../context/action.type';
 
 const Explore = () => {
   const { appState, dispatch } = useContext(UserContext);
 
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("All");
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('All');
   const history = useHistory();
 
   const handleSearch = () => {
@@ -99,9 +99,16 @@ const Explore = () => {
               isPrivate={false}
             />
           ))}
-          <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
-            More
-          </button>
+
+          {appState.isPostNotFound ? (
+            <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
+              More
+            </button>
+          ) : (
+            <button className="mybtn mt-4 mybtn-warning">
+              No More Post Found
+            </button>
+          )}
         </div>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">
@@ -111,13 +118,13 @@ const Explore = () => {
           {appState.isAuthenticated ? (
             <div>
               <h4>Got to home page </h4>
-              <button className="mybtn" onClick={() => history.push("/home")}>
+              <button className="mybtn" onClick={() => history.push('/home')}>
                 Home
               </button>
               <h4>Got to Add new post page</h4>
               <button
                 className="mybtn"
-                onClick={() => history.push("/post/addpost")}
+                onClick={() => history.push('/post/addpost')}
               >
                 ADD Post
               </button>
@@ -126,7 +133,7 @@ const Explore = () => {
             <div>
               <h4>You can sign to add post or your own</h4>
 
-              <button className="mybtn" onClick={() => history.push("/signIn")}>
+              <button className="mybtn" onClick={() => history.push('/signIn')}>
                 Sign In
               </button>
             </div>
