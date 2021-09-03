@@ -21,7 +21,11 @@ import {
 import { useContext } from 'react';
 import { UserContext } from '../context/context';
 
-import { deletePublicPost, uploadPost } from '../context/databasefunction';
+import {
+  deletePublicPost,
+  updatePost,
+  uploadPost,
+} from '../context/databasefunction';
 import Loading from '../Components/Loading';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
@@ -50,25 +54,24 @@ const AddPost = () => {
 
   const { editPostData } = appState;
 
-  const getPostId = async () => {
-    const postdoc = await firebase
-      .firestore()
-      .collection('Users')
-      .doc(appState.user.uid)
-      .collection('post')
-      .doc();
-
-    dispatchPost({ type: UPDATE_POST_ID, payload: postdoc.id });
-  };
-
   const uploadPostFun = () => {
-    uploadPost({
-      postState,
-      appState,
-      dispatch: dispatchPost,
-      initialState,
-      history,
-    });
+    if (isAddPost === 'addpost') {
+      uploadPost({
+        postState,
+        appState,
+        dispatch: dispatchPost,
+        initialState,
+        history,
+      });
+    } else if (isAddPost === 'editpost') {
+      updatePost({
+        postState,
+        appState,
+        dispatch: dispatchPost,
+        initialState,
+        history,
+      });
+    }
   };
 
   const handleSubmit = async () => {
@@ -179,15 +182,10 @@ const AddPost = () => {
           }}
         />
       </div>
-      {postId ? (
-        <button onClick={() => handleSubmit()} className="mybtn mybtn-success">
-          {isAddPost === 'addpost' ? ' ADD Post' : 'Edit Post'}
-        </button>
-      ) : (
-        <button onClick={() => getPostId()} className="mybtn">
-          GET post ID
-        </button>
-      )}
+
+      <button onClick={() => handleSubmit()} className="mybtn mybtn-success">
+        {isAddPost === 'addpost' ? ' ADD Post' : 'Edit Post'}
+      </button>
 
       <div
         className={

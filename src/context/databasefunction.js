@@ -439,7 +439,7 @@ export const searchUserPost = async ({
   }
 };
 
-export const uploadPost = async ({
+export const updatePost = async ({
   postState,
   appState,
   dispatch,
@@ -458,12 +458,109 @@ export const uploadPost = async ({
   });
   arrayForSearch.push(postState.postTitle.toLowerCase());
 
-  const uploadPost = await firebase
+  const updatePost = await firebase
     .firestore()
     .collection('Users')
     .doc(appState.user.uid)
     .collection('post')
     .doc(postId);
+
+  updatePost
+    .update({
+      isPrivate: postState.isPrivate,
+      editorState: postState.editorState,
+      postCategory: postState.postCategory,
+      postId,
+      arrayForSearch,
+      postTitle: postState.postTitle,
+      postSample: postState.postSample,
+      timeStamp: firebase.firestore.Timestamp.now(),
+    })
+    .then(() => {
+      toast.success('Private Post Uploaded.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      dispatch({ type: CLEAR_POST_STATE, payload: initialState });
+      dispatch({ type: SET_IS_LOADING, payload: false });
+      history.push('/home');
+    })
+    .catch((error) => {
+      toast('Error in Uploding Private Version of Post ' + error.message, {
+        type: 'error',
+      });
+    });
+
+  if (postState.isPrivate === false) {
+    const updatePostPublic = await firebase
+      .firestore()
+      .collection('PublicPost')
+      .doc(postId);
+
+    updatePostPublic
+      .update({
+        editorState: postState.editorState,
+        isPrivate: postState.isPrivate,
+        postCategory: postState.postCategory,
+        postId,
+        arrayForSearch,
+        postTitle: postState.postTitle,
+        postSample: postState.postSample,
+        timeStamp: firebase.firestore.Timestamp.now(),
+      })
+      .then(() => {
+        toast.success('Public Post Uploaded.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        dispatch({ type: CLEAR_POST_STATE, payload: initialState });
+        dispatch({ type: SET_IS_LOADING, payload: false });
+      })
+      .catch((error) =>
+        toast(
+          ('Error in Uploding Public Version of Post ' + error.message,
+          {
+            type: 'error',
+          })
+        )
+      );
+  }
+};
+
+export const uploadPost = async ({
+  postState,
+  appState,
+  dispatch,
+  history,
+  initialState,
+}) => {
+  dispatch({ type: SET_IS_LOADING, payload: true });
+
+  let arrayForSearch = [];
+  const postTitleWords = postState.postTitle.split(' ');
+
+  postTitleWords.forEach((t) => {
+    if (t) arrayForSearch.push(t.toLowerCase());
+  });
+  arrayForSearch.push(postState.postTitle.toLowerCase());
+
+  const uploadPost = await firebase
+    .firestore()
+    .collection('Users')
+    .doc(appState.user.uid)
+    .collection('post')
+    .doc();
+  const postId = uploadPost.id;
 
   uploadPost
     .set({
@@ -475,11 +572,12 @@ export const uploadPost = async ({
       isPrivate: postState.isPrivate,
       editorState: postState.editorState,
       postCategory: postState.postCategory,
-      postId,
+      postId: uploadPost.id,
       arrayForSearch,
       postTitle: postState.postTitle,
       postSample: postState.postSample,
       timeStamp: firebase.firestore.Timestamp.now(),
+      createdAt: firebase.firestore.Timestamp.now(),
     })
     .then(() => {
       toast.success('Private Post Uploaded.', {
@@ -524,6 +622,7 @@ export const uploadPost = async ({
         postSample: postState.postSample,
 
         timeStamp: firebase.firestore.Timestamp.now(),
+        createdAt: firebase.firestore.Timestamp.now(),
       })
       .then(() => {
         toast.success('Public Post Uploaded.', {

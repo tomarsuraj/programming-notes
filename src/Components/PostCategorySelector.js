@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const PostCategorySelector = ({ value, onChange, name, showAll }) => {
   return (
@@ -17,6 +17,8 @@ const PostCategorySelector = ({ value, onChange, name, showAll }) => {
       <option>C ++</option>
       <option>PHP</option>
       <option>Data Base</option>
+      <option>Linux</option>
+      <option>Other</option>
     </select>
   );
 };
