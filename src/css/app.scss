@@ -12,6 +12,10 @@ body {
   background-color: $color-bg;
 }
 
+p {
+  font-size: 18px;
+}
+
 .mybg-grey {
   background-color: $color-grey;
   z-index: -1;
@@ -104,6 +108,22 @@ body {
 }
 .ql-container {
   min-height: 200px;
+}
+.ql-container li,
+p {
+  font-size: 18px;
+}
+.ql-container h1 {
+  font-size: 38px;
+}
+.ql-container h2 {
+  font-size: 32px;
+}
+.ql-container h3 {
+  font-size: 28px;
+}
+.ql-container h4 {
+  font-size: 24px;
 }
 
 // Modal CSS

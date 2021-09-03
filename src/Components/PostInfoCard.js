@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/context";
-import { useHistory } from "react-router-dom";
+import React, { useContext } from 'react';
+import { UserContext } from '../context/context';
+import { useHistory } from 'react-router-dom';
 
 import {
   deleteBinPost,
   getUserBinPost,
   moveTobin,
   restoreBinPost,
-} from "../context/databasefunction";
+} from '../context/databasefunction';
 
 import {
   REMOVE_MOVE_TO_BIN_POST,
   SET_EDIT_POST_DATA,
   SET_VIEW_POST_DATA,
-} from "../context/action.type";
+} from '../context/action.type';
 
 const PostInfoCard = ({ isBin, value, isPrivate }) => {
   const { appState, dispatch } = useContext(UserContext);
@@ -22,16 +22,16 @@ const PostInfoCard = ({ isBin, value, isPrivate }) => {
   const handleViewClick = () => {
     if (appState.isAuthenticated && value.isPrivate) {
       dispatch({ type: SET_VIEW_POST_DATA, payload: value });
-      history.push("viewPost");
+      history.push('viewPost');
     } else {
-      history.push("publicPost/" + value.id);
+      history.push('publicPost/' + value.id);
       dispatch({ type: SET_VIEW_POST_DATA, payload: value });
     }
   };
 
   const handleEditClick = () => {
     dispatch({ type: SET_EDIT_POST_DATA, payload: value });
-    history.push("/post/editpost");
+    history.push('/post/editpost');
   };
   return (
     <div className="col col-sm-12 col-md-12 col-lg-6 ">
@@ -41,14 +41,30 @@ const PostInfoCard = ({ isBin, value, isPrivate }) => {
         </div>
         <div className="card-body">
           <p>{value.postSample}</p>
-          <h5 className="mytext-success">
-            <strong>Category: </strong>
-            {value.postCategory}
+          <h5>
+            <strong className="mytext-success">Category: </strong>
+            <small className="mytext-warning"> {value.postCategory}</small>
           </h5>
-          <h6 className="mytext-success">
-            <strong> Privacy: </strong>
-            {value.isPrivate ? "Private" : "Public"}
+          <h6>
+            <strong className="mytext-success">Privacy: </strong>
+            <small className="mytext-warning">
+              {value.isPrivate ? 'Private' : 'Public'}
+            </small>
           </h6>
+          <h6>
+            <strong className="mytext-success">Last Edited: </strong>
+            <small className="mytext-warning">
+              {value.timeStamp.toDate().toLocaleString()}
+            </small>
+          </h6>
+          {value.createdAt ? (
+            <h6>
+              <strong className="mytext-success">Created At: </strong>
+              <small className="mytext-warning">
+                {value.createdAt.toDate().toLocaleDateString()}
+              </small>
+            </h6>
+          ) : null}
           {value.authorDetails ? (
             <p className="float-end mytext-success">
               Author Name: {value.authorDetails.name}
