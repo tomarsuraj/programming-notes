@@ -6,6 +6,7 @@ import {
   SET_VIEW_POST_DATA,
   SET_LAST_USER_QUEARY_DOC,
   UPDATE_USER_POST,
+  IS_POST_NOT_FOUND,
 } from './action.type';
 import { toast } from 'react-toastify';
 // firebase
@@ -226,8 +227,11 @@ export const searchPublicPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
           }
-          dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
         });
     } else if (title === '' && category !== 'All') {
       post
@@ -237,10 +241,6 @@ export const searchPublicPost = async ({
         .limit(20)
         .get()
         .then((querySnapshot) => {
-          dispatch({
-            type: SET_LAST_USER_QUEARY_DOC,
-            payload: querySnapshot.docs[querySnapshot.docs.length - 1],
-          });
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
@@ -254,9 +254,15 @@ export const searchPublicPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
+            dispatch({
+              type: SET_LAST_USER_QUEARY_DOC,
+              payload: querySnapshot.docs[querySnapshot.docs.length - 1],
+            });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: true });
           }
-          dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
-          console.log('tempDoc', tempDoc);
         });
     } else if (title !== '' && category === 'All') {
       post
@@ -276,8 +282,15 @@ export const searchPublicPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
+            dispatch({
+              type: SET_LAST_USER_QUEARY_DOC,
+              payload: querySnapshot.docs[querySnapshot.docs.length - 1],
+            });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
           }
-          dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
         });
     } else {
       post
@@ -286,10 +299,6 @@ export const searchPublicPost = async ({
         .limit(20)
         .get()
         .then((querySnapshot) => {
-          dispatch({
-            type: SET_LAST_USER_QUEARY_DOC,
-            payload: querySnapshot.docs[querySnapshot.docs.length - 1],
-          });
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
@@ -303,8 +312,15 @@ export const searchPublicPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
+            dispatch({
+              type: SET_LAST_USER_QUEARY_DOC,
+              payload: querySnapshot.docs[querySnapshot.docs.length - 1],
+            });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: true });
           }
-          dispatch({ type: UPDATE_PUBLIC_POST, payload: tempDoc });
         });
     }
     dispatch({ type: SET_IS_LOADING, payload: false });
@@ -349,8 +365,11 @@ export const searchUserPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
           }
-          dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
     } else if (title === '' && category !== 'All') {
       post
@@ -360,10 +379,6 @@ export const searchUserPost = async ({
         .limit(20)
         .get()
         .then((querySnapshot) => {
-          dispatch({
-            type: SET_LAST_USER_QUEARY_DOC,
-            payload: querySnapshot.docs[querySnapshot.docs.length - 1],
-          });
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
@@ -377,8 +392,15 @@ export const searchUserPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({
+              type: SET_LAST_USER_QUEARY_DOC,
+              payload: querySnapshot.docs[querySnapshot.docs.length - 1],
+            });
+            dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: true });
           }
-          dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
     } else if (title !== '' && category === 'All') {
       post
@@ -398,8 +420,11 @@ export const searchUserPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
           }
-          dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
     } else {
       post
@@ -408,11 +433,6 @@ export const searchUserPost = async ({
         .limit(20)
         .get()
         .then((querySnapshot) => {
-          dispatch({
-            type: SET_LAST_USER_QUEARY_DOC,
-            payload: querySnapshot.docs[querySnapshot.docs.length - 1],
-          });
-
           const tempDoc = querySnapshot.docs.map((doc) => {
             return { id: doc.id, ...doc.data() };
           });
@@ -426,8 +446,15 @@ export const searchUserPost = async ({
               draggable: true,
               progress: undefined,
             });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: false });
+          } else {
+            dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
+            dispatch({ type: IS_POST_NOT_FOUND, payload: true });
+            dispatch({
+              type: SET_LAST_USER_QUEARY_DOC,
+              payload: querySnapshot.docs[querySnapshot.docs.length - 1],
+            });
           }
-          dispatch({ type: UPDATE_USER_POST, payload: tempDoc });
         });
     }
     dispatch({ type: SET_IS_LOADING, payload: false });

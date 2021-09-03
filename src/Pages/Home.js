@@ -55,7 +55,6 @@ const Home = () => {
       });
     }
   }, [appState.user.uid]);
-
   return (
     <div>
       {appState.isLoading ? <Loading /> : null}
@@ -104,9 +103,15 @@ const Home = () => {
               isPrivate={true}
             />
           ))}
-          <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
-            More
-          </button>
+          {appState.isPostNotFound ? (
+            <button className="mybtn mt-4" onClick={() => handleFetchNewPost()}>
+              More
+            </button>
+          ) : (
+            <button className="mybtn mt-4 mybtn-warning">
+              No More Post Found
+            </button>
+          )}
         </div>
       ) : (
         <div className="mt-4 mt-4 myborder-3 p-4">

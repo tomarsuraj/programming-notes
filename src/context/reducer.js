@@ -22,12 +22,14 @@ import {
   UPDATE_POST_TITLE,
   UPDATE_PUBLIC_POST,
   UPDATE_USER_POST,
+  IS_POST_NOT_FOUND,
 } from './action.type';
 
 const appInitialState = {
   isAuthenticated: false,
   isEmailVerified: false,
   isSignIn: false,
+  isPostNotFound: false,
   user: {},
   post: {},
   BinPostData: {},
@@ -58,6 +60,11 @@ export const appReducer = (state, action) => {
         isSignIn: action.payload,
       };
 
+    case IS_POST_NOT_FOUND:
+      return {
+        ...state,
+        isPostNotFound: action.payload,
+      };
     case REMOVE_MOVE_TO_BIN_POST: {
       const { post, publicPost } = state;
       return {
